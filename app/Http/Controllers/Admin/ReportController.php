@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReportExcel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Models\Review;
 
 class ReportController extends Controller
 {
@@ -20,6 +21,9 @@ class ReportController extends Controller
 
         // Tổng số khách hàng (distinct theo user_id)
         $totalCustomers = Order::distinct('user_id')->count('user_id');
+
+        // Tổng số đánh giá
+        $totalReviews = Review::count();
 
         // ==============================
         // Doanh thu theo danh mục (Bar)
@@ -129,6 +133,7 @@ class ReportController extends Controller
         return view('admin.reports.index', compact(
             'totalOrders',
             'totalCustomers',
+            'totalReviews', // thêm biến này
 
             // Category revenue (Bar)
             'revenueByCategory',

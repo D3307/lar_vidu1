@@ -8,12 +8,19 @@
 
 @section('content')
     <style>
-        .report-grid {
+        .report-grid-top {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
             gap: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 30px;
         }
         .report-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
             background: #fff;
             border-radius: 16px;
             padding: 18px;
@@ -26,9 +33,56 @@
             color: #7a2f3b;
             text-align: center;
         }
+        .report-value {
+            font-size:2rem; text-align:center; font-weight:bold; color:#333;
+        }
+        .report-grid-charts {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            align-items: stretch;
+            height: 370px;
+            padding-bottom: 30px;
+        }
+        .rect-chart {
+            flex: 2 1 0;
+            min-width: 0;
+            height: 370px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .square-chart {
+            flex: 1 1 0;
+            min-width: 0;
+            height: 370px;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .report-grid-full {
+            margin-top:24px;
+            display: flex;
+            height: 100%;
+        }
+        .full-width-card {
+            width: 100%;
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            border: 1px solid rgba(122,47,59,0.08);
+        }
+        .full-width-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #7a2f3b;
+            text-align: center;
+        }
         canvas {
             width: 100% !important;
-            height: 320px !important;
+            height: 100% !important;
         }
         select {
             padding: 6px 10px;
@@ -51,43 +105,51 @@
     </form>
 
     <!-- Thống kê nhanh -->
-    <div class="report-grid">
+    <div class="report-grid-top">
         <div class="report-card">
             <h3>Tổng số đơn hàng</h3>
-            <div class="report-value" style="font-size:2rem; text-align:center; font-weight:bold; color:#333;">
+            <div class="report-value">
                 {{ $totalOrders ?? 0 }}
             </div>
         </div>
         <div class="report-card">
             <h3>Tổng số khách hàng</h3>
-            <div class="report-value" style="font-size:2rem; text-align:center; font-weight:bold; color:#333;">
+            <div class="report-value">
                 {{ $totalCustomers ?? 0 }}
+            </div>
+        </div>
+        <div class="report-card">
+            <h3>Tổng số đánh giá</h3>
+            <div class="report-value">
+                {{ $totalReviews ?? 0 }}
             </div>
         </div>
     </div>
 
     <!-- Các biểu đồ -->
-    <div class="report-grid" style="margin-top:24px;">
-        <div class="report-card">
+    <div class="report-grid-charts">
+        <div class="report-card rect-chart">
             <h3>Doanh thu theo danh mục</h3>
             <canvas id="categoryRevenueChart"></canvas>
         </div>
-        <div class="report-card">
+        <div class="report-card square-chart">
             <h3>Doanh thu theo phương thức thanh toán</h3>
             <canvas id="revenueByPaymentMethodChart"></canvas>
         </div>
     </div>
 
     <!-- Biểu đồ doanh thu gộp (Ngày/Tháng/Năm) -->
-    <div class="report-grid" style="margin-top:24px;">
-        <div class="report-card">
+    <div class="report-grid-full">
+        <div class="full-width-card">
             <h3>Doanh thu theo thời gian</h3>
             <select id="timeSelect">
                 <option value="day">Theo ngày</option>
                 <option value="month">Theo tháng</option>
                 <option value="year">Theo năm</option>
             </select>
-            <canvas id="revenueByPeriodChart"></canvas>
+            <div style="width:100%;height:400px;">
+                <canvas id="revenueByPeriodChart"></canvas>
+            </div>
         </div>
     </div>
 
@@ -122,7 +184,11 @@
                     backgroundColor: ['#7a2f3b','#d67a8c','#f1b6b8','#8ec5fc','#aaa']
                 }]
             },
-            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            options: { 
+                responsive: true, 
+                plugins: { legend: { position: 'bottom' } },
+                aspectRatio: 1 // giữ hình vuông
+            }
         });
 
         // ==============================
@@ -132,7 +198,6 @@
         let periodChart; // chart toàn cục
 
         function renderPeriodChart(type) {
-            // Nếu chart cũ tồn tại thì xóa đi
             if (periodChart) {
                 periodChart.destroy();
             }
@@ -175,7 +240,7 @@
                         backgroundColor: backgroundColor,
                         borderColor: borderColor,
                         borderWidth: 2,
-                        tension: 0.3 // chỉ áp dụng cho line
+                        tension: 0.3
                     }]
                 },
                 options: {
@@ -185,35 +250,11 @@
             });
         }
 
-        // Mặc định load theo ngày
         renderPeriodChart('day');
 
-        // Khi select thay đổi thì render lại chart
         document.getElementById('timeSelect').addEventListener('change', function() {
             renderPeriodChart(this.value);
         });
-
-            // Hàm cập nhật chart khi chọn Day/Month/Year
-            document.getElementById('timeSelect').addEventListener('change', function() {
-                let type = this.value;
-                if (type === 'day') {
-                    periodChart.data.labels = {!! json_encode($dayLabels) !!};
-                    periodChart.data.datasets[0].data = {!! json_encode($dayValues) !!};
-                    periodChart.data.datasets[0].label = 'Doanh thu theo ngày';
-                    periodChart.data.datasets[0].backgroundColor = '#d67a8c';
-                } else if (type === 'month') {
-                    periodChart.data.labels = {!! json_encode($monthLabels) !!};
-                    periodChart.data.datasets[0].data = {!! json_encode($monthValues) !!};
-                    periodChart.data.datasets[0].label = 'Doanh thu theo tháng';
-                    periodChart.data.datasets[0].backgroundColor = '#8ec5fc';
-                } else {
-                    periodChart.data.labels = {!! json_encode($yearLabels) !!};
-                    periodChart.data.datasets[0].data = {!! json_encode($yearValues) !!};
-                    periodChart.data.datasets[0].label = 'Doanh thu theo năm';
-                    periodChart.data.datasets[0].backgroundColor = '#7a2f3b';
-                }
-                periodChart.update();
-            });
 
         // ==============================
         // Xuất PDF
