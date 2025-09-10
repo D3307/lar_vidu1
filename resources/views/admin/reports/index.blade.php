@@ -10,10 +10,51 @@
     <style>
         .report-grid-top {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
             gap: 24px;
             margin-bottom: 24px;
             padding-bottom: 30px;
+        }
+        .modern-card2 {
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px 22px;
+            box-shadow: 0 4px 16px rgba(122,47,59,0.07);
+            border: 1px solid rgba(122,47,59,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+        }
+        .modern-card2:hover {
+            box-shadow: 0 8px 24px rgba(122,47,59,0.13);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #7a2f3b;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #7a2f3b;
+        }
+        .card-value {
+            font-size: 2.1rem;
+            font-weight: bold;
+            color: #7a2f3b;
+            margin-left: 2px;
         }
         .report-card {
             display: flex;
@@ -26,15 +67,6 @@
             padding: 18px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.05);
             border: 1px solid rgba(122,47,59,0.08);
-        }
-        .report-card h3 {
-            margin-bottom: 12px;
-            font-size: 1.1rem;
-            color: #7a2f3b;
-            text-align: center;
-        }
-        .report-value {
-            font-size:2rem; text-align:center; font-weight:bold; color:#333;
         }
         .report-grid-charts {
             display: flex;
@@ -70,7 +102,7 @@
             width: 100%;
             background: #fff;
             border-radius: 16px;
-            padding: 18px;
+            padding: 10px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.05);
             border: 1px solid rgba(122,47,59,0.08);
         }
@@ -106,23 +138,26 @@
 
     <!-- Thống kê nhanh -->
     <div class="report-grid-top">
-        <div class="report-card">
-            <h3>Tổng số đơn hàng</h3>
-            <div class="report-value">
-                {{ $totalOrders ?? 0 }}
+        <div class="report-card modern-card2">
+            <div class="card-header">
+                <span class="card-icon" style="font-size:2rem;">📦</span>
+                <span class="card-title">Đơn hàng</span>
             </div>
+            <div class="card-value">{{ $totalOrders ?? 0 }}</div>
         </div>
-        <div class="report-card">
-            <h3>Tổng số khách hàng</h3>
-            <div class="report-value">
-                {{ $totalCustomers ?? 0 }}
+        <div class="report-card modern-card2">
+            <div class="card-header">
+                <span class="card-icon" style="font-size:2rem;">👥</span>
+                <span class="card-title">Khách hàng</span>
             </div>
+            <div class="card-value">{{ $totalCustomers ?? 0 }}</div>
         </div>
-        <div class="report-card">
-            <h3>Tổng số đánh giá</h3>
-            <div class="report-value">
-                {{ $totalReviews ?? 0 }}
+        <div class="report-card modern-card2">
+            <div class="card-header">
+                <span class="card-icon" style="font-size:2rem;">⭐</span>
+                <span class="card-title">Đánh giá</span>
             </div>
+            <div class="card-value">{{ $totalReviews ?? 0 }}</div>
         </div>
     </div>
 
@@ -147,7 +182,7 @@
                 <option value="month">Theo tháng</option>
                 <option value="year">Theo năm</option>
             </select>
-            <div style="width:100%;height:400px;">
+            <div style="width:100%;height:400px; padding-top:20px;">
                 <canvas id="revenueByPeriodChart"></canvas>
             </div>
         </div>
