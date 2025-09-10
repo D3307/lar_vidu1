@@ -13,11 +13,13 @@
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Tên</th>
-                    <th>Email</th>
-                    <th>Vai trò</th>
-                    <th>Hành động</th>
+                    <th style="width:15px;">STT</th>
+                    <th style="width:50px;">Tên</th>
+                    <th style="width:250px;">Email</th>
+                    <th style="width:100px;">Số điện thoại</th>
+                    <th style="width:250px;">Địa chỉ</th>
+                    <th style="width:70px;">Vai trò</th>
+                    <th style="width:100px;">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,6 +29,8 @@
                     <td>{{ $users->firstItem() + $loop->index }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                    <td>{{ $user->phone ?? 'N/A' }}</td>
+                    <td>{{ $user->address ?? 'N/A' }}</td>
                     <td>
                         <span class="role-badge {{ $user->role == 'admin' ? 'role-admin' : 'role-user' }}">
                             {{ ucfirst($user->role) }}
