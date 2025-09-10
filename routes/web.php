@@ -16,7 +16,8 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Customer\ReviewController;
+use App\Http\Controllers\Customer\ReviewController as CustomerReviewController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -90,8 +91,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/success', function () {return view('customer.success');})->name('customer.success');
 
     //Đánh giá
-    Route::get('/review/{order}', [ReviewController::class, 'create'])->name('customer.review');
-    Route::post('/review/{order}', [ReviewController::class, 'store'])->name('customer.review.store');
+    Route::get('/review/{order}', [CustomerReviewController::class, 'create'])->name('customer.review');
+    Route::post('/review/{order}', [CustomerReviewController::class, 'store'])->name('customer.review.store');
 
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');
@@ -113,6 +114,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('products', AdminProductController::class);
         Route::resource('users', UserController::class);
         Route::resource('orders', AdminOrderController::class);
+        Route::resource('reviews', AdminReviewController::class);
         
         //Route báo cáo - thống kê
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

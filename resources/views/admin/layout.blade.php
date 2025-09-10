@@ -112,6 +112,7 @@
                 <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'nav-item-active' : '' }}">📦 Quản lý sản phẩm</a>
                 <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'nav-item-active' : '' }}">👤 Quản lý người dùng</a>
                 <a href="{{ route('admin.orders.orders') }}" class="{{ request()->routeIs('admin.orders.*') ? 'nav-item-active' : '' }}">📋 Quản lý đơn hàng</a>
+                <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'nav-item-active' : '' }}">⭐ Quản lý đánh giá</a>
             </nav>
 
             <!-- other sidebar items (đăng xuất...) -->
