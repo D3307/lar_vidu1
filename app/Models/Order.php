@@ -31,4 +31,10 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    // Đánh giá (reviews)
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

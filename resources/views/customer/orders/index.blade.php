@@ -2,6 +2,17 @@
 
 @section('title', 'Danh sách đơn hàng')
 
+<!-- Hiển thị thông báo đánh giá thành công hoặc lỗi -->
+@if(session('success') || session('error'))
+    <div id="toast-message" class="custom-toast {{ session('success') ? 'success' : 'error' }}">
+        <span class="icon">✔</span>
+        <span class="message">
+            {{ session('success') ?? session('error') }}
+        </span>
+        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+    </div>
+@endif
+
 @section('content')
 <div class="container py-5">
     <h2 class="mb-4 text-center" style="color:#e75480;font-weight:700">Danh sách đơn hàng</h2>
@@ -56,20 +67,52 @@
     @endif
 </div>
 
-<!-- Thông báo đánh giá thành công -->
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
 <style>
+.custom-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff6b88; /* màu hồng */
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-weight: 600;
+    z-index: 9999;
+    animation: slideIn 0.4s ease, fadeOut 0.5s ease 3s forwards;
+}
+
+.custom-toast .icon {
+    font-size: 18px;
+}
+
+.custom-toast .message {
+    flex-grow: 1;
+}
+
+.custom-toast .close-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.custom-toast.error {
+    background: #d9534f; /* đỏ cho error */
+}
+
+@keyframes slideIn {
+    from { transform: translateX(120%); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(120%); }
+}
 .card:hover { transform: translateY(-4px); transition: .12s ease; }
 
 /* chuẩn hóa danh sách pagination (tránh icon/arrow to) */
@@ -122,3 +165,16 @@
 }
 </style>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toast = document.getElementById('toast-message');
+        if (toast) {
+            setTimeout(() => {
+                toast.remove();
+            }, 3500); // 3.5 giây biến mất
+        }
+    });
+</script>
+@endpush

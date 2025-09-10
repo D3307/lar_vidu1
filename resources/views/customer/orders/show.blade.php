@@ -97,7 +97,13 @@
                         <button onclick="window.print()" class="btn btn-light">In đơn hàng</button>
                         
                         <!-- Đánh giá -->
-                        <a href="{{ route('customer.review', $order->id) }}" class="btn btn-outline-primary">Đánh giá</a>
+                        @if($order->status === 'delivered' && $order->user_id === auth()->id())
+                            @if($order->reviews->isEmpty())
+                                <a href="{{ route('customer.review', $order->id) }}" class="btn btn-outline-primary">Đánh giá</a>
+                            @else
+                                <span class="btn btn-success disabled">Đã đánh giá</span>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
