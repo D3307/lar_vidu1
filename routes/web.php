@@ -90,7 +90,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/success', function () {return view('customer.success');})->name('customer.success');
 
     //Đánh giá
-    Route::post('/review/{product}', [ReviewController::class, 'store'])->name('customer.review');
+    Route::get('/review/{order}', [ReviewController::class, 'create'])->name('customer.review');
+    Route::post('/review/{order}', [ReviewController::class, 'store'])->name('customer.review.store');
 
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');

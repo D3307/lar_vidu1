@@ -1,34 +1,30 @@
-@if($order->status === 'delivered')
-    <h4 class="mt-4">Đánh giá sản phẩm</h4>
-    @auth
-        @foreach($order->items as $item)
-            <div class="border rounded p-3 mb-3">
-                <p><strong>{{ $item->product->name ?? $item->product_name }}</strong></p>
+@extends('layouts.app')
 
-                <form action="{{ route('customer.review', $item->product->id) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+@section('title', 'Đánh giá đơn hàng #' . $order->id)
 
-                    <div class="mb-2">
-                        <label class="form-label">Chọn số sao:</label>
-                        <select name="rating" class="form-select" style="width:150px;" required>
-                            <option value="">-- Chọn --</option>
-                            @for($i=1; $i<=5; $i++)
-                                <option value="{{ $i }}">{{ $i }} sao</option>
-                            @endfor
-                        </select>
-                    </div>
+@section('content')
+<div class="container py-5">
+    <h3>Đánh giá đơn hàng #{{ $order->id }}</h3>
 
-                    <div class="mb-2">
-                        <label class="form-label">Nhận xét:</label>
-                        <textarea name="comment" class="form-control" rows="3"></textarea>
-                    </div>
+    <form action="{{ route('customer.review.store', $order->id) }}" method="POST">
+        @csrf
+        <div class="mb-3">
+            <label class="form-label">Chọn số sao:</label>
+            <select name="rating" class="form-select" style="width:200px;" required>
+                <option value="">-- Chọn --</option>
+                @for($i=1;$i<=5;$i++)
+                    <option value="{{ $i }}">{{ $i }} sao</option>
+                @endfor
+            </select>
+        </div>
 
-                    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-                </form>
-            </div>
-        @endforeach
-    @else
-        <p><a href="{{ route('login') }}">Đăng nhập</a> để gửi đánh giá.</p>
-    @endauth
-@endif
+        <div class="mb-3">
+            <label class="form-label">Nhận xét:</label>
+            <textarea name="comment" class="form-control" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+        <a href="{{ route('orders.index') }}" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+@endsection
