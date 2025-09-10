@@ -36,7 +36,11 @@
                     <td>{{ number_format($order->total, 0, ',', '.') }} đ</td>
                     <td>
                         <span class="status-badge {{ $order->status }}">
-                            {{ ucfirst($order->status) }}
+                            {{ $order->status == 'pending' ? 'Pending' : '' }}
+                            {{ $order->status == 'processing' ? 'Processing' : '' }}
+                            {{ $order->status == 'shipping' ? 'Shipping' : '' }}
+                            {{ $order->status == 'delivered' ? 'Delivered' : '' }}
+                            {{ $order->status == 'cancelled' ? 'Cancelled' : '' }}
                         </span>
                     </td>
                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
@@ -57,46 +61,6 @@
         </table>
         <div style="margin-top: 30px;">
             {{ $orders->links('vendor.pagination.bootstrap-4') }}
-
-            <style>
-                .pagination li {
-                    display: inline-block;
-                    margin: 0 4px;
-                }
-
-                .pagination li a,
-                .pagination li span {
-                    display: inline-block;
-                    padding: 8px 14px;
-                    border-radius: 8px;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    text-decoration: none;
-                    border: 1px solid #ffd1dc;
-                    color: #ff6b88;
-                    background: #fff;
-                    transition: all 0.2s ease;
-                }
-
-                .pagination li a:hover {
-                    background: #ffebf0;
-                    color: #ff3b67;
-                    border-color: #ffb2c1;
-                }
-
-                .pagination li.active span {
-                    background: #ff6b88;
-                    border-color: #ff6b88;
-                    color: #fff;
-                }
-
-                .pagination li.disabled span {
-                    color: #ccc;
-                    background: #f9f9f9;
-                    border-color: #eee;
-                    cursor: not-allowed;
-                }
-            </style>
         </div>
     </div>
 </div>
@@ -134,19 +98,22 @@
         text-align:left;
     }
 
+    /* Trạng thái đơn hàng */
     .status-badge {
         display:inline-block;
-        padding:3px 8px;
+        padding:4px 10px;
         font-size:0.85rem;
         border-radius:6px;
         font-weight:600;
         color:#fff;
     }
-    .status-badge.pending { background:#f0ad4e; }
-    .status-badge.processing { background:#5bc0de; }
-    .status-badge.completed { background:#5cb85c; }
-    .status-badge.cancelled { background:#d9534f; }
+    .status-badge.pending { background:#f0ad4e; }       /* vàng */
+    .status-badge.processing { background:#5bc0de; }    /* xanh dương nhạt */
+    .status-badge.shipping { background:#5c80d6; }      /* xanh lam */
+    .status-badge.delivered { background:#5cb85c; }     /* xanh lá */
+    .status-badge.cancelled { background:#d9534f; }     /* đỏ */
 
+    /* Nút hành động */
     .btn-action {
         border:none;
         background:transparent;

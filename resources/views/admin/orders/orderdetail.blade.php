@@ -92,8 +92,7 @@
                     @csrf
                     <select name="status" class="form-select-status" onchange="this.form.submit()">
                         <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Chờ xử lý</option>
-                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Đang xử lý</option>
-                        <option value="packed" {{ $order->status == 'packed' ? 'selected' : '' }}>Đã đóng gói</option>
+                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Chờ giao hàng</option>
                         <option value="shipping" {{ $order->status == 'shipping' ? 'selected' : '' }}>Đang vận chuyển</option>
                         <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Đã giao</option>
                         <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
