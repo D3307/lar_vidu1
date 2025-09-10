@@ -37,11 +37,11 @@ class ReviewController extends Controller
         }
 
         // Với mỗi sản phẩm trong đơn hàng có thể đánh giá (giả sử đơn hàng có nhiều sản phẩm)
-        foreach ($order->products as $product) {
+        foreach ($order->items as $item) {
             Review::create([
-                'product_id' => $product->id,
+                'product_id' => $item->product_id,
+                'order_id'   => $order->id, // thêm dòng này
                 'user_id'    => auth()->id(),
-                'order_id'   => $order->id,
                 'rating'     => $request->rating,
                 'comment'    => $request->comment,
             ]);
