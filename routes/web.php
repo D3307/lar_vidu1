@@ -59,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
     Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
     Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
+    Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
 
     // Cart
     Route::prefix('cart')->group(function () {

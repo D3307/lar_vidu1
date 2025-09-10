@@ -44,4 +44,16 @@ class ProductController extends Controller
 
         return view('customer.products', compact('products', 'categories', 'category'));
     }
+
+    //Tìm  kiếm sản phẩm theo tên
+    public function search(Request $request)
+    {
+        $keyword = $request->input('search');
+
+        $products = Product::query()
+            ->where('name', 'LIKE', "%{$keyword}%")
+            ->get();
+
+        return view('customer.search', compact('products', 'keyword'));
+    }
 }

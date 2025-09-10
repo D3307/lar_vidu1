@@ -362,6 +362,17 @@
                 </a>
             </div>
         </div>
+
+        <form action="{{ route('customer.search') }}" method="GET" 
+            style="display:flex;align-items:center;">
+            <input type="text" id="search" name="search" value="{{ request('search') }}" 
+                placeholder="Tìm kiếm sản phẩm..." 
+                style="padding:8px 16px; border-radius:8px; border:1px solid #e8cbd2; width:220px; margin-right:8px;">
+            <button type="submit" 
+                    style="padding:8px 16px; border-radius:8px; background:#c03651; color:#fff; border:none;">
+                🔍 Tìm kiếm
+            </button>
+        </form>
     </header>
 
     <main>
