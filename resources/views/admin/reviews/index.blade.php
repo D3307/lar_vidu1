@@ -53,8 +53,8 @@
         </table>
     </div>
 
-    <div style="margin-top:16px">
-        {{ $reviews->links('vendor.pagination.bootstrap-4') }}
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
+        {{ $reviews->links() }}
     </div>
 </div>
 

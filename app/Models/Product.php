@@ -33,4 +33,10 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    //Tồn kho
+    public function inventory()
+    {
+        return $this->hasOne(Inventory::class);
+    }
 }

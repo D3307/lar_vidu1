@@ -18,6 +18,7 @@ use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Customer\ReviewController as CustomerReviewController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\InventoryController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -112,6 +113,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
 
         Route::resource('categories', CategoryController::class);
         Route::resource('products', AdminProductController::class);
+        Route::resource('inventories', InventoryController::class);
         Route::resource('users', UserController::class);
         Route::resource('orders', AdminOrderController::class);
         Route::resource('reviews', AdminReviewController::class);

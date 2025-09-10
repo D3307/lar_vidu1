@@ -11,7 +11,7 @@ class ReviewController extends Controller
     // Danh sách đánh giá
     public function index()
     {
-        $reviews = Review::with(['user','product','order'])->latest()->paginate(6);
+        $reviews = Review::with(['product','user','order'])->orderBy('created_at','asc')->paginate(6);
         return view('admin.reviews.index', compact('reviews'));
     }
 
