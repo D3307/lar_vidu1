@@ -16,7 +16,7 @@
                     <div class="product-info">
                         <h3>{{ $product->name }}</h3>
                         <p>{{ number_format($product->price, 0, ',', '.') }} VNĐ</p>
-                        <a href="{{ route('customer.products', $product->id) }}" 
+                        <a href="{{ route('customer.product_detail', $product->id) }}" 
                            class="btn btn-sm btn-primary">Xem chi tiết</a>
                     </div>
                 </div>
