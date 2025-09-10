@@ -134,26 +134,39 @@
             </form>
         </div>
 
-
         <!-- Đánh giá sản phẩm -->
         <hr class="my-4">
-        {{-- Danh sách đánh giá --}}
+        <h4 class="fw-bold mb-3">Đánh giá sản phẩm</h4>
+
         @if($product->reviews->count() > 0)
-            <ul class="list-group">
+            <div class="d-flex flex-column gap-3">
                 @foreach($product->reviews as $review)
-                    <li class="list-group-item">
-                        <strong>{{ $review->user->name }}</strong> - 
-                        <span>{{ str_repeat('⭐', $review->rating) }}</span>
-                        <p>{{ $review->comment }}</p>
+                    <div class="p-3 border rounded shadow-sm" style="background: #fff;">
+                        <div class="d-flex align-items-center mb-2">
+                            {{-- Avatar (chữ cái đầu) --}}
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                style="width:40px;height:40px;background: #f2f2f2; font-weight: 600; color:#555;">
+                                {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                            </div>
+
+                            <div>
+                                <strong>{{ $review->user->name }}</strong>
+                                <div class="text-warning small">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fa{{ $i <= $review->rating ? ' fa-star' : ' fa-star-o' }}"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mb-2">{{ $review->comment }}</p>
                         <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
-                    </li>
+                    </div>
                 @endforeach
-            </ul>
+            </div>
         @else
-            <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+            <p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
         @endif
-
-
     </div>
 </div>
 
