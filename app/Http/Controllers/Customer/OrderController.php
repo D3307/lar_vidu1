@@ -120,7 +120,7 @@ class OrderController extends Controller
         }
 
         if ($request->payment === 'cod') {
-            $order->update(['payment_method' => 'cod','payment_status' => 'paid','status'=>'completed']);
+            $order->update(['payment_method' => 'cod','payment_status' => 'paid','status'=>'Processing']);
             return view('customer.success', compact('order'));
         } else {
             // momo xử lý chuyển tiếp tới thanh toán momo
@@ -159,7 +159,7 @@ class OrderController extends Controller
         $order->update([
             'payment_method' => 'cod',
             'payment_status' => 'paid',
-            'status' => 'completed',
+            'status' => 'Processing',
         ]);
 
         return view('customer.success', compact('order'));

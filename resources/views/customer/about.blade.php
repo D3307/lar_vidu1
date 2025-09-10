@@ -4,11 +4,32 @@
 
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4" style="font-size: 1.8rem;">Giới thiệu về chúng tôi</h1>
-    <p>
-        Chào mừng bạn đến với cửa hàng bán giày cao gót của chúng tôi.  
-        Chúng tôi cung cấp sản phẩm và dịch vụ chất lượng cao, với sứ mệnh mang lại sự hài lòng cho khách hàng.
-    </p>
+    <h1 class="mb-4" style="font-size: 1.8rem;">Chính sách đổi trả</h1>
+    <div class="mb-4" style="line-height:1.7;">
+        <h5>1. Chính sách đổi sản phẩm</h5>
+        <strong>a. Đổi size</strong>
+        <ul>
+            <li>Áp dụng 01 lần đổi / 1 đơn hàng với các đơn hàng mua online và tại cửa hàng.</li>
+            <li>Sản phẩm đổi trong thời gian <strong>3 ngày</strong> kể từ ngày mua hàng trên hóa đơn (đối với khách mua trực tiếp), <strong>3 ngày</strong> kể từ ngày nhận hàng (đối với khách mua online).</li>
+            <li>Sản phẩm còn mới, nguyên tem, tags, mang theo hóa đơn mua hàng, chưa giặt, không dơ bẩn, hư hỏng bởi tác nhân bên ngoài sau khi mua hàng.</li>
+        </ul>
+        <strong>b. Đổi sản phẩm lỗi</strong>
+        <ul>
+            <li><strong>Điều kiện áp dụng:</strong> Sản phẩm lỗi kỹ thuật (rách, bung keo, ...).</li>
+            <li><strong>Không áp dụng:</strong> Sản phẩm đã qua sử dụng.</li>
+            <li>Phản hồi đến shop trong vòng <strong>3 ngày</strong> kể từ ngày mua hàng trên hóa đơn (khách mua trực tiếp), <strong>3 ngày</strong> kể từ ngày nhận hàng (khách mua online).</li>
+        </ul>
+        <h5 class="mt-3">2. Phương thức đổi sản phẩm</h5>
+        <ul>
+            <li>Hàng mua trực tiếp tại cửa hàng: Đổi trả trực tiếp tại cửa hàng.</li>
+            <li>Hàng mua online (website, Shopee, Lazada): Liên hệ shop qua email hoặc số điện thoại để được đổi trả.</li>
+        </ul>
+        <h5 class="mt-3">3. Chi phí đổi hàng</h5>
+        <ul>
+            <li>Miễn phí đổi hàng cho khách mua ở shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm hàng, bị hư hỏng trong quá trình vận chuyển.</li>
+            <li>Trường hợp không vừa size hoặc khách không ưng sản phẩm, khách hàng vui lòng trả phí vận chuyển hoàn đơn về cửa hàng.</li>
+        </ul>
+    </div>
 
     <h4 class="mt-4">Địa chỉ liên hệ</h4>
     <p><strong>Địa chỉ:</strong> 41A, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>

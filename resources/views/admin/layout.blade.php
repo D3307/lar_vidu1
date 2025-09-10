@@ -88,7 +88,15 @@
         <div style="display:flex;align-items:center;gap:12px">
             <div style="font-weight:800;color:#7a2f3b">Bridal Shop - Trang quản trị của Admin</div>
         </div>
-        <div style="color:#7a2f3b">Xin chào, {{ Auth::user()->name ?? 'Admin' }}</div>
+        <div class="user-menu" style="position:relative;">
+            <button type="button" style="background:transparent;border:none;display:flex;align-items:center;gap:10px;cursor:pointer;">
+                <span style="display:inline-block;width:38px;height:38px;background:#f0d4db;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                    <i class="fa-solid fa-user" style="color:#7a2f3b;font-size:1.4rem;"></i>
+                </span>
+                <span style="font-weight:600;color:#7a2f3b;">{{ Auth::user()->name ?? 'Admin' }}</span>
+                <i class="fa-solid fa-chevron-down" style="color:#7a2f3b;"></i>
+            </button>
+        </div>
     </header>
 
     <div class="admin-wrap">
