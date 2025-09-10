@@ -27,4 +27,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    //Đánh giá
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

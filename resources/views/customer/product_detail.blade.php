@@ -134,6 +134,26 @@
             </form>
         </div>
 
+
+        <!-- Đánh giá sản phẩm -->
+        <hr class="my-4">
+        {{-- Danh sách đánh giá --}}
+        @if($product->reviews->count() > 0)
+            <ul class="list-group">
+                @foreach($product->reviews as $review)
+                    <li class="list-group-item">
+                        <strong>{{ $review->user->name }}</strong> - 
+                        <span>{{ str_repeat('⭐', $review->rating) }}</span>
+                        <p>{{ $review->comment }}</p>
+                        <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+        @endif
+
+
     </div>
 </div>
 

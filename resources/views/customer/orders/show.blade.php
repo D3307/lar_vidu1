@@ -95,6 +95,9 @@
                         @endif
 
                         <button onclick="window.print()" class="btn btn-light">In đơn hàng</button>
+                        
+                        <!-- Đánh giá sản phẩm -->
+                        <a href="{{ route('customer.review', $order->id) }}" class="btn btn-outline-primary">Đánh giá</a>
                     </div>
                 </div>
             </div>

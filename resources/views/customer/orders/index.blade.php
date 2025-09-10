@@ -56,6 +56,19 @@
     @endif
 </div>
 
+<!-- Thông báo đánh giá thành công -->
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 <style>
 .card:hover { transform: translateY(-4px); transition: .12s ease; }
 

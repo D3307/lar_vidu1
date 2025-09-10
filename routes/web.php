@@ -16,6 +16,7 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Customer\PaymentController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Customer\ReviewController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -54,14 +55,14 @@ Route::middleware(['auth', 'verified'])->group(function() {
         return view('customer.account');
     })->name('accounts');
 
-    // Products
+    // Sản phẩm
     Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
     Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
     Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
     Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
     Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
 
-    // Cart
+    // Giỏ hàng
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::post('/add/{id}', [CartController::class, 'add'])->name('cart.add');
@@ -87,6 +88,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/payment/momo/fake-callback/{orderId}', [PaymentController::class, 'fakeMomoCallback']);
     Route::get('/payment/momo/return', [PaymentController::class, 'momoReturn'])->name('payment.momo.return');
     Route::get('/success', function () {return view('customer.success');})->name('customer.success');
+
+    //Đánh giá
+    Route::post('/review/{product}', [ReviewController::class, 'store'])->name('customer.review');
 
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');
