@@ -362,20 +362,26 @@
                 </a>
             </div>
         </div>
-
-        <form action="{{ route('customer.search') }}" method="GET" 
-            style="display:flex;align-items:center;">
-            <input type="text" id="search" name="search" value="{{ request('search') }}" 
-                placeholder="Tìm kiếm sản phẩm..." 
-                style="padding:8px 16px; border-radius:8px; border:1px solid #e8cbd2; width:220px; margin-right:8px;">
-            <button type="submit" 
-                    style="padding:8px 16px; border-radius:8px; background:#c03651; color:#fff; border:none;">
-                🔍 Tìm kiếm
-            </button>
-        </form>
     </header>
 
+    <!-- Thanh tìm kiếm -->
+    <div class="search-bar" style="position: sticky; padding: 20px; height: 80px;">
+        <div class="container" style="display:flex; justify-content:center;">
+            <form action="{{ route('customer.search') }}" method="GET" 
+                style="display:flex; gap:8px; width:100%; max-width:500px;">
+                <input type="text" id="search" name="search" value="{{ request('search') }}" 
+                    placeholder="Tìm kiếm sản phẩm..." 
+                    style="flex:1; height: 40px; padding:10px 16px; border-radius:8px; border:1px solid #e8cbd2;">
+                <button type="submit" 
+                    style="height: 40px; padding:5px 20px; border-radius:8px; background:var(--accent); color:black; border:none; font-weight:600;">
+                    🔍 Tìm kiếm
+                </button>
+            </form>
+        </div>
+    </div>
+
     <main>
+        
         @yield('content')
     </main>
 
