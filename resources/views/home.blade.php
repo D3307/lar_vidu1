@@ -67,24 +67,29 @@
         
         <div class="product-grid">
             @foreach($products as $product)
-                <div class="product-card" style="background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.3s;">
-                    <img src="{{ asset('storage/' . $product->image) }}" 
-                        alt="{{ $product->name }}" 
-                        style="width: 100%; height: 300px; object-fit: cover;">
-                    <div style="padding: 1rem;">
-                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #333;">
-                            {{ $product->name }}
-                        </h3>
-                        <p style="font-weight: bold; color: #ff6b88; font-size: 1.1rem;">
-                            {{ number_format($product->price, 0, ',', '.') }} ₫
-                        </p>
+                <a href="{{ route('customer.product_detail', $product->id) }}" 
+                style="text-decoration: none; color: inherit;">
+                    <div class="product-card" 
+                        style="background: white; border-radius: 10px; overflow: hidden; 
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.3s;">
+                        <img src="{{ asset('storage/' . $product->image) }}" 
+                            alt="{{ $product->name }}" 
+                            style="width: 100%; height: 300px; object-fit: cover;">
+                        <div style="padding: 1rem;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #333;">
+                                {{ $product->name }}
+                            </h3>
+                            <p style="font-weight: bold; color: #ff6b88; font-size: 1.1rem;">
+                                {{ number_format($product->price, 0, ',', '.') }} ₫
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
     </div>
 
-    <!-- Các phần khác giữ nguyên -->
+    <!-- Footer -->
     <div class="promo-banner" style="background: #f8f8f8; padding: 2rem; text-align: center; margin: 3rem 0; border-radius: 10px;">
         <h2 style="color: #ff6b88; margin-bottom: 0.5rem;">GIẢM GIÁ 30% CHO ĐƠN HÀNG ĐẦU TIÊN</h2>
         <p style="color: #666;">Sử dụng mã WELCOME30 khi thanh toán</p>
