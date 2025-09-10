@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Customer\ReviewController as CustomerReviewController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Customer\AccountController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -53,9 +54,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    Route::get('/account', function () {
-        return view('customer.account');
-    })->name('accounts');
+    //Tài khoản cá nhân
+    Route::get('/account', [AccountController::class, 'edit'])->name('accounts.edit');
+    Route::put('/account', [AccountController::class, 'update'])->name('accounts.update');
 
     // Sản phẩm
     Route::get('/products', [ProductController::class, 'index'])->name('customer.products');

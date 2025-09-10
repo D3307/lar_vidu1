@@ -317,7 +317,7 @@
                                 <a href="{{ route('admin.dashboard') }}">Quản trị</a>
                             @endif
 
-                            <a href="{{ route('accounts') }}">Tài khoản của tôi</a>
+                            <a href="{{ route('accounts.edit') }}">Tài khoản của tôi</a>
                             <a href="{{ route('orders.index') }}">Đơn hàng của tôi</a>
 
                             @if($lastOrder)
