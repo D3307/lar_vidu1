@@ -102,6 +102,10 @@ Route::middleware(['auth', 'verified'])->group(function() {
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');
     Route::get('/contact', [PageController::class, 'contact'])->name('customer.contact');
+
+    // Lịch sử người dùng
+    // routes/web.php
+    Route::get('/lich-su', [App\Http\Controllers\Customer\UserHistoryController::class, 'index'])->name('customer.histories.index')->middleware('auth');
 });
 
 // -------------------- Public pages --------------------

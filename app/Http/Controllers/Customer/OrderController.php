@@ -126,9 +126,18 @@ class OrderController extends Controller
                 'color'      => $item['color'] ?? null,
                 'size'       => $item['size'] ?? null,
             ]);
+
+            // Lưu lịch sử mua sản phẩm
+            UserHistory::create([
+                'user_id'    => Auth::id(),
+                'order_id'   => $order->id,
+                'product_id' => $item['id'] ?? null,
+                'action_type'     => 'buy_product',
+                'used_at'    => now(),
+            ]);
         }
 
-        // lưu user_histories nếu có coupon
+        // Lưu lịch sử dùng coupon (nếu có)
         if ($coupon) {
             UserHistory::create([
                 'user_id'   => Auth::id(),
@@ -198,5 +207,33 @@ class OrderController extends Controller
         $orders = Order::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(5);
 
         return view('customer.orders.index', compact('orders'));
+    }
+
+    //Hủy đơn hàng
+    public function cancel($id) {
+        $order = Order::findOrFail($id);
+
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        if (!in_array($order->status, ['pending', 'Processing'])) {
+            return redirect()->back()->with('error', 'Đơn hàng không thể hủy ở trạng thái hiện tại.');
+        }
+
+        $order->update(['status' => 'canceled']);
+
+        return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công.');
+    }
+
+
+    //Lịch sử mua hàng
+    public function history() {
+        $histories = \App\Models\UserHistory::where('user_id', auth()->id())
+            ->with(['product', 'order', 'coupon'])
+            ->orderByDesc('used_at')
+            ->paginate(10);
+
+        return view('customer.history.index', compact('histories'));
     }
 }

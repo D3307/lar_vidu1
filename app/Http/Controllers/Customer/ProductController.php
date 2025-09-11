@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\UserHistory;
 
 class ProductController extends Controller
 {
@@ -29,6 +30,16 @@ class ProductController extends Controller
         $sizes     = $product->size ? explode(',', $product->size) : [];
         $colors    = $product->color ? explode(',', $product->color) : [];
         $materials = $product->material ? explode(',', $product->material) : [];
+
+        // Lưu lịch sử duyệt sản phẩm nếu user đăng nhập
+        if (auth()->check()) {
+            UserHistory::create([
+                'user_id'    => auth()->id(),
+                'product_id' => $product->id,
+                'action_type'     => 'view_product',
+                'used_at'    => now(),
+            ]);
+        }
 
         return view('customer.product_detail', compact('product', 'sizes', 'colors', 'materials'));
     }
