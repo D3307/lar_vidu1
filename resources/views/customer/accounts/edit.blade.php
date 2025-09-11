@@ -14,10 +14,10 @@
                             <div class="d-flex align-items-center mb-4">
                                 <div class="me-3">
                                     <span class="bg-light rounded-circle p-3">
-                                        <i class="fa-solid fa-user fa-2x text-primary"></i>
+                                        <i class="fa-solid fa-user fa-2x text-brand"></i>
                                     </span>
                                 </div>
-                                <h4 class="mb-0 fw-bold text-primary">Thông tin cá nhân</h4>
+                                <h4 class="mb-0 fw-bold text-brand">Thông tin cá nhân</h4>
                             </div>
 
                             @if(session('success'))
@@ -61,7 +61,7 @@
                                         class="form-control rounded-3">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                                <button type="submit" class="btn btn-brand w-100 py-2 fw-bold">
                                     <i class="fa-solid fa-floppy-disk me-2"></i> Lưu thay đổi
                                 </button>
                             </form>
@@ -73,41 +73,43 @@
                 <div class="col-md-7">
                     <div class="card shadow-sm border-0 rounded-4 h-100">
                         <div class="card-body p-4">
-                            <h4 class="fw-bold text-secondary mb-3">
+                            <h4 class="fw-bold text-brand mb-3">
                                 <i class="fa-solid fa-clock-rotate-left me-2"></i> Lịch sử đơn hàng / khuyến mãi
                             </h4>
 
                             @if($histories->count())
-                                <div class="table-responsive">
-                                    <table class="table table-striped align-middle">
-                                        <thead>
-                                            <tr>
-                                                <th>Thời gian</th>
-                                                <th>Mã giảm giá</th>
-                                                <th>Giảm</th>
-                                                <th>Đơn hàng</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($histories as $history)
-                                                <tr>
-                                                    <td>{{ $history->used_at }}</td>
-                                                    <td>{{ $history->coupon?->code ?? '-' }}</td>
-                                                    <td>
-                                                        @if($history->discount)
-                                                            {{ number_format($history->discount, 0, ',', '.') }} đ
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>#{{ $history->order?->id ?? '-' }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                <div class="history-list">
+                                    @foreach($histories as $history)
+                                        <div class="history-item d-flex justify-content-between align-items-center mb-3 p-3 rounded-3 shadow-sm">
+                                            <div>
+                                                <div class="fw-semibold text-brand">
+                                                    <i class="fa-solid fa-receipt me-2"></i> Đơn #{{ $history->order?->id ?? '-' }}
+                                                </div>
+                                                <small class="text-muted">
+                                                    {{ \Carbon\Carbon::parse($history->used_at)->format('d/m/Y H:i') }}
+                                                </small>
+                                            </div>
+                                            <div class="text-end">
+                                                <div>
+                                                    <span class="badge bg-brand text-white px-3 py-2">
+                                                        {{ $history->coupon?->code ?? 'Không có mã' }}
+                                                    </span>
+                                                </div>
+                                                <div class="fw-bold mt-1 text-brand">
+                                                    @if($history->discount)
+                                                        -{{ number_format($history->discount, 0, ',', '.') }} đ
+                                                    @else
+                                                        0 đ
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
 
-                                {{ $histories->links('vendor.pagination.bootstrap-4') }}
+                                <div class="mt-3">
+                                    {{ $histories->links('vendor.pagination.bootstrap-4') }}
+                                </div>
                             @else
                                 <p class="text-muted">Bạn chưa có lịch sử giao dịch nào.</p>
                             @endif
@@ -120,73 +122,64 @@
 </div>
 
 <style>
-    /* Khung thông tin cá nhân */
-    .account-info {
-        background: #ffffff;
-        border: 1px solid #f5c3d2;  /* viền hồng nhạt */
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 4px 10px rgba(122, 47, 59, 0.1); /* bóng nhẹ màu chủ đạo */
+    /* === MÀU CHỦ ĐẠO === */
+    :root {
+        --brand-color: #7a2f3b;   /* rượu vang */
+        --brand-hover: #b14d63;   /* hồng nhạt */
     }
 
-    /* Tiêu đề */
-    .account-info h2 {
-        color: #7a2f3b; /* màu rượu vang từ footer */
-        font-weight: bold;
-        margin-bottom: 20px;
+    /* Text và icon */
+    .text-brand {
+        color: var(--brand-color) !important;
+    }
+
+    /* Button custom */
+    .btn-brand {
+        background-color: var(--brand-color);
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+    .btn-brand:hover {
+        background-color: var(--brand-hover);
+        color: #fff;
+    }
+
+    /* Override Bootstrap primary */
+    .btn-primary {
+        background-color: var(--brand-color) !important;
+        border-color: var(--brand-color) !important;
+    }
+    .btn-primary:hover {
+        background-color: var(--brand-hover) !important;
+        border-color: var(--brand-hover) !important;
     }
 
     /* Input */
-    .account-info input {
-        border: 1px solid #e3a1b2; /* viền hồng nhạt */
-        border-radius: 8px;
-        padding: 10px;
+    .form-control {
+        border: 1px solid #e3a1b2;
     }
-
-    .account-info input:focus {
-        border-color: #b14d63; /* hồng đậm hơn khi focus */
+    .form-control:focus {
+        border-color: var(--brand-hover);
         box-shadow: 0 0 5px rgba(177, 77, 99, 0.4);
     }
 
-    /* Nút lưu thay đổi */
-    .account-info button {
-        background: #7a2f3b; /* đồng bộ với footer */
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 18px;
-        transition: 0.3s;
-    }
-
-    .account-info button:hover {
-        background: #b14d63; /* hồng nhạt hơn khi hover */
-    }
-
-    /* Bảng lịch sử đơn hàng */
-    .history-table {
-        margin-top: 30px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(177, 77, 99, 0.1);
-    }
-
-    .history-table th {
-        background: #7a2f3b; 
-        color: #fff;
-        padding: 12px;
-        text-align: center;
-    }
-
-    .history-table td {
+    /* Bảng lịch sử */
+    .history-item {
         background: #fff;
-        padding: 12px;
-        border-bottom: 1px solid #f3d6de;
-        text-align: center;
+        border: 1px solid #f2d7dd;
+        transition: all 0.3s ease;
+    }
+    .history-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(122, 47, 59, 0.15);
+        border-color: var(--brand-color);
     }
 
-    .history-table tr:hover td {
-        background: #fceef3; /* hồng nhạt khi hover */
+    /* Badge màu chủ đạo */
+    .bg-brand {
+        background-color: var(--brand-color) !important;
     }
-
 </style>
 @endsection
