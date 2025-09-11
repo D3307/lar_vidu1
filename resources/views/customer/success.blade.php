@@ -26,10 +26,22 @@
                                 <p style="margin:6px 0 0;color:#666;"><strong>Trạng thái thanh toán:</strong> {{ $order->payment_status ?? 'pending' }}</p>
                             </div>
                             <div style="text-align:right; min-width:160px;">
+                                @php
+                                    $discount = $order->discount ?? 0;
+                                    $finalTotal = ($order->total ?? 0) - $discount;
+                                @endphp
                                 <p style="margin:0;color:#222;font-weight:700;font-size:18px;">
-                                    {{ number_format($order->total ?? 0, 0, ',', '.') }} VNĐ
+                                    {{ number_format($finalTotal, 0, ',', '.') }} VNĐ
                                 </p>
-                                <small style="color:#999;">Tổng tiền</small>
+                                <small style="color:#999;">
+                                    Tổng tiền đơn hàng 
+                                    @if($discount > 0)
+                                        <br><span style="color:#e75480;">(Đã giảm {{ number_format($discount, 0, ',', '.') }}đ)</span>
+                                        @if($order->coupon)
+                                            <br><span style="color:#e75480;">Mã giảm giá: {{ $order->coupon->code }}</span>
+                                        @endif
+                                    @endif
+                                </small>
                             </div>
                         </div>
 

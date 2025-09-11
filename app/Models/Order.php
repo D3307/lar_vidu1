@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Coupon;
 
 class Order extends Model
 {
@@ -14,6 +15,8 @@ class Order extends Model
         'name',
         'phone',
         'address',
+        'discount',
+        'coupon_id',
         'total',
         'status',
         'payment_status',
@@ -36,5 +39,11 @@ class Order extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    //Mã giảm giá
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class, 'coupon_id');
     }
 }

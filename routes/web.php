@@ -85,7 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/orders/{id}', [CustomerOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/cod-payment', [CustomerOrderController::class, 'codPayment'])->name('orders.codPayment');
     Route::post('/buy-now/{id}', [CustomerOrderController::class, 'buyNow'])->name('buy.now');
-    Route::post('/coupon', [\App\Http\Controllers\Customer\CouponController::class, 'coupon'])->name('customer.coupon');
+    Route::post('/coupon', [CouponController::class, 'coupon'])->name('customer.coupon');
 
     //Thanh toán
     Route::get('/payment/momo/{order}', [PaymentController::class, 'payWithMomo'])->name('payment.momo');

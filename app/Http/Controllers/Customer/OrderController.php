@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Customer;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product; // nếu bạn có model Product
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
+use App\Models\UserHistory;
 
 class OrderController extends Controller
 {
@@ -15,7 +17,6 @@ class OrderController extends Controller
     {
         $order = Order::with('items.product')->findOrFail($id);
 
-        // Kiểm tra quyền xem đơn hàng
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
@@ -27,11 +28,10 @@ class OrderController extends Controller
     public function showCheckoutForm(Request $request)
     {
         $sessionCart = session('cart', []);
-        $selectedKeys = $request->query('selected', []); // từ cart index gửi bằng GET
+        $selectedKeys = $request->query('selected', []);
         $buyNow = session('buy_now', null);
 
         if ($buyNow) {
-            // mua ngay: chỉ 1 item từ session
             $cart = ['buy_now' => $buyNow];
             $selected = ['buy_now'];
         } elseif (!empty($selectedKeys)) {
@@ -52,10 +52,17 @@ class OrderController extends Controller
         $total = collect($cart)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
         $user = auth()->user();
 
-        return view('customer.cart.checkout', compact('cart', 'total', 'user', 'selected'));
+        $coupons = Coupon::where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->get();
+
+        $discount = session('discount', 0);
+        $finalTotal = $total - $discount;
+
+        return view('customer.cart.checkout', compact('cart', 'total', 'user', 'selected', 'coupons', 'discount', 'finalTotal'));
     }
 
-    // POST: tạo order từ các item được chọn hoặc buy_now
+    // POST: tạo order
     public function checkout(Request $request)
     {
         $request->validate([
@@ -64,6 +71,7 @@ class OrderController extends Controller
             'address'  => 'required|string|max:255',
             'payment'  => 'required|string|in:cod,momo',
             'selected' => 'nullable|array',
+            'coupon_id'=> 'nullable|exists:coupons,id'
         ]);
 
         $sessionCart = session('cart', []);
@@ -85,15 +93,28 @@ class OrderController extends Controller
 
         $total = collect($cartItems)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
+        // xử lý coupon
+        $coupon = null;
+        $discount = 0;
+        if ($request->filled('coupon_id')) {
+            $coupon = Coupon::find($request->coupon_id);
+            if ($coupon) {
+                $discount = $coupon->value ?? 0;
+            }
+        }
+
+        $finalTotal = $total - $discount;
+
         $order = Order::create([
             'user_id' => Auth::id(),
             'name'    => $request->name,
             'phone'   => $request->phone,
             'address' => $request->address,
-            'total'   => $total,
+            'total'   => $finalTotal,
             'status'  => 'pending',
             'payment_method' => $request->payment,
-            'payment_status' => 'pending'
+            'payment_status' => 'pending',
+            'coupon_id' => $coupon?->id
         ]);
 
         foreach ($cartItems as $item) {
@@ -107,7 +128,18 @@ class OrderController extends Controller
             ]);
         }
 
-        // Xóa item đã đặt: nếu mua ngay thì forget buy_now, nếu selected thì unset keys từ session cart, nếu không thì forget cart
+        // lưu user_histories nếu có coupon
+        if ($coupon) {
+            UserHistory::create([
+                'user_id'   => Auth::id(),
+                'order_id'  => $order->id,
+                'coupon_id' => $coupon->id,
+                'discount'  => $discount,
+                'used_at'   => now(),
+            ]);
+        }
+
+        // clear giỏ hàng
         if ($buyNow) {
             session()->forget('buy_now');
         } elseif (!empty($selected)) {
@@ -123,15 +155,12 @@ class OrderController extends Controller
             $order->update(['payment_method' => 'cod','payment_status' => 'paid','status'=>'Processing']);
             return view('customer.success', compact('order'));
         } else {
-            // momo xử lý chuyển tiếp tới thanh toán momo
             return redirect()->route('payment.momo', ['order' => $order->id]);
         }
     }
 
-    // Mua ngay: lưu item vào session 'buy_now' rồi chuyển tới checkout form
     public function buyNow(Request $request, $id)
     {
-        // ví dụ lấy product từ DB
         $product = Product::findOrFail($id);
         $quantity = (int) $request->input('quantity', 1);
 
@@ -141,7 +170,6 @@ class OrderController extends Controller
             'price' => $product->price,
             'quantity' => $quantity,
             'image' => $product->image ?? '',
-            // thêm color/size nếu có
         ];
 
         session(['buy_now' => $item]);
@@ -167,7 +195,6 @@ class OrderController extends Controller
 
     public function index()
     {
-        // Lấy các đơn của user hiện tại, mới nhất trước, phân trang
         $orders = Order::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(5);
 
         return view('customer.orders.index', compact('orders'));

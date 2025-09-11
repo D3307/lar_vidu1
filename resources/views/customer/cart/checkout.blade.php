@@ -20,15 +20,18 @@
                             @endforeach
                         @endif
 
-                        {{-- hiển thị danh sách item (cart từ controller) --}}
+                        {{-- hiển thị danh sách item --}}
                         <div class="mb-3">
                             <h5>Sản phẩm</h5>
                             @foreach($cart as $k => $item)
                                 <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ asset($item['image'] ?? '') }}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-right:12px;">
+                                    <img src="{{ asset($item['image'] ?? '') }}" alt=""
+                                         style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-right:12px;">
                                     <div>
                                         <div style="font-weight:700">{{ $item['name'] }}</div>
-                                        <div class="text-muted">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ</div>
+                                        <div class="text-muted">
+                                            {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -37,23 +40,65 @@
                         {{-- thông tin giao hàng --}}
                         <div class="mb-3">
                             <label for="name" class="form-label" style="color:#e75480;">Họ và tên</label>
-                            <input type="text" class="form-control border-pink" id="name" name="name" value="{{ old('name', $user->name ?? '') }}" required>
+                            <input type="text" class="form-control border-pink" id="name" name="name"
+                                   value="{{ old('name', $user->name ?? '') }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label" style="color:#e75480;">Địa chỉ</label>
-                            <input type="text" class="form-control border-pink" id="address" name="address" value="{{ old('address', $user->address ?? '') }}" required>
+                            <input type="text" class="form-control border-pink" id="address" name="address"
+                                   value="{{ old('address', $user->address ?? '') }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label" style="color:#e75480;">Số điện thoại</label>
-                            <input type="text" class="form-control border-pink" id="phone" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required>
+                            <input type="text" class="form-control border-pink" id="phone" name="phone"
+                                   value="{{ old('phone', $user->phone ?? '') }}" required>
                         </div>
 
+                        {{-- phương thức thanh toán --}}
                         <div class="mb-3">
                             <label for="payment" class="form-label" style="color:#e75480;">Phương thức thanh toán</label>
                             <select class="form-select border-pink" id="payment" name="payment" required>
                                 <option value="cod">Thanh toán khi nhận hàng</option>
                                 <option value="momo">Thanh toán Online (Momo)</option>
                             </select>
+                        </div>
+
+                        {{-- chọn mã giảm giá --}}
+<div class="mb-3">
+    <label for="coupon_id" class="form-label" style="color:#e75480;">Mã giảm giá</label>
+    <select class="form-select border-pink" id="coupon_id" name="coupon_id">
+        <option value="">-- Chọn mã giảm giá --</option>
+        @foreach($coupons as $coupon)
+            <option value="{{ $coupon->id }}"
+                @if(old('coupon_id') == $coupon->id) selected @endif>
+                {{ $coupon->code }} -
+                @if($coupon->type == 'percent')
+                    Giảm {{ $coupon->value }}%
+                @else
+                    Giảm {{ number_format($coupon->value,0,',','.') }}đ
+                @endif
+                (Đơn tối thiểu {{ number_format($coupon->min_order_value,0,',','.') }}đ)
+            </option>
+        @endforeach
+    </select>
+</div>
+
+
+                        {{-- tổng cộng --}}
+                        <div class="mb-3">
+                            <div style="font-size:1.1rem;">
+                                <span>Tổng tiền: </span>
+                                <span style="font-weight:700">{{ number_format($total,0,',','.') }} đ</span>
+                            </div>
+                            @if($discount > 0)
+                                <div style="color:#e75480;">
+                                    <span>Giảm giá: -{{ number_format($discount,0,',','.') }} đ</span>
+                                </div>
+                                <div style="font-size:1.2rem;font-weight:700;">
+                                    <span>Thành tiền: </span>
+                                    <span style="color:#e75480;">{{ number_format($finalTotal,0,',','.') }} đ</span>
+                                </div>
+                            @endif
                         </div>
 
                         <button type="submit" class="btn w-100 text-white" style="background-color:#e75480;">

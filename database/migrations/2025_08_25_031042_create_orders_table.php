@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->decimal('total_amount', 10, 2);
+            $table->foreignId('coupon_id')->nullable()->constrained('coupons');
             $table->string('status')->default('pending'); // pending, paid, shipped,...
             $table->timestamps();
 
