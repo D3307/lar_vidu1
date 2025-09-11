@@ -17,14 +17,12 @@ class CouponController extends Controller
             return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ!');
         }
 
-        // Lấy tổng tiền trong giỏ hàng (ví dụ cart trong session)
         $cartTotal = session('cart_total', 0);
 
         if ($coupon->min_order_value && $cartTotal < $coupon->min_order_value) {
             return redirect()->back()->with('error', 'Đơn hàng chưa đạt giá trị tối thiểu!');
         }
 
-        // Tính giảm giá
         $discount = $coupon->type === 'percent'
             ? $cartTotal * ($coupon->value / 100)
             : $coupon->value;
@@ -34,6 +32,9 @@ class CouponController extends Controller
             'applied_coupon' => $coupon->code,
             'discount' => $discount
         ]);
+
+        // Tăng số lần sử dụng
+        $coupon->increment('used_count');
 
         return redirect()->back()->with('success', 'Áp dụng mã giảm giá thành công!');
     }

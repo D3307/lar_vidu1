@@ -14,8 +14,9 @@ class Coupon extends Model
     public function isValid()
     {
         $now = now();
-        return (!$this->start_date || $this->start_date <= $now) &&
-               (!$this->end_date || $this->end_date >= $now) &&
-               (!$this->usage_limit || $this->used_count < $this->usage_limit);
+        return
+            ($this->start_date === null || $this->start_date <= $now) &&
+            ($this->end_date === null || $this->end_date >= $now) &&
+            ($this->usage_limit === null || $this->used_count < $this->usage_limit);
     }
 }
