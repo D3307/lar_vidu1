@@ -113,7 +113,7 @@
             </div>
 
             <nav class="dash-list" id="dashList" aria-hidden="true">
-                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'nav-item-active' : '' }}">Tổng quan</a>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'nav-item-active' : '' }}">Dashboard</a>
                 <a href="{{ route('admin.reports.summary') }}" class="{{ request()->routeIs('admin.reports.summary') ? 'nav-item-active' : '' }}">📑 Báo cáo</a>
                 <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.index') ? 'nav-item-active' : '' }}">📊 Biểu đồ</a>
                 <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'nav-item-active' : '' }}">📂 Quản lý danh mục</a>
@@ -122,6 +122,7 @@
                 <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'nav-item-active' : '' }}">👤 Quản lý người dùng</a>
                 <a href="{{ route('admin.orders.orders') }}" class="{{ request()->routeIs('admin.orders.*') ? 'nav-item-active' : '' }}">📋 Quản lý đơn hàng</a>
                 <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'nav-item-active' : '' }}">⭐ Quản lý đánh giá</a>
+                <a href="{{ route('admin.coupons.index') }}" class="{{ request()->routeIs('admin.coupons.*') ? 'nav-item-active' : '' }}">🏷️ Quản lý mã giảm giá</a>
             </nav>
 
             <!-- other sidebar items (đăng xuất...) -->

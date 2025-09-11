@@ -20,7 +20,8 @@ use App\Http\Controllers\Customer\ReviewController as CustomerReviewController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Customer\AccountController;
-use App\Http\Controllers\Customer\CouponController;
+use App\Http\Controllers\Customer\CouponController as CustomerCouponController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -120,6 +121,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('users', UserController::class);
         Route::resource('orders', AdminOrderController::class);
         Route::resource('reviews', AdminReviewController::class);
+        Route::resource('coupons', AdminCouponController::class);
         
         //Route báo cáo - thống kê
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
