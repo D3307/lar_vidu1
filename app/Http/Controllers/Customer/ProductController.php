@@ -12,7 +12,7 @@ class ProductController extends Controller
     public function index()
     {
         //Lấy tất cả sản phẩm
-        $products = Product::paginate(6);
+        $products = Product::with('reviews')->paginate(6);
 
         //Lấy tất cả danh mục sản phẩm
         $categories = Category::all();

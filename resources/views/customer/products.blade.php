@@ -51,6 +51,19 @@
                             </h3>
                             <p style="margin: 0; color: #d70018; font-weight: 600;">
                                 {{ number_format($product->price, 0, ',', '.') }} ₫
+
+                                @php
+                                    $averageRating = $product->reviews->avg('rating') ?? 5;
+                                    $averageRating = round($averageRating); 
+                                @endphp
+
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $averageRating)
+                                        <i class="fa-solid fa-star" style="color:#d70018;"></i>
+                                    @else
+                                        <i class="fa-regular fa-star" style="color:#d70018;"></i>
+                                    @endif
+                                @endfor
                             </p>
                         </div>
                     </div>
