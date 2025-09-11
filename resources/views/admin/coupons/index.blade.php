@@ -62,7 +62,7 @@
         </table>
     </div>
 
-    <div style="margin-top: 30px;">
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
         {{ $coupons->links('vendor.pagination.bootstrap-4') }}
     </div>
 </div>

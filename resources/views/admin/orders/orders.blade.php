@@ -59,7 +59,7 @@
                 @endforelse
             </tbody>
         </table>
-        <div style="margin-top: 30px;">
+        <div style="margin-top:16px;display:flex;justify-content:flex-end">
             {{ $orders->links('vendor.pagination.bootstrap-4') }}
         </div>
     </div>

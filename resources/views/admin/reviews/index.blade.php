@@ -54,7 +54,7 @@
     </div>
 
     <div style="margin-top:16px;display:flex;justify-content:flex-end">
-        {{ $reviews->links() }}
+        {{ $reviews->links('vendor.pagination.bootstrap-4') }}
     </div>
 </div>
 

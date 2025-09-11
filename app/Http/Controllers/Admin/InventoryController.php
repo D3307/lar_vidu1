@@ -11,7 +11,7 @@ class InventoryController extends Controller
 {
     public function index()
     {
-        $inventories = Inventory::with('product')->paginate(10);
+        $inventories = Inventory::with('product')->paginate(6);
         return view('admin.inventories.index', compact('inventories'));
     }
 

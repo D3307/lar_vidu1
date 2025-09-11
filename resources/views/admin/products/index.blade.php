@@ -50,49 +50,9 @@
         </table>
     </div>
 
-    <div style="margin-top: 30px;">
-            {{ $products->links('vendor.pagination.bootstrap-4') }}
-
-            <style>
-                .pagination li {
-                    display: inline-block;
-                    margin: 0 4px;
-                }
-
-                .pagination li a,
-                .pagination li span {
-                    display: inline-block;
-                    padding: 8px 14px;
-                    border-radius: 8px;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    text-decoration: none;
-                    border: 1px solid #ffd1dc;
-                    color: #ff6b88;
-                    background: #fff;
-                    transition: all 0.2s ease;
-                }
-
-                .pagination li a:hover {
-                    background: #ffebf0;
-                    color: #ff3b67;
-                    border-color: #ffb2c1;
-                }
-
-                .pagination li.active span {
-                    background: #ff6b88;
-                    border-color: #ff6b88;
-                    color: #fff;
-                }
-
-                .pagination li.disabled span {
-                    color: #ccc;
-                    background: #f9f9f9;
-                    border-color: #eee;
-                    cursor: not-allowed;
-                }
-            </style>
-        </div>
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
+        {{ $products->links('vendor.pagination.bootstrap-4') }}
+    </div>
 </div>
 
 <style>
@@ -112,5 +72,46 @@
     .btn-edit:hover { background:#f9f3f3;}
     .btn-delete { color:#fff; background:#d9534f; border:1px solid #c9302c;}
     .btn-delete:hover { background:#c9302c;}
+    .pagination {
+        display: flex;
+        gap: 6px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        align-items: center;
+    }
+    .pagination li { display: inline-block; }
+    .pagination li a,
+    .pagination li span {
+        display: inline-block;
+        padding: 6px 10px;
+        min-width: 40px;
+        text-align: center;
+        border-radius: 8px;
+        background: #fff;
+        color: #333;
+        border: 1px solid #eee;
+        font-size: 14px;
+        line-height: 1;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+    .pagination li a:hover { background: rgba(231,84,128,0.06); }
+    .pagination li.active span {
+        background: #e75480;
+        color: #fff;
+        border-color: #e75480;
+    }
+    .pagination li.disabled span {
+        opacity: 0.6;
+        cursor: default;
+    }
+    .pagination li a .page-icon,
+    .pagination li span .page-icon {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        vertical-align: middle;
+    }
 </style>
 @endsection
