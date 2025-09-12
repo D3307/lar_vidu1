@@ -111,7 +111,7 @@ class OrderController extends Controller
             'phone'   => $request->phone,
             'address' => $request->address,
             'total'   => $finalTotal,
-            'status'  => 'pending',
+            'status'  => 'pending', // luôn bắt đầu bằng pending
             'payment_method' => $request->payment,
             'payment_status' => 'pending',
             'coupon_id' => $coupon?->id
@@ -132,7 +132,7 @@ class OrderController extends Controller
                 'user_id'    => Auth::id(),
                 'order_id'   => $order->id,
                 'product_id' => $item['id'] ?? null,
-                'action_type'     => 'buy_product',
+                'action_type'=> 'buy_product',
                 'used_at'    => now(),
             ]);
         }
@@ -161,9 +161,11 @@ class OrderController extends Controller
         }
 
         if ($request->payment === 'cod') {
-            $order->update(['payment_method' => 'cod','payment_status' => 'paid','status'=>'Processing']);
-            return view('customer.success', compact('order'));
+            // Chỉ tạo đơn, chưa đánh dấu paid
+            return redirect()->route('orders.index')
+                ->with('success', 'Đặt hàng thành công! Vui lòng thanh toán khi nhận hàng.');
         } else {
+            // Thanh toán qua Momo
             return redirect()->route('payment.momo', ['order' => $order->id]);
         }
     }
@@ -195,8 +197,8 @@ class OrderController extends Controller
 
         $order->update([
             'payment_method' => 'cod',
-            'payment_status' => 'paid',
-            'status' => 'Processing',
+            'payment_status' => 'pending', // vẫn để pending cho COD
+            'status' => 'processing',
         ]);
 
         return view('customer.success', compact('order'));
@@ -217,7 +219,7 @@ class OrderController extends Controller
             abort(403);
         }
 
-        if (!in_array($order->status, ['pending', 'Processing'])) {
+        if (!in_array($order->status, ['pending', 'processing'])) {
             return redirect()->back()->with('error', 'Đơn hàng không thể hủy ở trạng thái hiện tại.');
         }
 
@@ -225,7 +227,6 @@ class OrderController extends Controller
 
         return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công.');
     }
-
 
     //Lịch sử mua hàng
     public function history() {
