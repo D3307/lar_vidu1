@@ -25,8 +25,8 @@
                             <h5>Sản phẩm</h5>
                             @foreach($cart as $k => $item)
                                 <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ asset($item['image'] ?? '') }}" alt=""
-                                         style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-right:12px;">
+                                    <img src="{{ asset('storage/'.$item['image']) }}" alt="{{ $item['name'] }}"
+                                        style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-right:12px;">
                                     <div>
                                         <div style="font-weight:700">{{ $item['name'] }}</div>
                                         <div class="text-muted">

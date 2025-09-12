@@ -50,6 +50,13 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="address" class="form-label fw-semibold">Địa chỉ</label>
+                                    <input type="text" name="address" id="address"
+                                        class="form-control rounded-3"
+                                        value="{{ old('address', $user->address) }}">
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="password" class="form-label fw-semibold">Mật khẩu (để trống nếu không đổi)</label>
                                     <input type="password" name="password" id="password"
                                         class="form-control rounded-3">
@@ -107,7 +114,7 @@
                                     @endforeach
                                 </div>
 
-                                <div class="mt-3">
+                                <div class="mt-3" style="display: flex; justify-content: end;">
                                     {{ $histories->links('vendor.pagination.bootstrap-4') }}
                                 </div>
                             @else
@@ -180,6 +187,39 @@
     /* Badge màu chủ đạo */
     .bg-brand {
         background-color: var(--brand-color) !important;
+    }
+    .pagination li {
+        display: inline-block;
+        margin: 0 4px;
+    }
+    .pagination li a,
+    .pagination li span {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid #ffd1dc;
+        color: #7a2f3b;
+        background: #fff;
+        transition: all 0.2s ease;
+    }
+    .pagination li a:hover {
+        background: #ffebf0;
+        color: #ff3b67;
+        border-color: #ffb2c1;
+    }
+    .pagination li.active span {
+        background: #7a2f3b;
+        border-color: #ff6b88;
+        color: #fff;
+    }
+    .pagination li.disabled span {
+        color: #ccc;
+        background: #f9f9f9;
+        border-color: #eee;
+        cursor: not-allowed;
     }
 </style>
 @endsection
