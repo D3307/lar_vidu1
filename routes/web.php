@@ -22,22 +22,31 @@ use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Customer\AccountController;
 use App\Http\Controllers\Customer\CouponController as CustomerCouponController;
 use App\Http\Controllers\Admin\CouponController as AdminCouponController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use Illuminate\Support\Facades\Auth;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
     return view('welcomeweb');
 })->name('welcomeweb');
 
-// -------------------- Register --------------------
+// -------------------- Đăng ký --------------------
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
-// -------------------- Login & Logout --------------------
+// -------------------- Đăng nhập & Đăng xuất --------------------
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// -------------------- Email Verification --------------------
+// -------------------- Đặt lại mật khẩu --------------------
+Route::get('passwords/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('passwords/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('passwords/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('passwords/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+// -------------------- Xác thực Email --------------------
 Route::middleware('auth')->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
@@ -140,3 +149,5 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
         Route::get('/orders/{id}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
     });
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');

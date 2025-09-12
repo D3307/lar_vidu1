@@ -3,47 +3,39 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class VerificationController extends Controller
 {
-    /**
-     * Xử lý xác minh email khi user click link trong mail
-     */
-    public function verify(Request $request, $id, $hash)
-    {
-        $user = \App\Models\User::findOrFail($id);
+    /*
+    |--------------------------------------------------------------------------
+    | Email Verification Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling email verification for any
+    | user that recently registered with the application. Emails may also
+    | be re-sent if the user didn't receive the original email message.
+    |
+    */
 
-        // Kiểm tra hash trong URL có khớp với email không
-        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            return redirect()->route('verification.notice')->with('error', 'Liên kết xác minh không hợp lệ.');
-        }
-
-        // Nếu chưa xác minh thì cập nhật cột email_verified_at
-        if (! $user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
-            event(new Verified($user));
-        }
-
-        return redirect()->route('home')->with('success', 'Email của bạn đã được xác minh.');
-    }
+    use VerifiesEmails;
 
     /**
-     * Gửi lại email xác minh
+     * Where to redirect users after verification.
+     *
+     * @var string
      */
-    public function send(Request $request)
+    protected $redirectTo = '/home';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $user = $request->user();
-
-        if ($user->hasVerifiedEmail()) {
-            return redirect()->route('home');
-        }
-
-        $user->sendEmailVerificationNotification();
-
-        return back()->with('success', 'Đã gửi lại liên kết xác minh!');
+        $this->middleware('auth');
+        $this->middleware('signed')->only('verify');
+        $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
 }
