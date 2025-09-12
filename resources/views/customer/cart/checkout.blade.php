@@ -72,10 +72,10 @@
                                     <option value="{{ $coupon->id }}"
                                         @if(old('coupon_id') == $coupon->id) selected @endif>
                                         {{ $coupon->code }} -
-                                        @if($coupon->type == 'percent')
-                                            Giảm {{ $coupon->value }}%
+                                        @if($coupon->discount_type == 'percent')
+                                            Giảm {{ $coupon->discount }}%
                                         @else
-                                            Giảm {{ number_format($coupon->value,0,',','.') }}đ
+                                            Giảm {{ number_format($coupon->discount,0,',','.') }}đ
                                         @endif
                                         (Đơn tối thiểu {{ number_format($coupon->min_order_value,0,',','.') }}đ)
                                     </option>
@@ -111,7 +111,26 @@
 </div>
 
 <style>
-    .border-pink { border: 1px solid #e75480 !important; }
     .card { border-top: 4px solid #e75480; }
+    .border-pink {
+        border: 1px solid #e75480 !important;
+        font: #333;
+    }
+    .form-select.border-pink:focus {
+        border-color: #e75480 !important;
+        box-shadow: 0 0 0 0.25rem rgba(231, 84, 128, 0.25);
+    }
+    .form-select.border-pink option {
+        color: #333; /* mặc định đen để dễ đọc */
+        font-weight: 500;
+    }
+    .form-select.border-pink option:checked,
+    .form-select.border-pink option[selected] {
+        color: #e75480 !important;
+        font-weight: 700;
+    }
+    .form-select.border-pink option:hover {
+        background-color: #e75480;
+    }
 </style>
 @endsection
