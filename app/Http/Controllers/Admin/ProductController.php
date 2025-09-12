@@ -21,7 +21,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->paginate(6);
+        $products = $query->paginate(10);
 
         if ($request->ajax()) {
             return view('admin.products.partials', compact('products'))->render();
