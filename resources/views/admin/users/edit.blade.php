@@ -2,10 +2,6 @@
 
 @section('title', 'Sửa người dùng')
 
-@section('page-header')
-    <h2 style="font-size:1.4rem;font-weight:700;color:#7a2f3b">✏️ Sửa người dùng</h2>
-@endsection
-
 @section('content')
 <div class="admin-card">
     <form action="{{ route('admin.users.update', $user->id) }}" method="POST" style="max-width:600px;margin:auto">
@@ -24,6 +20,20 @@
             <input type="email" name="email" id="email" 
                    value="{{ old('email', $user->email) }}" required>
             @error('email') <span class="error-text">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="">Số điện thoại</label>
+            <input type="text" name="name" id="name" 
+                   value="{{ old('name') }}" required>
+            @error('name') <span class="error-text">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="name">Tên</label>
+            <input type="text" name="name" id="name" 
+                   value="{{ old('name') }}" required>
+            @error('name') <span class="error-text">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">

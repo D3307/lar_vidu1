@@ -2,10 +2,6 @@
 
 @section('title', 'Thêm người dùng')
 
-@section('page-header')
-    <h2 style="font-size:1.4rem;font-weight:700;color:#7a2f3b">Thêm người dùng</h2>
-@endsection
-
 @section('content')
 <div class="admin-card">
     <form action="{{ route('admin.users.store') }}" method="POST" style="max-width:600px;margin:auto">
@@ -23,6 +19,20 @@
             <input type="email" name="email" id="email" 
                    value="{{ old('email') }}" required>
             @error('email') <span class="error-text">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input type="text" name="phone" id="phone" 
+                   value="{{ old('phone') }}" required>
+            @error('phone') <span class="error-text">{{ $message }}</span> @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <input type="text" name="address" id="address" 
+                   value="{{ old('address') }}" required>
+            @error('address') <span class="error-text">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">
