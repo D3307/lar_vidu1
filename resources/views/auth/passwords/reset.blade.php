@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Quên mật khẩu</h2>
+    <h2>Đặt lại mật khẩu</h2>
 
     @if (session('status'))
         <div class="alert alert-success">
@@ -10,16 +10,24 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" action="{{ route('password.update') }}">
         @csrf
+        <input type="hidden" name="token" value="{{ $token }}">
         <div class="form-group">
-            <label for="email">Nhập email của bạn</label>
-            <input id="email" type="email" class="form-control" name="email" required autofocus>
+            <label for="email">Email</label>
+            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
         </div>
-        <button type="submit" class="btn btn-primary">Gửi link đặt lại mật khẩu</button>
+        <div class="form-group">
+            <label for="password">Mật khẩu mới</label>
+            <input id="password" type="password" class="form-control" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="password-confirm">Xác nhận mật khẩu</label>
+            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Đặt lại mật khẩu</button>
     </form>
 </div>
-
 
 <style>
     body, .container {
