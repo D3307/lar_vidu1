@@ -68,16 +68,6 @@
             <textarea name="description" rows="4" style="width:100%;padding:8px;border-radius:6px">{{ old('description') }}</textarea>
         </div>
 
-        transition:all .2s;>
-            <label>Ảnh sản phẩm</label><br>
-            <input type="file" name="image" accept="image/*">
-        </div>
-
-        <div style="margin-top:8px">
-            <label>Mô tả</label><br>
-            <textarea name="description" rows="4" style="width:100%;padding:8px;border-radius:6px">{{ old('description') }}</textarea>
-        </div>
-
         <div style="margin-top:16px;display:flex;gap:10px;">
             <button type="submit" class="btn btn-outline" style="background:#f0d4db;color:#7a2f3b;font-weight:600;">➕ Tạo</button>
             <a href="{{ route('admin.products.index') }}" class="btn btn-outline" style="background:#eee;color:#7a2f3b;font-weight:600;">⬅ Hủy</a>

@@ -23,10 +23,10 @@
         </div>
 
         <div class="form-group">
-            <label for="">Số điện thoại</label>
-            <input type="text" name="name" id="name" 
-                   value="{{ old('name') }}" required>
-            @error('name') <span class="error-text">{{ $message }}</span> @enderror
+            <label for="phone">Số điện thoại</label>
+            <input type="text" name="phone" id="phone" 
+                   value="{{ old('phone', $user->phone) }}" required>
+            @error('phone') <span class="error-text">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">

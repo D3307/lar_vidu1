@@ -15,13 +15,14 @@
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th>STT</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
+                    <th style="width: 20px;">STT</th>
+                    <th style="width: 250px;">Tên sản phẩm</th>
+                    <th style="width: 100px;">Danh mục</th>
+                    <th style="width: 60px;">Giá</th>
+                    <th style="width: 60px;">Số lượng</th>
+                    <th style="width: 100px;">Màu sắc</th>
+                    <th style="width: 70px;">Kích thước</th>
+                    <th style="width: 100px;">Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +33,17 @@
                     <td>{{ $product->category->name ?? '-' }}</td>
                     <td>{{ number_format($product->price, 0, ',', '.') }} đ</td>
                     <td>{{ $product->quantity }}</td>
-                    <td>{{ $product->status == 'active' ? 'Hiển thị' : 'Ẩn' }}</td>
+                    <td>
+                        @if($product->color)
+                            @foreach(explode(',', $product->color) as $c)
+                                <span class="color-circle" style="background-color: {{ trim($c) }};" 
+                                    title="{{ trim($c) }}"></span>
+                            @endforeach
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td>{{ $product->size }}</td>
                     <td>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-action btn-edit">Sửa</a>
                         <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline">
@@ -43,7 +54,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" style="text-align:center;color:#999;padding:12px">Không có sản phẩm nào</td>
+                    <td colspan="8" style="text-align:center;color:#999;padding:12px">Không có sản phẩm nào</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -66,6 +77,15 @@
     .styled-table th { background:#f9f3f3; color:#7a2f3b; font-weight:600; text-align:left;
                        padding:10px 12px; font-size:0.95rem;}
     .styled-table td { padding:10px 12px; border-top:1px solid rgba(0,0,0,0.05); font-size:0.95rem; color:#333;}
+    .color-circle {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        margin-right: 4px;
+        vertical-align: middle;
+    }
     .btn-action { border:none; background:transparent; padding:6px 10px; border-radius:6px;
                   font-size:0.85rem; cursor:pointer; text-decoration:none; margin-right:4px; transition:background .2s;}
     .btn-edit { color:#7a2f3b; border:1px solid rgba(122,47,59,0.3);}
