@@ -46,15 +46,7 @@
                                           style="width:20px; height:20px; background:{{ $item['color'] }}; border:1px solid #ccc;"></span>
                                 </td>
                                 <td>{{ $item['size'] ?? '-' }}</td>
-                                <td>
-                                    <form action="{{ route('cart.update', $key) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        {{-- ✅ Ô nhập số lượng ngắn gọn hơn --}}
-                                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1"
-                                               class="form-control form-control-sm d-inline-block text-center" style="width:60px;">
-                                        <button type="submit" class="btn btn-sm btn-outline-primary ms-1">Cập nhật</button>
-                                    </form>
-                                </td>
+                                <td>{{ $item['quantity'] }}</td>
                                 <td>{{ number_format($item['price'], 0, ',', '.') }} đ</td>
                                 <td>{{ number_format($subtotal, 0, ',', '.') }} đ</td>
                             </tr>
@@ -97,6 +89,26 @@
         </div>
     @endif
 </div>
+
+
+<style>
+    /* Tùy chỉnh checkbox */
+    input[type="checkbox"] {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+        accent-color: var(--primary);
+    }
+    .btn-accent {
+        background: var(--accent);
+        color: #fff;
+    }
+    .btn-accent:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+</style>
+
 
 @push('scripts')
 <script>

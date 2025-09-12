@@ -34,15 +34,13 @@
                             <p style="margin:0">{{ $order->address }}</p>
                         </div>
                         <div class="col-md-6 text-md-end">
-                            <h6 style="margin-bottom:8px;color:#333">Thanh toán</h6>
-                            <p style="margin:0"><strong>Phương thức:</strong> {{ $order->payment_method ?? 'N/A' }}</p>
-                            <p style="margin:0"><strong>Trạng thái thanh toán:</strong> {{ $order->payment_status ?? 'pending' }}</p>
+                            <p style="margin:0"><strong>Phương thức thanh toán:</strong> {{ $order->payment_method ?? 'N/A' }}</p>
                         </div>
                     </div>
 
                     <hr>
 
-                    <h6 style="color:#333">Sản phẩm</h6>
+                    <h6 style="color:#333"></h6>
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead>
@@ -88,26 +86,59 @@
                     </div>
 
                     <div class="mt-4 d-flex flex-wrap gap-2">
-                        <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary">‹ Quay về danh sách</a>
+                        <a href="{{ route('orders.index') }}" 
+                        class="btn" 
+                        style="background:#f6e8ea;color:#7a2130;border:1px solid #e8cbd2;">
+                        ‹ Quay về danh sách
+                        </a>
 
                         @if(($order->payment_status ?? null) !== 'paid' && ($order->payment_method ?? '') === 'momo')
-                            <a href="{{ route('payment.momo', $order->id) }}" class="btn" style="background:#e75480;color:#fff;border:none;">Thanh toán lại (MoMo)</a>
+                            <a href="{{ route('payment.momo', $order->id) }}" 
+                            class="btn" 
+                            style="background:#e75480;color:#fff;border:none;">
+                            Thanh toán lại (MoMo)
+                            </a>
                         @endif
 
-                        <button onclick="window.print()" class="btn btn-light">In đơn hàng</button>
-                        
-                        <!-- Đánh giá -->
-                        @if($order->status === 'delivered' && $order->user_id === auth()->id())
-                            @if($order->reviews->isEmpty())
-                                <a href="{{ route('customer.review', $order->id) }}" class="btn btn-outline-primary">Đánh giá</a>
-                            @else
-                                <span class="btn btn-success disabled">Đã đánh giá</span>
-                            @endif
-                        @endif
+                        <button onclick="window.print()" 
+                                class="btn" 
+                                style="background:#e75480;color:#fff;border:none;">
+                            🖨 In đơn hàng
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+{{-- CSS cho in ấn --}}
+<style>
+@media print {
+    /* Ẩn toàn bộ layout mặc định */
+    header, footer, nav, .navbar, .sidebar, .mt-4, .btn { 
+        display: none !important; 
+    }
+
+    /* Chỉ hiển thị phần đơn hàng */
+    .card.shadow-sm {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+    .card.shadow-sm, .card.shadow-sm * {
+        visibility: visible;
+    }
+    .card.shadow-sm {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
 @endsection

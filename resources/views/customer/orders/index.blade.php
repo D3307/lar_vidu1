@@ -96,15 +96,28 @@
                                                     <div style="font-weight:800;font-size:18px;color:#222;">
                                                         {{ number_format($order->total ?? 0,0,',','.') }} đ
                                                     </div>
-                                                    <div class="mt-2">
+
+                                                    <div class="mt-2 d-flex flex-wrap gap-2 justify-content-end">
                                                         <span class="badge"
                                                             style="background:{{ $data['color'] }}20;
                                                                     color:{{ $data['color'] }};
                                                                     font-weight:700;
-                                                                    padding:6px 10px;
+                                                                    padding:10px 10px;
+                                                                    height: 35px;
+                                                                    font-size:14px;
                                                                     border-radius:8px;">
                                                             Xem chi tiết →
                                                         </span>
+
+                                                        <!-- Đánh giá -->
+                                                        @if($order->status === 'delivered' && $order->user_id === auth()->id())
+                                                            @if($order->reviews->isEmpty())
+                                                                <a href="{{ route('customer.review', $order->id) }}" 
+                                                                class="btn-review">Đánh giá</a>
+                                                            @else
+                                                                <span class="btn-reviewed">Đã đánh giá</span>
+                                                            @endif
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,6 +221,33 @@
         height: 14px;
         display: inline-block;
         vertical-align: middle;
+    }
+    /* Nút Đánh giá */
+    .btn-review {
+        background: #e75480;
+        color: #fff;
+        border: none;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    .btn-review:hover {
+        background: #d9436e;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* Nút Đã đánh giá */
+    .btn-reviewed {
+        background: #5cb85c;
+        color: #fff;
+        border: none;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 8px;
+        opacity: 0.85;
+        cursor: default;
     }
 </style>
 @endsection

@@ -64,25 +64,24 @@
                         </div>
 
                         {{-- chọn mã giảm giá --}}
-<div class="mb-3">
-    <label for="coupon_id" class="form-label" style="color:#e75480;">Mã giảm giá</label>
-    <select class="form-select border-pink" id="coupon_id" name="coupon_id">
-        <option value="">-- Chọn mã giảm giá --</option>
-        @foreach($coupons as $coupon)
-            <option value="{{ $coupon->id }}"
-                @if(old('coupon_id') == $coupon->id) selected @endif>
-                {{ $coupon->code }} -
-                @if($coupon->type == 'percent')
-                    Giảm {{ $coupon->value }}%
-                @else
-                    Giảm {{ number_format($coupon->value,0,',','.') }}đ
-                @endif
-                (Đơn tối thiểu {{ number_format($coupon->min_order_value,0,',','.') }}đ)
-            </option>
-        @endforeach
-    </select>
-</div>
-
+                        <div class="mb-3">
+                            <label for="coupon_id" class="form-label" style="color:#e75480;">Mã giảm giá</label>
+                            <select class="form-select border-pink" id="coupon_id" name="coupon_id">
+                                <option value="">-- Chọn mã giảm giá --</option>
+                                @foreach($coupons as $coupon)
+                                    <option value="{{ $coupon->id }}"
+                                        @if(old('coupon_id') == $coupon->id) selected @endif>
+                                        {{ $coupon->code }} -
+                                        @if($coupon->type == 'percent')
+                                            Giảm {{ $coupon->value }}%
+                                        @else
+                                            Giảm {{ number_format($coupon->value,0,',','.') }}đ
+                                        @endif
+                                        (Đơn tối thiểu {{ number_format($coupon->min_order_value,0,',','.') }}đ)
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
                         {{-- tổng cộng --}}
                         <div class="mb-3">
