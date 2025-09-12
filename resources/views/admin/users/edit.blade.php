@@ -30,10 +30,10 @@
         </div>
 
         <div class="form-group">
-            <label for="name">Tên</label>
-            <input type="text" name="name" id="name" 
-                   value="{{ old('name') }}" required>
-            @error('name') <span class="error-text">{{ $message }}</span> @enderror
+            <label for="address">Địa chỉ</label>
+            <input type="text" name="address" id="address" 
+                   value="{{ old('address', $user->address) }}" required>
+            @error('address') <span class="error-text">{{ $message }}</span> @enderror
         </div>
 
         <div class="form-group">
