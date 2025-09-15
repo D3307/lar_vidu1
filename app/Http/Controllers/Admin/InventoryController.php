@@ -9,11 +9,26 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $inventories = Inventory::with('product')->paginate(10);
+        $query = Inventory::with('product');
+
+        // Tìm kiếm trong bảng inventories
+        if ($request->filled('search')) {
+            $keyword = trim($request->input('search'));
+            $query->where(function ($q) use ($keyword) {
+                $q->where('id', 'like', "%{$keyword}%")
+                    ->orWhereHas('product', function ($q2) use ($keyword) {
+                        $q2->where('name', 'like', "%{$keyword}%");
+                    });
+            });
+        }
+
+        $inventories = $query->paginate(10);
+
         return view('admin.inventories.index', compact('inventories'));
     }
+
 
     public function edit($id)
     {
