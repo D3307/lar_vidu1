@@ -96,7 +96,7 @@
 
         {{-- Tổng tiền --}}
         <div class="total">
-            Tổng cộng: {{ number_format($order->total, 0, ',', '.') }} đ
+            Tổng cộng: {{ number_format($order->final_total, 0, ',', '.') }} đ
         </div>
 
         {{-- Footer --}}

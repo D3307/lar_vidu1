@@ -33,7 +33,7 @@
                     <td>
                         {{ $order->payment_method == 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản' }}
                     </td>
-                    <td>{{ number_format($order->total, 0, ',', '.') }} đ</td>
+                    <td>{{ number_format($order->final_total, 0, ',', '.') }} đ</td>
                     <td>
                         <span class="status-badge {{ $order->status }}">
                             {{ $order->status == 'pending' ? 'Pending' : '' }}

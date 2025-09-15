@@ -71,7 +71,8 @@ class OrderController extends Controller
             'address'  => 'required|string|max:255',
             'payment'  => 'required|string|in:cod,momo',
             'selected' => 'nullable|array',
-            'coupon_id'=> 'nullable|exists:coupons,id'
+            'coupon_id'=> 'nullable|exists:coupons,id',
+            'discount' => 'nullable|numeric|min:0',
         ]);
 
         $sessionCart = session('cart', []);
@@ -96,26 +97,39 @@ class OrderController extends Controller
         // xử lý coupon
         $coupon = null;
         $discount = 0;
+
         if ($request->filled('coupon_id')) {
             $coupon = Coupon::find($request->coupon_id);
-            if ($coupon) {
-                $discount = $coupon->value ?? 0;
+
+            if ($coupon && $total >= $coupon->min_order_value) {
+                if ($coupon->discount_type === 'percent') {
+                    $discount = (int) round($total * ($coupon->discount / 100));
+                } else {
+                    $discount = $coupon->discount;
+                }
+
+                // Không để finalTotal âm
+                $discount = min($discount, $total);
             }
         }
 
         $finalTotal = $total - $discount;
 
+
         $order = Order::create([
-            'user_id' => Auth::id(),
-            'name'    => $request->name,
-            'phone'   => $request->phone,
-            'address' => $request->address,
-            'total'   => $finalTotal,
-            'status'  => 'pending', // luôn bắt đầu bằng pending
+            'user_id'        => Auth::id(),
+            'name'           => $request->name,
+            'phone'          => $request->phone,
+            'address'        => $request->address,
+            'total'          => $total,        // Tổng ban đầu
+            'discount'       => $discount,     // Số tiền giảm
+            'final_total'    => $finalTotal,   // Thành tiền sau giảm
+            'status'         => 'pending',
             'payment_method' => $request->payment,
-            'payment_status' => 'unpaid', // mặc định unpaid, sẽ cập nhật khi thanh toán xong
-            'coupon_id' => $coupon?->id
+            'payment_status' => 'unpaid',
+            'coupon_id'      => $coupon?->id,
         ]);
+
 
         foreach ($cartItems as $item) {
             OrderItem::create([

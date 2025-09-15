@@ -16,7 +16,7 @@
 
                         <div class="text-end">
                             <div style="font-weight:800;font-size:18px;color:#222;">
-                                {{ number_format($order->total ?? 0,0,',','.') }} đ
+                                {{ number_format($order->final_total ?? 0,0,',','.') }} đ
                             </div>
                             <div style="margin-top:8px;">
                                 <span style="padding:6px 10px;border-radius:18px;background:#f6e8ea;color:#7a2130;font-weight:700;">
@@ -79,7 +79,7 @@
                             <tfoot>
                                 <tr>
                                     <th colspan="3" class="text-end">Tổng cộng:</th>
-                                    <th class="text-end">{{ number_format($order->total ?? 0,0,',','.') }} đ</th>
+                                    <th class="text-end">{{ number_format($order->final_total ?? 0,0,',','.') }} đ</th>
                                 </tr>
                             </tfoot>
                         </table>

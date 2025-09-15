@@ -94,7 +94,7 @@
 
                                                 <div class="text-end ms-auto">
                                                     <div style="font-weight:800;font-size:18px;color:#222;">
-                                                        {{ number_format($order->total ?? 0,0,',','.') }} đ
+                                                        {{ number_format($order->final_total ?? 0,0,',','.') }} đ
                                                     </div>
 
                                                     <div class="mt-2 d-flex flex-wrap gap-2 justify-content-end">

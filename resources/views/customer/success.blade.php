@@ -28,7 +28,7 @@
                             <div style="text-align:right; min-width:160px;">
                                 @php
                                     $discount = $order->discount ?? 0;
-                                    $finalTotal = ($order->total ?? 0) - $discount;
+                                    $finalTotal = ($order->final_total ?? 0) - $discount;
                                 @endphp
                                 <p style="margin:0;color:#222;font-weight:700;font-size:18px;">
                                     {{ number_format($finalTotal, 0, ',', '.') }} VNĐ

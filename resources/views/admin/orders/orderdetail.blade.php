@@ -137,7 +137,7 @@
     <div class="card-row" style="text-align:right">
         <h3 style="color:#7a2f3b;margin:0">Tổng: 
             <span style="color:#c03651">
-                {{ number_format($order->total, 0, ',', '.') }} đ
+                {{ number_format($order->final_total, 0, ',', '.') }} đ
             </span>
         </h3>
     </div>

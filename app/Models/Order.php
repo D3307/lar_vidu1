@@ -16,6 +16,7 @@ class Order extends Model
         'phone',
         'address',
         'discount',
+        'final_total',
         'coupon_id',
         'total',
         'status',
