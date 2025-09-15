@@ -118,19 +118,26 @@
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="price" value="{{ $product->price }}">
 
-                <div class="d-flex gap-2">
-                    {{-- Thêm vào giỏ --}}
-                    <button type="submit" class="btn"
-                            style="background: var(--btn-primary); color: var(--btn-primary-text); border:none;">
-                        <i class="fa fa-cart-plus me-2"></i> Thêm vào giỏ
-                    </button>
+                @if($product->quantity > 0)
+                    <div class="d-flex gap-2">
+                        {{-- Thêm vào giỏ --}}
+                        <button type="submit" class="btn"
+                                style="background: var(--btn-primary); color: var(--btn-primary-text); border:none;">
+                            <i class="fa fa-cart-plus me-2"></i> Thêm vào giỏ
+                        </button>
 
-                    {{-- Mua ngay --}}
-                    <button type="submit" class="btn btn-success"
-                            formaction="{{ route('buy.now', $product->id) }}">
-                        <i class="fa fa-bolt me-2"></i> Mua ngay
-                    </button>
-                </div>
+                        {{-- Mua ngay --}}
+                        <button type="submit" class="btn btn-success"
+                                formaction="{{ route('buy.now', $product->id) }}">
+                            <i class="fa fa-bolt me-2"></i> Mua ngay
+                        </button>
+                    </div>
+                @else
+                    <div class="alert alert-danger mt-3">
+                        Sản phẩm này hiện đã <strong>hết hàng</strong>.
+                    </div>
+                @endif
+
             </form>
         </div>
 
