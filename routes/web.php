@@ -94,7 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/payment/momo/callback', [PaymentController::class, 'momoCallback'])->name('payment.momo.callback');
     Route::get('/payment/momo/fake-callback/{orderId}', [PaymentController::class, 'fakeMomoCallback']);
     Route::get('/payment/momo/return', [PaymentController::class, 'momoReturn'])->name('payment.momo.return');
-    Route::get('/success', function () {return view('customer.success');})->name('customer.success');
+    Route::get('/customer/success', [PaymentController::class, 'success'])->name('customer.success');
+
 
     //Đánh giá
     Route::get('/review/{order}', [CustomerReviewController::class, 'create'])->name('customer.review');
@@ -110,15 +111,16 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
 // -------------------- Public pages --------------------
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-// Sản phẩm
-    Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
-    Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
-    Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
-    Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
-
 Route::get('/about', [PageController::class, 'about'])->name('customer.about');
 Route::get('/contact', [PageController::class, 'contact'])->name('customer.contact');
+// Sản phẩm
+Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
+Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
+Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
+Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
+
+
 
 // -------------------- Admin routes --------------------
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])

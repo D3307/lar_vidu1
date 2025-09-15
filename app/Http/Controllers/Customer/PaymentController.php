@@ -21,8 +21,8 @@ class PaymentController extends Controller
         $orderIdMomo   = time() . "";   // Mã đơn hàng MoMo
         $orderInfo     = "Thanh toán đơn hàng #" . $order->id;
         $amount = (int) round($order->total);   // đảm bảo thành số nguyên hợp lệ
-        $redirectUrl   = route('customer.success'); // Sau khi thanh toán xong
-        $ipnUrl        = route('payment.momo.callback'); // MoMo gọi về server
+        $redirectUrl   = route('customer.success', ['order_id' => $order->id]); // Sau khi thanh toán xong
+        $ipnUrl        = "https://bd38a3633997.ngrok-free.app/payment/momo/callback";
         $requestId     = time() . "";
         $requestType   = "payWithATM";
 
@@ -84,16 +84,27 @@ class PaymentController extends Controller
 
     public function momoCallback(Request $request)
     {
-        // Callback từ MoMo (IPN)
-        if ($request->resultCode == 0) {
-            // Lấy order_id từ extraData
-            $order = Order::find($request->extraData);
-            if ($order) {
-                $order->update(['payment_status' => 'paid', 'payment_method' => 'momo']);
+        \Log::info('MoMo callback', $request->all());
+
+        $order = Order::find($request->extraData);
+        if ($order) {
+            if ($request->resultCode == 0) {
+                $order->update([
+                    'payment_status' => 'paid',
+                    'payment_method' => 'momo'
+                ]);
+            } else {
+                $order->update([
+                    'payment_status' => 'failed',
+                    'payment_method' => 'momo'
+                ]);
             }
         }
-        return redirect()->route('customer.success');
+
+        // Trả về JSON cho MoMo, không redirect
+        return response()->json(['status' => 'ok']);
     }
+
 
     // filepath: http://127.0.0.1:8000/payment/momo/fake-callback/{id đơn hàng vừa tạo}
     public function fakeMomoCallback($orderId)
@@ -103,6 +114,22 @@ class PaymentController extends Controller
             $order->update(['payment_status' => 'paid', 'payment_method' => 'momo']);
         }
         // Truyền biến $order về view success
+        return view('customer.success', compact('order'));
+    }
+
+    //Thông báo thanh toán thành công
+    public function success(Request $request)
+    {
+        // MoMo redirect về có thể có ?order_id=xxx
+        $orderId = $request->order_id ?? $request->orderId ?? null;
+
+        if ($orderId) {
+            $order = Order::find($orderId);
+        } else {
+            // fallback: lấy đơn hàng mới nhất
+            $order = Order::latest()->first();
+        }
+
         return view('customer.success', compact('order'));
     }
 }
