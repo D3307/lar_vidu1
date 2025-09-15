@@ -32,8 +32,10 @@
                 'cancelled' => ['label' => 'Đã hủy', 'color' => '#d9534f'],    // đỏ
             ];
 
-            // Gom đơn hàng theo trạng thái
-            $groupedOrders = $orders->groupBy(fn($order) => $order->status ?? 'pending');
+            // Dùng allOrders nếu controller đã gửi (để tab/count dùng toàn bộ dữ liệu),
+            // ngược lại dùng $orders (get() hoặc paginated collection).
+            $sourceOrders = $allOrders ?? $orders;
+            $groupedOrders = $sourceOrders->groupBy(fn($order) => $order->status ?? 'pending');
         @endphp
 
         <!-- Tabs trạng thái -->

@@ -220,9 +220,25 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->orderByDesc('created_at')->paginate(5);
+        $allOrders = Order::where('user_id', auth()->id())
+            ->orderByDesc('created_at')
+            ->get();
 
-        return view('customer.orders.index', compact('orders'));
+        $perPage = 5;
+        $page = request()->get('page', 1);
+        $orders = new \Illuminate\Pagination\LengthAwarePaginator(
+            $allOrders->forPage($page, $perPage),
+            $allOrders->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        // truyền cả $orders (phân trang) và $allOrders (dùng để group/count cho tab)
+        return view('customer.orders.index', [
+            'orders' => $orders,
+            'allOrders' => $allOrders,
+        ]);
     }
 
     //Hủy đơn hàng
