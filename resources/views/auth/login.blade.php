@@ -31,7 +31,7 @@
                     <input type="checkbox" id="remember" name="remember" style="margin-right: 0.5rem;">
                     <label for="remember" style="color: #6b6b6b;">Ghi nhớ đăng nhập</label>
                 </div>
-                <a href="{{ route('password.request') }}" style="color: #7a2f3b; text-decoration: none;">Quên mật khẩu?</a>
+                <a href="#" style="color: #7a2f3b; text-decoration: none;">Quên mật khẩu?</a>
             </div>
             
             <button type="submit" 

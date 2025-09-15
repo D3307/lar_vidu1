@@ -24,7 +24,7 @@ class PaymentController extends Controller
         $redirectUrl   = route('customer.success'); // Sau khi thanh toán xong
         $ipnUrl        = route('payment.momo.callback'); // MoMo gọi về server
         $requestId     = time() . "";
-        $requestType   = "captureWallet";
+        $requestType   = "payWithATM";
 
         // Gửi thêm extraData = id đơn hàng để callback biết cập nhật đơn nào
         $extraData     = (string) $order->id;

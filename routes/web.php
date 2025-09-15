@@ -46,7 +46,7 @@ Route::post('passwords/email', [ForgotPasswordController::class, 'sendResetLinkE
 Route::get('passwords/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('passwords/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-// -------------------- Xác thực Email --------------------
+// -------------------- Email Verification --------------------
 Route::middleware('auth')->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
