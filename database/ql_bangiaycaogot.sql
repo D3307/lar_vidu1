@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 15, 2025 lúc 12:05 PM
+-- Thời gian đã tạo: Th9 15, 2025 lúc 03:49 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -32,16 +32,6 @@ CREATE TABLE `cache` (
   `value` text DEFAULT NULL,
   `expiration` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel-cache-1b6453892473a467d07372d45eb05abc2031647a', 'i:1;', 1757661901),
-('laravel-cache-1b6453892473a467d07372d45eb05abc2031647a:timer', 'i:1757661901;', 1757661901),
-('laravel-cache-ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4', 'i:2;', 1757662060),
-('laravel-cache-ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4:timer', 'i:1757662060;', 1757662060);
 
 -- --------------------------------------------------------
 
@@ -189,6 +179,8 @@ CREATE TABLE `orders` (
   `address` varchar(255) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `total` decimal(10,2) NOT NULL,
+  `discount` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `final_total` int(10) UNSIGNED DEFAULT NULL,
   `status` varchar(50) DEFAULT 'pending',
   `payment_status` varchar(50) DEFAULT 'unpaid',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -201,16 +193,26 @@ CREATE TABLE `orders` (
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`id`, `name`, `phone`, `address`, `user_id`, `total`, `status`, `payment_status`, `created_at`, `updated_at`, `payment_method`, `coupon_id`) VALUES
-(1, 'Thảo', '0944763697', 'Hà Nội', 4, 549000.00, 'delivered', 'paid', '2025-09-12 04:12:12', '2025-09-12 04:13:38', 'momo', NULL),
-(2, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 'pending', 'unpaid', '2025-09-12 05:46:27', '2025-09-12 05:46:27', 'cod', 10),
-(3, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 'delivered', 'unpaid', '2025-09-12 05:49:23', '2025-09-14 19:29:09', 'cod', 10),
-(4, 'Thảo', '0944763697', 'Hà Nội', 4, 4275000.00, 'shipping', 'paid', '2025-09-12 05:55:25', '2025-09-14 22:44:54', 'cod', 10),
-(5, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 'pending', 'pending', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 'cod', 10),
-(6, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 'pending', 'pending', '2025-09-14 23:01:28', '2025-09-14 23:01:28', 'momo', 7),
-(7, 'Linh', '0987654321', 'Hà Nội', 5, 499000.00, 'pending', 'pending', '2025-09-14 23:07:56', '2025-09-14 23:07:56', 'momo', 3),
-(8, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 'pending', 'pending', '2025-09-14 23:24:01', '2025-09-14 23:24:01', 'momo', 4),
-(9, 'Lan', '098765431', 'Ha Noi', 10, 549000.00, 'pending', 'pending', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 'momo', 1);
+INSERT INTO `orders` (`id`, `name`, `phone`, `address`, `user_id`, `total`, `discount`, `final_total`, `status`, `payment_status`, `created_at`, `updated_at`, `payment_method`, `coupon_id`) VALUES
+(1, 'Thảo', '0944763697', 'Hà Nội', 4, 549000.00, 0, 0, 'delivered', 'paid', '2025-09-12 04:12:12', '2025-09-12 04:13:38', 'momo', NULL),
+(2, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 480000, 'pending', 'unpaid', '2025-09-12 05:46:27', '2025-09-12 05:46:27', 'cod', 10),
+(3, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 3570000, 'delivered', 'paid', '2025-09-12 05:49:23', '2025-09-14 19:29:09', 'cod', 10),
+(4, 'Thảo', '0944763697', 'Hà Nội', 4, 4275000.00, 120000, 4155000, 'shipping', 'unpaid', '2025-09-12 05:55:25', '2025-09-14 22:44:54', 'cod', 10),
+(5, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 120000, 620000, 'pending', 'unpaid', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 'cod', 10),
+(6, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'processing', 'paid', '2025-09-14 23:01:28', '2025-09-14 23:01:28', 'momo', 7),
+(7, 'Linh', '0987654321', 'Hà Nội', 5, 499000.00, 99800, 399200, 'processing', 'paid', '2025-09-14 23:07:56', '2025-09-14 23:07:56', 'momo', 3),
+(8, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 5000, 940000, 'delivered', 'paid', '2025-09-14 23:24:01', '2025-09-15 05:24:41', 'momo', 4),
+(9, 'Lan', '098765431', 'Ha Noi', 10, 549000.00, 146700, 402300, 'processing', 'paid', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 'momo', 1),
+(10, 'Linh', '0987654321', 'Ha Noi', 5, 855000.00, 128250, 726750, 'delivered', 'paid', '2025-09-15 03:37:42', '2025-09-15 05:24:26', 'momo', 5),
+(11, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'processing', 'paid', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 'momo', 3),
+(12, 'Lan', '0123456789', 'Ha Noi', 10, 370000.00, 37000, 333000, 'shipping', 'paid', '2025-09-15 03:53:07', '2025-09-15 05:24:12', 'momo', 2),
+(13, 'Lan', '0987654321', 'Ha Noi', 10, 549000.00, 50000, 499000, 'cancelled', 'paid', '2025-09-15 03:56:48', '2025-09-15 05:24:02', 'momo', 8),
+(14, 'Lan', '09763733737', 'Ha Noi', 10, 499000.00, 149700, 349300, 'processing', 'paid', '2025-09-15 04:05:43', '2025-09-15 05:21:22', 'momo', 1),
+(15, 'Lan', '0123456789', 'Ha Noi', 10, 499000.00, 49900, 449100, 'delivered', 'paid', '2025-09-15 04:16:13', '2025-09-15 05:23:56', 'momo', 2),
+(16, 'Lan', '0987654321', 'Hà Nội', 10, 549000.00, 164700, 384300, 'cancelled', 'paid', '2025-09-15 05:02:23', '2025-09-15 05:23:51', 'momo', 1),
+(17, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 05:47:48', '2025-09-15 05:47:48', 'cod', 8),
+(18, 'Linh', '0987654321', 'Hà Nội', 5, 945000.00, 189000, 756000, 'processing', 'paid', '2025-09-15 06:00:58', '2025-09-15 06:01:47', 'momo', 10),
+(19, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 06:41:19', '2025-09-15 06:41:19', 'cod', 8);
 
 --
 -- Bẫy `orders`
@@ -269,7 +271,17 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `qua
 (9, 6, 5, '#000000', '35', 1, 599000.00, '2025-09-14 23:01:28', '2025-09-14 23:01:28'),
 (10, 7, 6, NULL, NULL, 1, 499000.00, '2025-09-14 23:07:56', '2025-09-14 23:07:56'),
 (11, 8, 3, '#fffdd0', '35', 1, 945000.00, '2025-09-14 23:24:01', '2025-09-14 23:24:01'),
-(12, 9, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 00:58:44', '2025-09-15 00:58:44');
+(12, 9, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 00:58:44', '2025-09-15 00:58:44'),
+(13, 10, 2, '#fffdd0', '35', 1, 855000.00, '2025-09-15 03:37:42', '2025-09-15 03:37:42'),
+(14, 11, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 03:47:20', '2025-09-15 03:47:20'),
+(15, 12, 13, NULL, NULL, 1, 370000.00, '2025-09-15 03:53:07', '2025-09-15 03:53:07'),
+(16, 13, 8, '#a52a2a', '35', 1, 549000.00, '2025-09-15 03:56:48', '2025-09-15 03:56:48'),
+(17, 14, 6, NULL, NULL, 1, 499000.00, '2025-09-15 04:05:43', '2025-09-15 04:05:43'),
+(18, 15, 6, NULL, NULL, 1, 499000.00, '2025-09-15 04:16:13', '2025-09-15 04:16:13'),
+(19, 16, 11, '#ffc0cb', '37', 1, 549000.00, '2025-09-15 05:02:23', '2025-09-15 05:02:23'),
+(20, 17, 1, NULL, NULL, 1, 549000.00, '2025-09-15 05:47:48', '2025-09-15 05:47:48'),
+(21, 18, 3, NULL, NULL, 1, 945000.00, '2025-09-15 06:00:58', '2025-09-15 06:00:58'),
+(22, 19, 1, NULL, NULL, 1, 549000.00, '2025-09-15 06:41:19', '2025-09-15 06:41:19');
 
 -- --------------------------------------------------------
 
@@ -310,13 +322,13 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `size`, `material`, `color`, `description`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
 (1, 5, 'Giày Cao Gót Slingback Phối Liệu Bóng', 'products/1757669169_1755787092_giayphoixich.jpeg', '35,36,37,38,39', 'Si bóng', '#000000,#ffc0cb,#fffdd0', 'Giày Cao Gót Slingback Phối Liệu Bóng thanh lịch, nữ tính\r\n\r\nThiết kế mũi nhọn, quai cách eo mang lại nét uyển chuyển trên từng bước chân\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 549000.00, 10000, '2025-09-12 02:26:09', '2025-09-12 02:29:27'),
-(2, 1, 'Giày bít mũi nhọn gót stiletto', 'products/1757670291_giaybitmuinhon.jpg', '35,36,37,38,39', NULL, '#000000,#fffdd0', 'Mã sản phẩm: 1010BMN0738\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 9 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 855000.00, 687, '2025-09-12 02:43:22', '2025-09-12 02:59:50'),
+(2, 1, 'Giày bít mũi nhọn gót stiletto', 'products/1757670291_giaybitmuinhon.jpg', '35,36,37,38,39', 'Da nhân tạo', '#000000,#fffdd0', 'Mã sản phẩm: 1010BMN0738\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 9 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 855000.00, 687, '2025-09-12 02:43:22', '2025-09-15 03:36:36'),
 (3, 1, 'Giày bít mũi block heel phối khóa trang trí', 'products/1757670432_giaybitmuiphoikhoa.jpg', '35,36,37,38,39', 'Da nhân tạo', '#000000,#fffdd0', 'Mã sản phẩm: 1010BMN0735\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót dạng khối\r\nĐộ cao gót: 6.5 cm\r\nLoại mũi: Bít mũi vuông\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 945000.00, 2524, '2025-09-12 02:47:12', '2025-09-12 02:47:12'),
 (4, 1, 'Giày slingback mũi nhọn phối khóa đôi', 'products/1757670596_giayslingbackmuinhonphoikhoadoi.jpg', '35,36,37,38,39', 'Da nhân tạo phủ bóng', '#800000,#000000', 'Mã sản phẩm: 1010BMN0731\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 8.5 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo phủ bóng\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Mary Jane', 740000.00, 0, '2025-09-12 02:49:56', '2025-09-14 21:15:45'),
 (5, 2, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671059_giaysandalgotvuongquaingang.jpeg', '35,36,37,38,39', 'Si bóng', '#800000,#000000,#fffdd0', 'Giày Sandal Gót Vuông Quai Ngang Phối Khóa Trang Trí sành điệu\r\n\r\nQuai hậu phối khóa kim loại, gót trụ cao mang lại nét hiện đại, thời trang\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh\r\n\r\nĐế bằng cao 9cm thanh lịch, dễ dàng di chuyển\r\n\r\nCó 3 màu cơ bản cho bạn dễ dàng lựa chọn và phối đồ', 599000.00, 2483, '2025-09-12 02:57:39', '2025-09-12 02:57:39'),
 (6, 2, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671441_giaysandalgotvuongquaingangphoikhoa.jpeg', '35,36,37,38,39', 'Da cao cấp tổng hợp', '#000000,#fffdd0,#aaaaaa', 'Giày sandal gót vuông quai ngang phối khoá trang trí tinh tế, thanh lịch\r\n\r\nGót vuông cao 5cm tạo cảm giác chắc chắn\r\n\r\nThiết kế thông minh với miếng đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nPhù hợp đi làm, đi tiệc, dạo phố', 499000.00, 7359, '2025-09-12 03:04:01', '2025-09-12 03:05:31'),
 (7, 1, 'Giày Cao Gót Cao Gót Mũi Nhọn', 'products/1757671702_giaycaogotmuinhon.jpg', '35,36,37,38,39', 'Si bóng', '#000000,#fffdd0', 'Giày Cao Gót Cao Gót Mũi Nhọn thanh lịch, nữ tính\r\n\r\nGiày thiết kế mũi nhọn, quai cổ chân cách điệu mang lại nét đẹp uyển chuyển khi diện\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 499000.00, 1685, '2025-09-12 03:08:22', '2025-09-12 03:08:22'),
-(8, 5, 'Giày Cao Gót Quai Mary Jane', NULL, '35,36,37,38,39', 'Si mờ trơn', '#000000,#ffc0cb,#a52a2a', 'Giày Cao Gót Quai Mary Jane thanh lịch\r\n\r\nMũi nhọn, quai nganh thanh mảnh, và gót bọc kim loại cực kì nữ tính\r\n\r\nThiết kế thông minh với đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nGiày có 3 màu dễ phối đồ. Phù hợp để đi làm, dạo phố, đi tiệc', 549000.00, 4595, '2025-09-12 03:12:20', '2025-09-12 03:12:53'),
+(8, 5, 'Giày Cao Gót Quai Mary Jane', 'products/1757932529_giaycaogotquaimaryjane.jpeg', '35,36,37,38,39', 'Si mờ trơn', '#000000,#ffc0cb,#a52a2a', 'Giày Cao Gót Quai Mary Jane thanh lịch\r\n\r\nMũi nhọn, quai nganh thanh mảnh, và gót bọc kim loại cực kì nữ tính\r\n\r\nThiết kế thông minh với đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nGiày có 3 màu dễ phối đồ. Phù hợp để đi làm, dạo phố, đi tiệc', 549000.00, 4595, '2025-09-12 03:12:20', '2025-09-15 03:35:31'),
 (9, 4, 'Giày Cao Gót Đông Hải Bít Mũi Nhấn Quai Ankle Strap', 'products/1757672242_giayanklestrap.jpg', '35,36,37,38,39', 'Da tổng hợp (PU)', '#fffdd0,#0a0a0a,#fcdad5', 'Giày cao gót Đông Hải không chỉ là phụ kiện, mà là tuyên ngôn thời trang. Mẫu giày được thiết kế dành riêng cho những quý cô hiện đại, yêu thích sự thanh lịch nhưng vẫn muốn giữ nét trẻ trung, cuốn hút. Phần quai tinh tế ôm sát bàn chân, tạo nên vẻ đẹp duyên dáng. Độ cao 5cm không chỉ giúp tôn dáng mà còn mang lại sự thoải mái khi di chuyển cả ngày. Kiểu dáng hiện đại kết hợp cùng chất liệu cao cấp giúp đôi giày này trở thành điểm nhấn hoàn hảo cho bất kỳ trang phục nào!', 620000.00, 1984, '2025-09-12 03:17:22', '2025-09-12 03:18:01'),
 (10, 4, 'Giày Cao Gót Zucia Mary Jane Đính Đá', 'products/1757674759_giaymaryjane.jpg', '35,36,37,38,39', 'Da tổng hợp (PU)', '#000000,#fcdad5,#B79d98', 'Giày cao gót mang phong cách cổ điển nhưng đầy cuốn hút, mẫu giày Mary Jane gót vuông sẽ là điểm nhấn hoàn hảo cho quý cô yêu thích nét thanh lịch pha chút kiêu sa và sang trọng. Chất liệu da bóng trở nên thu hút khi diện dưới ánh đèn, chi tiết khóa đá lấp lánh ở quai tạo điểm nhấn nữ tính. Giày nữ có gót vuông cao 5cm giúp dáng đi vững vàng, duyên dáng cả ngày dài. Dù kết hợp cùng váy tiểu thư, đầm dạ tiệc hay đơn giản là quần tây, quần jean thì đôi giày này chắc chắn sẽ nâng tầm phong cách, giúp người diện trở nên ấn tượng.', 890000.00, 2526, '2025-09-12 03:25:40', '2025-09-12 03:59:21'),
 (11, 3, 'Giày Sandal Đế Xuồng Quai Chéo', 'products/1757672862_giaydexuong.jpg', '37,38,39', 'Si mờ trơn', '#000000,#ffc0cb,#fffdd0', 'Giày Sandal Đế Xuồng Quai Chéo thời trang, nữ tính\r\n\r\nThiết kế đế xuồng chắc chắn, quai đan chéo và quan cổ chân mang lại sự nổi bật và chắc chắn khi diện\r\n\r\nĐế bằng cao 9cm dễ dàng phối với nhiều bộ trang phục khác nhau\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh', 549000.00, 645, '2025-09-12 03:27:43', '2025-09-12 03:32:33'),
@@ -386,7 +398,28 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('qgoQPR8ImCMMt5NNDmtMJH67g75ATcQUKFMsBVoz', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoia0FnMkdhanJyTXBhQkw2Mmp4VEJpenhrczFRZEs1dWNjalR3Q3hUTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wYXltZW50L21vbW8vOCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1757926157);
+('1TOyFkvsZCmcbDV0J6GmBDhYgTE9ly8CsOPb9Npv', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoic0NXNnBZczRJQTRqM1NVZmwyOTBkSThGbnB3ZWNTZTluZFZWWklvSCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937973),
+('98xwsVfI18no07OTqU1oA7H0sBIdRHFvqmsexXfX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibEFzVlQwTWhYaGlXdFNYNTJyN1ZHZzd4d0dMRFN4TGhpcnlZQ2w5ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938149),
+('adcLtCfSLlymc7UsQvsHu8gOVLWSUAUB4a52hZrg', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibXo3TW9Zem8ySXJxZGd2aEdmVmpHeXY5WERMVTFCbE9FT2V5UzhOaSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937506),
+('bdykxbdZziXVNongDcTt8xUqwMMc5d35aYqoEzPw', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiZDVuZnh2Q3FGYXRLcHlqZGI4YWJnVHVBaEh6Y1g3bFBVZVh1Zmx5YiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937331),
+('d3MxFjhnwKRhekhNVkp2fAZw69yrrtKA3kXcYnKO', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiaTdxNkVrTmduWXdEc2ZJTjgycDA0b1o2SHlxU3JpaDBKY1RPWnhHSiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938636),
+('dAQx14fElIf2DQ8ytQ7BchL13Pj8R3HPcLaMLEhr', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiZDdVVDBQT3E3dGZLcXd3dTdiRXhYa1NkVUh3QWhMSjBwQ2RiSkdWRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937327),
+('dlVsLfd9CwNwwDEcfUYYJsXUIn7j37PrjKQQKKCW', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiU1RpVXY2c2syQlJEQUZvVzk3UGZGUDhtQXNuOE1raWhnRzdzQ3V5MCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938608),
+('G3WLpFhLnj72D7182Pg9Mw5ltSyZJNBLt1JDAhcR', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiT1B0ZWRJdWJRaGRzT2tiZVRiYmJjRk04ZkhlRlNSYjBNTHJ6Vnc0eiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938327),
+('ICoQvRrNCngdHBB4zdOHCbA5wCM2NNq69P4hcPqE', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiN3JkZm5KVTZSSVI4aWx0S0FZV1Nlekh4eVpmd0VVRW5XMHJZWW5iRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937998),
+('Jw7gwpJ04JfqHQyhAqd0z1LgTWAyfTe6FjfDxAb3', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZEdvZ0VVbnBqRHJWcDBvU3hVY1JwU0l3MkJzQVQydmRyOUtYR3l4ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9vcmRlcnM/cGFnZT0xIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1757944133),
+('KE9gYhMLoRQGFTk4qBfivMpYfvLI22i8UOIJl5ZC', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiSUVQUXIwdFpvekJ2cmR4SEcyNGVvSGFDVHJlMGoyN0ZJOHFvcThabiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938612),
+('niAqZywYwYDdKGxuOUhKr71nEIf1KEahzpvT3xYF', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTUJoZDZlbUxXcG1MekRZUTBzaDRpUUtUY1NXektyNGJPRXFrUmZXYyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938298),
+('NzML44gisorLEVIePbouqxoJghPRv0752m0xYtyz', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiUHpuemNnTDlTVmFwWk5KdnI4YnZUelBmR0tUNVlrVVc3dEZYZk9TRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938477),
+('P93i7LYYjz6IsfMAj2c2pLjEsaIroQRwVxLfNrBX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiVTNHbm0zZU1PZzZ0bGdaRmxYc3p2MFo3S3lvM2l4MkR1Ujg2UVVzcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937764),
+('S1PHCBk8JpBcx2X2zSmmGClZCjizTC44LrOEquHI', 10, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiQkdtbk9ETmRaOVFaR0k2TnpaU0VOcHlNZktidVB3d1g3TGY4aXo1TyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQxMzoiaHR0cDovL2JkMzhhMzYzMzk5Ny5uZ3Jvay1mcmVlLmFwcC9jdXN0b21lci9zdWNjZXNzP2Ftb3VudD01NDkwMDAmZXh0cmFEYXRhPTE2Jm1lc3NhZ2U9U3VjY2Vzc2Z1bC4mb3JkZXJJZD0xNzU3OTM4NTcwJm9yZGVySW5mbz1UaGFuaCUyMHRvJUMzJUExbiUyMCVDNCU5MSVDNiVBMW4lMjBoJUMzJUEwbmclMjAlMjMxNiZvcmRlclR5cGU9bW9tb193YWxsZXQmb3JkZXJfaWQ9MTYmcGFydG5lckNvZGU9TU9NT0JLVU4yMDE4MDUyOSZwYXlUeXBlPW5hcGFzJnJlcXVlc3RJZD0xNzU3OTM4NTcwJnJlc3BvbnNlVGltZT0xNzU3OTM4NjEwOTU5JnJlc3VsdENvZGU9MCZzaWduYXR1cmU9MzI3NTRjNjhmOTM4MjVlNjk1YzAwZjU2M2Y4ZDUwYTRhMDNjNjA0OGE2M2MwYzVlNjU4NTBkNzA1OGQ3YjU0MSZ0cmFuc0lkPTQ1Nzc0MDg4MjAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDtzOjQ6ImNhcnQiO2E6MDp7fX0=', 1757938613),
+('sQdOm8ICat7eYBHZu6BkOaEKXHQzUadMYpVqgt4W', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNUZyRXJGTHl3NUpudVRrRFU4Y2x1Q2ZVYjhDdnNlaEVzR2NDd2ZHZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938302),
+('Sx4eHhlkonk0ZYu48Snb2Hs7KDnn6VVu50XUmrBA', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiYkhCSGxBS1NocVVQQnN0aERoNE5FR2NVSkVaWGZURUNYOUVTRldXRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937589),
+('TlBH3w8QmKLmnJDcsqsD42LcydtRr8LJBMsubIxP', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoia2FtVmpKelM5dWRaRFh5d1k4VzBxM3lNSldzWFBnSjVUclA4WGllTSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937613),
+('U4QtRqrUOjvjlsr6SmHOq9iXH1IZzvCD8Sm3uZWB', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTWgxbGUxTk9teVYzVW1PelpTZFhQbldUb3ZHWjI5YXJxVVZaSkhGUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937585),
+('x4z489ArGdEuNlI1kdECoS0WzfM6LK9zQIJNszBX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiOUdxY3h3UXl1WXZOS1BrQlpORWZhYVdoOUs1MWc2TmNRajJYVHdZUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757936937),
+('x5LRFhqboebSICvhQBHN8BedVfjzgPpM3YNIp33p', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNjFGNmR3a2s2UEwzc2Vvd1BWbml5TnROcWFBUzY5Qk1TT21WcFVPcyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937356),
+('Yg4P8v14x8L9N7ARsp1SD0UwPTdAAOpk4vUaDgUL', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoicTRRUjJqTnc3d0ppZzJRZzZLdE5TUW1QVFFtSXViRGlkTk8wRmZEdyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937969);
 
 -- --------------------------------------------------------
 
@@ -414,8 +447,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `phone`, `address`) VALUES
 (4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', 'jqHXoNs9KXetj2HiyxB6flL2WnWVBuU3luo9vNPVpyhOcSfNU4QeV6S0PyG2', '2025-09-12 00:21:15', '2025-09-12 07:02:51', 'customer', '0944763697', 'Hà Nội'),
-(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'TRc9NOdcGOFCwqADB1b4O4P1eWT4LfJYdFdOoygmnnfwTNuhMsL8EmpJXHZK', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', NULL, NULL),
-(10, 'Lan', 'lantruong346@gmail.com', '2025-09-15 07:55:37', '$2y$12$dyCpz7pTZhRbFFg2a6v2Xe3..blEWE/4UXFvfdZ8hZ4T4m3j5J2Pu', 'Yqlz5wZiTfY8QpviLeq6fRFv2jq4yXMWLP35KSXVsJbUxuF9N3N8SZtKpoBP', '2025-09-15 00:53:06', '2025-09-15 00:53:06', 'customer', NULL, NULL);
+(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'j7NI0Q0FdKQoRBoIBG8gJEPBjPFUWmjRut9hyxIiGKGyZMMkUEm5TyLRDrL2', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội'),
+(10, 'Lan', 'lantruong346@gmail.com', '2025-09-15 07:55:37', '$2y$12$dyCpz7pTZhRbFFg2a6v2Xe3..blEWE/4UXFvfdZ8hZ4T4m3j5J2Pu', 'kZTS8b5ACrdqkcJ3xbmMTPHLxFQh5UG2ZkrKONaapJ2J4CVZDsZEemxmPukH', '2025-09-15 00:53:06', '2025-09-15 00:53:06', 'customer', '0123456789', 'Hà Giang');
 
 -- --------------------------------------------------------
 
@@ -439,51 +472,43 @@ CREATE TABLE `user_histories` (
 --
 
 INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at`, `created_at`, `updated_at`, `discount`) VALUES
-(1, 4, NULL, NULL, '2025-09-12 11:04:26', '2025-09-12 04:04:26', '2025-09-12 04:04:26', NULL),
-(2, 4, NULL, 1, '2025-09-12 11:12:12', '2025-09-12 04:12:12', '2025-09-12 04:12:12', NULL),
-(3, 4, NULL, NULL, '2025-09-12 11:24:41', '2025-09-12 04:24:41', '2025-09-12 04:24:41', NULL),
-(4, 4, NULL, NULL, '2025-09-12 11:24:49', '2025-09-12 04:24:49', '2025-09-12 04:24:49', NULL),
-(5, 4, NULL, NULL, '2025-09-12 11:24:58', '2025-09-12 04:24:58', '2025-09-12 04:24:58', NULL),
-(6, 4, NULL, NULL, '2025-09-12 11:25:06', '2025-09-12 04:25:06', '2025-09-12 04:25:06', NULL),
-(7, 4, NULL, NULL, '2025-09-12 11:25:14', '2025-09-12 04:25:14', '2025-09-12 04:25:14', NULL),
-(8, 4, NULL, NULL, '2025-09-12 11:25:19', '2025-09-12 04:25:19', '2025-09-12 04:25:19', NULL),
-(9, 4, NULL, NULL, '2025-09-12 11:25:26', '2025-09-12 04:25:26', '2025-09-12 04:25:26', NULL),
-(10, 4, NULL, NULL, '2025-09-12 11:25:36', '2025-09-12 04:25:36', '2025-09-12 04:25:36', NULL),
-(11, 4, NULL, 2, '2025-09-12 12:46:27', '2025-09-12 05:46:27', '2025-09-12 05:46:27', NULL),
-(12, 4, NULL, 2, '2025-09-12 12:46:27', '2025-09-12 05:46:27', '2025-09-12 05:46:27', NULL),
-(13, 4, NULL, 3, '2025-09-12 12:49:23', '2025-09-12 05:49:23', '2025-09-12 05:49:23', NULL),
-(14, 4, NULL, 3, '2025-09-12 12:49:23', '2025-09-12 05:49:23', '2025-09-12 05:49:23', NULL),
 (15, 4, 10, 3, '2025-09-12 12:49:23', '2025-09-12 05:49:23', '2025-09-12 05:49:23', 20.00),
-(16, 4, NULL, NULL, '2025-09-12 12:55:09', '2025-09-12 05:55:09', '2025-09-12 05:55:09', NULL),
-(17, 4, NULL, 4, '2025-09-12 12:55:25', '2025-09-12 05:55:25', '2025-09-12 05:55:25', NULL),
 (18, 4, 10, 4, '2025-09-12 12:55:25', '2025-09-12 05:55:25', '2025-09-12 05:55:25', 20.00),
-(19, 4, NULL, NULL, '2025-09-12 12:57:44', '2025-09-12 05:57:44', '2025-09-12 05:57:44', NULL),
-(20, 4, NULL, 5, '2025-09-12 12:57:53', '2025-09-12 05:57:53', '2025-09-12 05:57:53', NULL),
 (21, 4, 10, 5, '2025-09-12 12:57:53', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 20.00),
-(22, 5, NULL, NULL, '2025-09-15 02:06:52', '2025-09-14 19:06:52', '2025-09-14 19:06:52', NULL),
-(23, 5, NULL, NULL, '2025-09-15 03:59:44', '2025-09-14 20:59:44', '2025-09-14 20:59:44', NULL),
-(24, 5, NULL, NULL, '2025-09-15 03:59:50', '2025-09-14 20:59:50', '2025-09-14 20:59:50', NULL),
-(25, 5, NULL, NULL, '2025-09-15 04:03:05', '2025-09-14 21:03:05', '2025-09-14 21:03:05', NULL),
-(26, 5, NULL, NULL, '2025-09-15 04:03:07', '2025-09-14 21:03:07', '2025-09-14 21:03:07', NULL),
-(27, 5, NULL, NULL, '2025-09-15 04:13:51', '2025-09-14 21:13:51', '2025-09-14 21:13:51', NULL),
-(28, 5, NULL, NULL, '2025-09-15 06:00:39', '2025-09-14 23:00:39', '2025-09-14 23:00:39', NULL),
-(29, 5, NULL, NULL, '2025-09-15 06:00:47', '2025-09-14 23:00:47', '2025-09-14 23:00:47', NULL),
-(30, 5, NULL, 6, '2025-09-15 06:01:28', '2025-09-14 23:01:28', '2025-09-14 23:01:28', NULL),
-(31, 5, NULL, 6, '2025-09-15 06:01:28', '2025-09-14 23:01:28', '2025-09-14 23:01:28', NULL),
 (32, 5, 7, 6, '2025-09-15 06:01:28', '2025-09-14 23:01:28', '2025-09-14 23:01:28', 25.00),
-(33, 5, NULL, NULL, '2025-09-15 06:07:33', '2025-09-14 23:07:33', '2025-09-14 23:07:33', NULL),
-(34, 5, NULL, 7, '2025-09-15 06:07:56', '2025-09-14 23:07:56', '2025-09-14 23:07:56', NULL),
 (35, 5, 3, 7, '2025-09-15 06:07:57', '2025-09-14 23:07:57', '2025-09-14 23:07:57', 20.00),
-(36, 5, NULL, NULL, '2025-09-15 06:23:18', '2025-09-14 23:23:18', '2025-09-14 23:23:18', NULL),
-(37, 5, NULL, NULL, '2025-09-15 06:23:22', '2025-09-14 23:23:22', '2025-09-14 23:23:22', NULL),
-(38, 5, NULL, NULL, '2025-09-15 06:23:30', '2025-09-14 23:23:30', '2025-09-14 23:23:30', NULL),
-(39, 5, NULL, NULL, '2025-09-15 06:23:35', '2025-09-14 23:23:35', '2025-09-14 23:23:35', NULL),
-(40, 5, NULL, 8, '2025-09-15 06:24:01', '2025-09-14 23:24:01', '2025-09-14 23:24:01', NULL),
 (41, 5, 4, 8, '2025-09-15 06:24:01', '2025-09-14 23:24:01', '2025-09-14 23:24:01', 5000.00),
-(42, 10, NULL, NULL, '2025-09-15 07:58:01', '2025-09-15 00:58:01', '2025-09-15 00:58:01', NULL),
-(43, 10, NULL, NULL, '2025-09-15 07:58:08', '2025-09-15 00:58:08', '2025-09-15 00:58:08', NULL),
 (44, 10, NULL, 9, '2025-09-15 07:58:44', '2025-09-15 00:58:44', '2025-09-15 00:58:44', NULL),
-(45, 10, 1, 9, '2025-09-15 07:58:44', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 30.00);
+(45, 10, 1, 9, '2025-09-15 07:58:44', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 30.00),
+(51, 5, NULL, 10, '2025-09-15 10:37:42', '2025-09-15 03:37:42', '2025-09-15 03:37:42', NULL),
+(52, 5, 5, 10, '2025-09-15 10:37:42', '2025-09-15 03:37:42', '2025-09-15 03:37:42', 15.00),
+(55, 5, NULL, 11, '2025-09-15 10:47:20', '2025-09-15 03:47:20', '2025-09-15 03:47:20', NULL),
+(56, 5, 3, 11, '2025-09-15 10:47:20', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 20.00),
+(58, 10, NULL, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', NULL),
+(59, 10, 2, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', 10.00),
+(61, 10, NULL, NULL, '2025-09-15 10:56:18', '2025-09-15 03:56:18', '2025-09-15 03:56:18', NULL),
+(62, 10, NULL, NULL, '2025-09-15 10:56:23', '2025-09-15 03:56:23', '2025-09-15 03:56:23', NULL),
+(63, 10, NULL, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', NULL),
+(64, 10, 8, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', 50000.00),
+(65, 10, NULL, NULL, '2025-09-15 11:05:30', '2025-09-15 04:05:30', '2025-09-15 04:05:30', NULL),
+(66, 10, NULL, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', NULL),
+(67, 10, 1, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', 30.00),
+(68, 10, NULL, NULL, '2025-09-15 11:09:05', '2025-09-15 04:09:05', '2025-09-15 04:09:05', NULL),
+(69, 10, NULL, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', NULL),
+(70, 10, 2, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', 10.00),
+(72, 10, NULL, NULL, '2025-09-15 12:01:58', '2025-09-15 05:01:58', '2025-09-15 05:01:58', NULL),
+(73, 10, NULL, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', NULL),
+(74, 10, 1, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', 30.00),
+(75, 5, NULL, NULL, '2025-09-15 12:45:34', '2025-09-15 05:45:34', '2025-09-15 05:45:34', NULL),
+(76, 5, NULL, 17, '2025-09-15 12:47:48', '2025-09-15 05:47:48', '2025-09-15 05:47:48', NULL),
+(77, 5, 8, 17, '2025-09-15 12:47:48', '2025-09-15 05:47:48', '2025-09-15 05:47:48', 50000.00),
+(78, 5, NULL, NULL, '2025-09-15 13:00:47', '2025-09-15 06:00:47', '2025-09-15 06:00:47', NULL),
+(79, 5, NULL, 18, '2025-09-15 13:00:58', '2025-09-15 06:00:58', '2025-09-15 06:00:58', NULL),
+(80, 5, 10, 18, '2025-09-15 13:00:58', '2025-09-15 06:00:58', '2025-09-15 06:00:58', 20.00),
+(81, 5, NULL, NULL, '2025-09-15 13:31:38', '2025-09-15 06:31:38', '2025-09-15 06:31:38', NULL),
+(82, 5, NULL, NULL, '2025-09-15 13:41:07', '2025-09-15 06:41:07', '2025-09-15 06:41:07', NULL),
+(83, 5, NULL, 19, '2025-09-15 13:41:19', '2025-09-15 06:41:19', '2025-09-15 06:41:19', NULL),
+(84, 5, 8, 19, '2025-09-15 13:41:19', '2025-09-15 06:41:19', '2025-09-15 06:41:19', 50000.00);
 
 --
 -- Bẫy `user_histories`
@@ -641,13 +666,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -671,7 +696,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
