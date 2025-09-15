@@ -5,7 +5,7 @@
 @section('content')
 <div class="admin-card">
     <h3 style="margin-bottom:16px;font-size:1.1rem;color:#4b3a3f">
-        Chỉnh sửa tồn kho - {{ $inventory->product->name ?? 'Sản phẩm' }}
+        {{ $inventory->product->name ?? 'Sản phẩm' }}
     </h3>
 
     <form action="{{ route('admin.inventories.update', $inventory->id) }}" method="POST">
