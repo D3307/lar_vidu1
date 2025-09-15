@@ -28,7 +28,8 @@ use Illuminate\Support\Facades\Auth;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
-    return view('welcomeweb');
+    $products = \App\Models\Product::orderBy('created_at', 'desc')->take(4)->get();
+    return view('welcomeweb', compact('products'));
 })->name('welcomeweb');
 
 // -------------------- Đăng ký --------------------
@@ -69,13 +70,6 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/account', [AccountController::class, 'edit'])->name('accounts.edit');
     Route::put('/account', [AccountController::class, 'update'])->name('accounts.update');
 
-    // Sản phẩm
-    Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
-    Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
-    Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
-    Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
-
     // Giỏ hàng
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
@@ -87,9 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     });
 
     // Đặt hàng
-    Route::get('/checkout', [\App\Http\Controllers\Customer\OrderController::class, 'showCheckoutForm'])
-        ->name('checkout.form')
-        ->middleware(['auth','verified']); // nếu bạn yêu cầu login
+    Route::get('/checkout', [\App\Http\Controllers\Customer\OrderController::class, 'showCheckoutForm'])->name('checkout.form')->middleware(['auth','verified']); // nếu bạn yêu cầu login
     Route::post('/checkout', [CustomerOrderController::class, 'checkout'])->name('checkout');
     Route::get('/orders', [CustomerOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [CustomerOrderController::class, 'show'])->name('orders.show');
@@ -117,6 +109,14 @@ Route::middleware(['auth', 'verified'])->group(function() {
 });
 
 // -------------------- Public pages --------------------
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Sản phẩm
+    Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
+    Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
+    Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
+    Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
+
 Route::get('/about', [PageController::class, 'about'])->name('customer.about');
 Route::get('/contact', [PageController::class, 'contact'])->name('customer.contact');
 
@@ -148,5 +148,3 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');
         Route::get('/orders/{id}/invoice', [AdminOrderController::class, 'invoice'])->name('orders.invoice');
     });
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');

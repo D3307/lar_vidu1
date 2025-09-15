@@ -31,28 +31,31 @@
 
     <!-- Sản phẩm nổi bật (có thể hiển thị 3-4 sản phẩm mẫu) -->
     <section class="container">
-        <h2 class="section-title">Sản phẩm nổi bật</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="{{ asset('storage/giayslingback.jpeg') }}">
-                <div class="product-info">
-                    <h3>Giày cao gót Sling back</h3>
-                    <p>599.000 VNĐ</p>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="/storage/giaycaogotmuinhon.jpeg" alt="Giày cao gót mũi nhọn">
-                <div class="product-info">
-                    <h3>Giày cao gót mũi nhọn</h3>
-                    <p>499.000 VNĐ</p>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="/storage/lPBKPtZiZwmBvwXJX6QEgSNc6Ri9annqsGBvuNlQ.jpg" alt="Giày cao gót mũi nhọn màu be">
-                <div class="product-info">
-                    <h3>Giày cao gót mũi nhọn màu be</h3>
-                    <p>499.000 VNĐ</p>
-                </div>
+        <div class="container" style="margin-top: 4rem;">
+            <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 1rem; color: #333; font-weight: 700;">SẢN PHẨM BÁN CHẠY</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">Top những sản phẩm được mua nhiều nhất</p>
+            
+            <div class="product-grid">
+                @foreach($products as $product)
+                    <a href="{{ route('customer.product_detail', $product->id) }}" 
+                    style="text-decoration: none; color: inherit;">
+                        <div class="product-card" 
+                            style="background: white; border-radius: 10px; overflow: hidden; 
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.3s;">
+                            <img src="{{ asset('storage/' . $product->image) }}" 
+                                alt="{{ $product->name }}" 
+                                style="width: 100%; height: 300px; object-fit: cover;">
+                            <div style="padding: 1rem;">
+                                <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #333;">
+                                    {{ $product->name }}
+                                </h3>
+                                <p style="font-weight: bold; color: #ff6b88; font-size: 1.1rem;">
+                                    {{ number_format($product->price, 0, ',', '.') }} ₫
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
             </div>
         </div>
     </section>

@@ -16,11 +16,12 @@
             <thead>
                 <tr>
                     <th style="width: 20px;">STT</th>
+                    <th style="width: 60px;">Ảnh</th>
                     <th style="width: 250px;">Tên sản phẩm</th>
                     <th style="width: 100px;">Danh mục</th>
                     <th style="width: 60px;">Giá</th>
                     <th style="width: 60px;">Số lượng</th>
-                    <th style="width: 100px;">Màu sắc</th>
+                    <th style="width: 80px;">Màu sắc</th>
                     <th style="width: 70px;">Kích thước</th>
                     <th style="width: 100px;">Hành động</th>
                 </tr>
@@ -29,6 +30,14 @@
                 @forelse($products as $product)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>
+                        @if($product->image)
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                 style="width:50px;height:50px;object-fit:cover;border-radius:6px;margin-right:8px;vertical-align:middle;">
+                        @else
+                            <div style="width:50px;height:50px;display:inline-block;background:#f0f0f0;color:#ccc;text-align:center;line-height:50px;border-radius:6px;margin-right:8px;vertical-align:middle;">N/A</div>
+                        @endif
+                    </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->category->name ?? '-' }}</td>
                     <td>{{ number_format($product->price, 0, ',', '.') }} đ</td>
