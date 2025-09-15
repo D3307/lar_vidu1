@@ -12,6 +12,7 @@ class UserHistoryController extends Controller
     {
         $histories = UserHistory::with(['order', 'coupon'])
             ->where('user_id', Auth::id())
+            ->whereNotNull('order_id') // Chỉ lấy lịch sử có mã đơn hàng
             ->orderByDesc('used_at')
             ->paginate(10);
 

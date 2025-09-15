@@ -245,6 +245,7 @@ class OrderController extends Controller
     //Lịch sử mua hàng
     public function history() {
         $histories = \App\Models\UserHistory::where('user_id', auth()->id())
+            ->whereNotNull('order_id') // Chỉ lấy lịch sử có mã đơn hàng
             ->with(['product', 'order', 'coupon'])
             ->orderByDesc('used_at')
             ->paginate(10);

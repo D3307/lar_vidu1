@@ -14,13 +14,30 @@ class AccountController extends Controller
     {
         $user = Auth::user();
 
-        // Lấy lịch sử của user hiện tại
         $histories = UserHistory::with(['coupon', 'order'])
             ->where('user_id', $user->id)
+            ->whereNotNull('order_id')
             ->orderBy('used_at', 'desc')
-            ->paginate(5);
+            ->get()
+            ->sortByDesc(fn($h) => !is_null($h->coupon_id)) // Ưu tiên bản ghi có coupon_id
+            ->unique('order_id') // Lọc trùng theo order_id
+            ->values();
 
-        return view('customer.accounts.edit', compact('user', 'histories'));
+        // Nếu muốn phân trang, dùng LengthAwarePaginator:
+        $perPage = 5;
+        $page = request()->get('page', 1);
+        $pagedHistories = new \Illuminate\Pagination\LengthAwarePaginator(
+            $histories->forPage($page, $perPage),
+            $histories->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('customer.accounts.edit', [
+            'user' => $user,
+            'histories' => $pagedHistories
+        ]);
     }
 
     public function update(Request $request)
