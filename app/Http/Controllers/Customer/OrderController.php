@@ -113,7 +113,7 @@ class OrderController extends Controller
             'total'   => $finalTotal,
             'status'  => 'pending', // luôn bắt đầu bằng pending
             'payment_method' => $request->payment,
-            'payment_status' => 'pending',
+            'payment_status' => 'unpaid', // mặc định unpaid, sẽ cập nhật khi thanh toán xong
             'coupon_id' => $coupon?->id
         ]);
 
@@ -197,7 +197,7 @@ class OrderController extends Controller
 
         $order->update([
             'payment_method' => 'cod',
-            'payment_status' => 'pending', // vẫn để pending cho COD
+            'payment_status' => 'unpaid', // vẫn để unpaid cho COD
             'status' => 'processing',
         ]);
 
