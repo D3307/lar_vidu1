@@ -117,7 +117,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * Fake callback để test nhanh không cần gọi MoMo
+     * Fake callback để test nhanh không cần gọi MoMo http://127.0.0.1:8000/payment/momo/fake-callback/{id đơn hàng vừa tạo}
      */
     public function fakeMomoCallback($orderId)
     {
