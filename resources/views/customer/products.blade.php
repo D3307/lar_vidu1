@@ -35,7 +35,6 @@
             {{ isset($category) ? $category->name : 'Tất cả sản phẩm' }}
         </h1>
 
-
         @if($products->count() > 0)
             <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
                 @foreach($products as $product)
@@ -49,22 +48,36 @@
                                     {{ $product->name }}
                                 </a>
                             </h3>
-                            <p style="margin: 0; color: #d70018; font-weight: 600;">
-                                {{ number_format($product->price, 0, ',', '.') }} ₫
 
-                                @php
-                                    $averageRating = $product->reviews->avg('rating') ?? 5;
-                                    $averageRating = round($averageRating); 
-                                @endphp
+                            <!-- Giá và sao trên cùng 1 dòng -->
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <p style="margin: 0; color: #d70018; font-weight: 600;">
+                                    {{ number_format($product->price, 0, ',', '.') }} ₫
+                                </p>
 
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= $averageRating)
-                                        <i class="fa-solid fa-star" style="color:#d70018;"></i>
-                                    @else
-                                        <i class="fa-regular fa-star" style="color:#d70018;"></i>
-                                    @endif
-                                @endfor
-                            </p>
+                                <div>
+                                    @php
+                                        $averageRating = $product->reviews->avg('rating') ?? 5;
+                                        $averageRating = round($averageRating); 
+                                    @endphp
+
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $averageRating)
+                                            <i class="fa-solid fa-star" style="color:#d70018;"></i>
+                                        @else
+                                            <i class="fa-regular fa-star" style="color:#d70018;"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                            </div>
+
+                            <!-- Thông báo hết hàng -->
+                            @if($product->quantity == 0)
+                                <p style="margin-top: 8px; color: #888; font-size: 0.9rem; font-weight: 500;">
+                                    <i class="fa-solid fa-triangle-exclamation" style="color:#ff6b88; margin-right: 6px;"></i>
+                                    Sản phẩm này hiện đã hết hàng
+                                </p>
+                            @endif
                         </div>
                     </div>
                 @endforeach
