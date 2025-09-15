@@ -24,7 +24,7 @@
                 <tr>
                     <td>{{ $inventory->id }}</td>
                     <td>{{ $inventory->product->name ?? 'N/A' }}</td>
-                    <td>{{ $inventory->quantity }}</td>
+                    <td>{{ $inventory->product->quantity ?? 0 }}</td>
                     <td>{{ $inventory->updated_at->format('d/m/Y H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.inventories.edit', $inventory->id) }}" class="btn-action btn-edit">Sửa</a>

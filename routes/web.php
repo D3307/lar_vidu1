@@ -113,7 +113,6 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/contact', [PageController::class, 'contact'])->name('customer.contact');
 
     // Lịch sử người dùng
-    // routes/web.php
     Route::get('/lich-su', [App\Http\Controllers\Customer\UserHistoryController::class, 'index'])->name('customer.histories.index')->middleware('auth');
 });
 

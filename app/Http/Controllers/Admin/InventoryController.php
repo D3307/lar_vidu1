@@ -11,32 +11,14 @@ class InventoryController extends Controller
 {
     public function index()
     {
-        $inventories = Inventory::with('product')->paginate(6);
+        $inventories = Inventory::with('product')->paginate(10);
         return view('admin.inventories.index', compact('inventories'));
-    }
-
-    public function create()
-    {
-        $products = Product::all();
-        return view('admin.inventories.create', compact('products'));
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:0'
-        ]);
-
-        Inventory::create($request->all());
-        return redirect()->route('admin.inventories.index')->with('success', 'Thêm tồn kho thành công');
     }
 
     public function edit($id)
     {
-        $inventory = Inventory::findOrFail($id);
-        $products = Product::all();
-        return view('admin.inventories.edit', compact('inventory', 'products'));
+        $inventory = Inventory::with('product')->findOrFail($id);
+        return view('admin.inventories.edit', compact('inventory'));
     }
 
     public function update(Request $request, $id)
@@ -46,14 +28,11 @@ class InventoryController extends Controller
         ]);
 
         $inventory = Inventory::findOrFail($id);
-        $inventory->update($request->all());
+        $inventory->update([
+            'quantity' => $request->quantity
+        ]);
 
-        return redirect()->route('admin.inventories.index')->with('success', 'Cập nhật tồn kho thành công');
-    }
-
-    public function destroy($id)
-    {
-        Inventory::destroy($id);
-        return redirect()->route('admin.inventories.index')->with('success', 'Xóa tồn kho thành công');
+        return redirect()->route('admin.inventories.index')
+                         ->with('success', 'Cập nhật số lượng tồn kho thành công');
     }
 }
