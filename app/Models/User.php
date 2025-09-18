@@ -52,4 +52,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(\App\Models\Order::class, 'user_id');
     }
+
+
+    //Danh sách yêu thích
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

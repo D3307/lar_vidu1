@@ -318,6 +318,7 @@
                             @endif
 
                             <a href="{{ route('accounts.edit') }}">Tài khoản của tôi</a>
+                            <a href="{{ route('wishlist') }}">Danh sách yêu thích</a>
                             <a href="{{ route('orders.index') }}">Đơn hàng của tôi</a>
 
                             @if($lastOrder)

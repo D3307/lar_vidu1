@@ -39,4 +39,11 @@ class Product extends Model
     {
         return $this->hasOne(Inventory::class);
     }
+
+
+    //Danh sách yêu thích
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

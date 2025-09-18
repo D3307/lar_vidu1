@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\CouponController as AdminCouponController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Customer\WishlistController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -107,6 +108,13 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
     // Lịch sử người dùng
     Route::get('/lich-su', [App\Http\Controllers\Customer\UserHistoryController::class, 'index'])->name('customer.histories.index')->middleware('auth');
+
+    //Danh sách yêu thích
+    Route::prefix('wishlist')->group(function () {
+        Route::get('/', [WishlistController::class, 'index'])->name('wishlist');
+        Route::post('/add/{productId}', [WishlistController::class, 'store'])->name('wishlist.add');
+        Route::delete('/remove/{productId}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+    });
 });
 
 // -------------------- Public pages --------------------
