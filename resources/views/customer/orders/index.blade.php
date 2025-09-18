@@ -2,18 +2,18 @@
 
 @section('title', 'Danh sách đơn hàng')
 
-<!-- Hiển thị thông báo đánh giá thành công hoặc lỗi -->
-@if(session('success') || session('error'))
-    <div id="toast-message" class="custom-toast {{ session('success') ? 'success' : 'error' }}">
-        <span class="icon">✔</span>
-        <span class="message">
-            {{ session('success') ?? session('error') }}
-        </span>
-        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
-    </div>
-@endif
-
 @section('content')
+<!-- Hiển thị thông báo -->
+    @if(session('success') || session('error'))
+        <div id="toast-message" class="custom-toast {{ session('success') ? 'success' : 'error' }}">
+            <span class="icon">{{ session('success') ? '✔' : '⚠' }}</span>
+            <span class="message">
+                {{ session('success') ?? session('error') }}
+            </span>
+            <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+        </div>
+    @endif
+    
 <div class="container py-5">
     <h2 class="mb-4 text-center" style="color:#e75480;font-weight:700">Danh sách đơn hàng</h2>
 

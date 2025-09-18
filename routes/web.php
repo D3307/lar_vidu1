@@ -97,10 +97,11 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/payment/momo/return', [PaymentController::class, 'momoReturn'])->name('payment.momo.return');
     Route::get('/customer/success', [PaymentController::class, 'success'])->name('customer.success');
 
-
     //Đánh giá
-    Route::get('/review/{order}', [CustomerReviewController::class, 'create'])->name('customer.review');
-    Route::post('/review/{order}', [CustomerReviewController::class, 'store'])->name('customer.review.store');
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/orders/{order}/review', [CustomerReviewController::class, 'create'])->name('reviews.create');
+        Route::post('/orders/{order}/review', [CustomerReviewController::class, 'store'])->name('reviews.store');
+    });
 
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');

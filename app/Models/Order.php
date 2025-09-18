@@ -42,6 +42,7 @@ class Order extends Model
         return $this->hasMany(Review::class);
     }
 
+
     //Mã giảm giá
     public function coupon()
     {
