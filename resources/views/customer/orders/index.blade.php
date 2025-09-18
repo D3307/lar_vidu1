@@ -110,6 +110,16 @@
                                                                     border-radius:8px;">
                                                             Xem chi tiết →
                                                         </span>
+
+                                                        @if(in_array($order->status, ['pending','processing']))
+                                                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng #{{ $order->id }} không?')">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn-cancel-order">
+                                                                    Hủy đơn
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,6 +250,20 @@
         border-radius: 8px;
         opacity: 0.85;
         cursor: default;
+    }
+    .btn-cancel-order {
+        background: #d9534f;
+        color: #fff;
+        border: none;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    .btn-cancel-order:hover {
+        background: #c9302c;
+        color: #fff;
+        transform: translateY(-2px);
     }
 </style>
 @endsection

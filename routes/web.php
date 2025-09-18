@@ -86,6 +86,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/checkout', [CustomerOrderController::class, 'checkout'])->name('checkout');
     Route::get('/orders', [CustomerOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [CustomerOrderController::class, 'show'])->name('orders.show');
+    Route::put('/orders/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/{order}/cod-payment', [CustomerOrderController::class, 'codPayment'])->name('orders.codPayment');
     Route::post('/buy-now/{id}', [CustomerOrderController::class, 'buyNow'])->name('buy.now');
     Route::post('/coupon', [CouponController::class, 'coupon'])->name('customer.coupon');

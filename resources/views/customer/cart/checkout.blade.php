@@ -180,9 +180,9 @@
                             </tr>
 
                             <tr>
-                                <td class="fw-bold" style="font-size:1.1rem;">Tổng cộng</td>
+                                <td class="fw-bold" style="font-size:1.1rem;">Thành tiền</td>
                                 <td class="fw-bold text-end" style="font-size:1.1rem; color:#e75480;">
-                                    {{ number_format($final_total ?? $total,0,',','.') }} đ
+                                    {{ number_format($finalTotal,0,',','.') }} đ
                                 </td>
                             </tr>
                         </tbody>
