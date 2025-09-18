@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 18, 2025 lúc 05:38 AM
+-- Thời gian đã tạo: Th9 18, 2025 lúc 08:18 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -164,7 +164,8 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2025_09_12_070931_create_sessions_table', 1),
 (2, '2025_09_12_133659_create_password_reset_tokens_table', 2),
-(3, '2025_09_15_033717_create_inventories_table', 3);
+(3, '2025_09_15_033717_create_inventories_table', 3),
+(4, '2025_09_18_035442_create_wishlists_table', 4);
 
 -- --------------------------------------------------------
 
@@ -194,7 +195,6 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `name`, `phone`, `address`, `user_id`, `total`, `discount`, `final_total`, `status`, `payment_status`, `created_at`, `updated_at`, `payment_method`, `coupon_id`) VALUES
-(1, 'Thảo', '0944763697', 'Hà Nội', 4, 549000.00, 0, 0, 'delivered', 'paid', '2025-09-12 04:12:12', '2025-09-12 04:13:38', 'momo', NULL),
 (2, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 480000, 'pending', 'unpaid', '2025-09-12 05:46:27', '2025-09-12 05:46:27', 'cod', 10),
 (3, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 3570000, 'delivered', 'paid', '2025-09-12 05:49:23', '2025-09-14 19:29:09', 'cod', 10),
 (4, 'Thảo', '0944763697', 'Hà Nội', 4, 4275000.00, 120000, 4155000, 'shipping', 'unpaid', '2025-09-12 05:55:25', '2025-09-14 22:44:54', 'cod', 10),
@@ -202,15 +202,16 @@ INSERT INTO `orders` (`id`, `name`, `phone`, `address`, `user_id`, `total`, `dis
 (6, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'shipping', 'paid', '2025-09-14 23:01:28', '2025-09-15 07:04:25', 'momo', 7),
 (8, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 5000, 940000, 'delivered', 'paid', '2025-09-14 23:24:01', '2025-09-15 05:24:41', 'momo', 4),
 (9, 'Lan', '098765431', 'Ha Noi', 10, 549000.00, 146700, 402300, 'processing', 'paid', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 'momo', 1),
-(11, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'processing', 'paid', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 'momo', 3),
+(11, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'delivered', 'paid', '2025-09-15 03:47:20', '2025-09-18 10:00:21', 'momo', 3),
 (12, 'Lan', '0123456789', 'Ha Noi', 10, 370000.00, 37000, 333000, 'shipping', 'paid', '2025-09-15 03:53:07', '2025-09-15 05:24:12', 'momo', 2),
 (13, 'Lan', '0987654321', 'Ha Noi', 10, 549000.00, 50000, 499000, 'cancelled', 'paid', '2025-09-15 03:56:48', '2025-09-15 05:24:02', 'momo', 8),
 (14, 'Lan', '09763733737', 'Ha Noi', 10, 499000.00, 149700, 349300, 'processing', 'paid', '2025-09-15 04:05:43', '2025-09-15 05:21:22', 'momo', 1),
 (15, 'Lan', '0123456789', 'Ha Noi', 10, 499000.00, 49900, 449100, 'delivered', 'paid', '2025-09-15 04:16:13', '2025-09-15 05:23:56', 'momo', 2),
 (16, 'Lan', '0987654321', 'Hà Nội', 10, 549000.00, 164700, 384300, 'cancelled', 'paid', '2025-09-15 05:02:23', '2025-09-15 05:23:51', 'momo', 1),
-(17, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 05:47:48', '2025-09-15 07:06:20', 'cod', 8),
+(17, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'delivered', 'unpaid', '2025-09-15 05:47:48', '2025-09-18 09:59:50', 'cod', 8),
 (18, 'Linh', '0987654321', 'Hà Nội', 5, 945000.00, 189000, 756000, 'cancelled', 'paid', '2025-09-15 06:00:58', '2025-09-15 06:59:44', 'momo', 10),
-(19, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 06:41:19', '2025-09-15 07:06:13', 'cod', 8);
+(19, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'delivered', 'paid', '2025-09-15 06:41:19', '2025-09-18 09:37:12', 'cod', 8),
+(20, 'Linh', '0987654320', 'Ha Noi', 5, 549000.00, 0, 549000, 'delivered', 'unpaid', '2025-09-18 01:06:11', '2025-09-18 09:37:01', 'momo', NULL);
 
 --
 -- Bẫy `orders`
@@ -258,7 +259,6 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, NULL, NULL, 1, 549000.00, '2025-09-12 04:12:12', '2025-09-12 04:12:12'),
 (2, 2, 3, '#fffdd0', '35', 1, 945000.00, '2025-09-12 05:46:27', '2025-09-12 05:46:27'),
 (3, 2, 1, '#ffc0cb', '38', 5, 549000.00, '2025-09-12 05:46:27', '2025-09-12 05:46:27'),
 (4, 3, 3, '#fffdd0', '35', 1, 945000.00, '2025-09-12 05:49:23', '2025-09-12 05:49:23'),
@@ -277,7 +277,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `qua
 (19, 16, 11, '#ffc0cb', '37', 1, 549000.00, '2025-09-15 05:02:23', '2025-09-15 05:02:23'),
 (20, 17, 1, NULL, NULL, 1, 549000.00, '2025-09-15 05:47:48', '2025-09-15 05:47:48'),
 (21, 18, 3, NULL, NULL, 1, 945000.00, '2025-09-15 06:00:58', '2025-09-15 06:00:58'),
-(22, 19, 1, NULL, NULL, 1, 549000.00, '2025-09-15 06:41:19', '2025-09-15 06:41:19');
+(22, 19, 1, NULL, NULL, 1, 549000.00, '2025-09-15 06:41:19', '2025-09-15 06:41:19'),
+(23, 20, 1, NULL, NULL, 1, 549000.00, '2025-09-18 01:06:12', '2025-09-18 01:06:12');
 
 -- --------------------------------------------------------
 
@@ -372,7 +373,9 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `user_id`, `order_id`, `product_id`, `rating`, `comment`, `created_at`, `updated_at`) VALUES
-(1, 4, 1, 1, 5, 'Chất lượng sản phẩm tốt, shop hỗ trợ tư vấn nhiệt tình', '2025-09-12 04:42:02', '2025-09-12 04:42:02');
+(2, 5, 19, 1, 5, 'Sẽ tiếp tục quay lại ủng hộ shop', '2025-09-18 09:50:37', '2025-09-18 09:50:37'),
+(3, 5, 8, 3, 2, 'Giao hàng chậm', '2025-09-18 09:55:12', '2025-09-18 09:55:12'),
+(4, 5, 11, 1, 4, 'Shop cần xem xét lại thái độ nhân viên', '2025-09-18 10:01:05', '2025-09-18 10:01:05');
 
 -- --------------------------------------------------------
 
@@ -394,20 +397,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('1TOyFkvsZCmcbDV0J6GmBDhYgTE9ly8CsOPb9Npv', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoic0NXNnBZczRJQTRqM1NVZmwyOTBkSThGbnB3ZWNTZTluZFZWWklvSCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937973),
-('98xwsVfI18no07OTqU1oA7H0sBIdRHFvqmsexXfX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibEFzVlQwTWhYaGlXdFNYNTJyN1ZHZzd4d0dMRFN4TGhpcnlZQ2w5ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938149),
-('d3MxFjhnwKRhekhNVkp2fAZw69yrrtKA3kXcYnKO', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiaTdxNkVrTmduWXdEc2ZJTjgycDA0b1o2SHlxU3JpaDBKY1RPWnhHSiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938636),
-('dlVsLfd9CwNwwDEcfUYYJsXUIn7j37PrjKQQKKCW', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiU1RpVXY2c2syQlJEQUZvVzk3UGZGUDhtQXNuOE1raWhnRzdzQ3V5MCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938608),
-('G3WLpFhLnj72D7182Pg9Mw5ltSyZJNBLt1JDAhcR', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiT1B0ZWRJdWJRaGRzT2tiZVRiYmJjRk04ZkhlRlNSYjBNTHJ6Vnc0eiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938327),
-('ICoQvRrNCngdHBB4zdOHCbA5wCM2NNq69P4hcPqE', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiN3JkZm5KVTZSSVI4aWx0S0FZV1Nlekh4eVpmd0VVRW5XMHJZWW5iRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937998),
-('Jw7gwpJ04JfqHQyhAqd0z1LgTWAyfTe6FjfDxAb3', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZEdvZ0VVbnBqRHJWcDBvU3hVY1JwU0l3MkJzQVQydmRyOUtYR3l4ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hY2NvdW50P3BhZ2U9MiI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1757945223),
-('KE9gYhMLoRQGFTk4qBfivMpYfvLI22i8UOIJl5ZC', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiSUVQUXIwdFpvekJ2cmR4SEcyNGVvSGFDVHJlMGoyN0ZJOHFvcThabiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938612),
-('niAqZywYwYDdKGxuOUhKr71nEIf1KEahzpvT3xYF', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTUJoZDZlbUxXcG1MekRZUTBzaDRpUUtUY1NXektyNGJPRXFrUmZXYyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938298),
-('NzML44gisorLEVIePbouqxoJghPRv0752m0xYtyz', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiUHpuemNnTDlTVmFwWk5KdnI4YnZUelBmR0tUNVlrVVc3dEZYZk9TRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938477),
-('P93i7LYYjz6IsfMAj2c2pLjEsaIroQRwVxLfNrBX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiVTNHbm0zZU1PZzZ0bGdaRmxYc3p2MFo3S3lvM2l4MkR1Ujg2UVVzcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937764),
-('S1PHCBk8JpBcx2X2zSmmGClZCjizTC44LrOEquHI', 10, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiQkdtbk9ETmRaOVFaR0k2TnpaU0VOcHlNZktidVB3d1g3TGY4aXo1TyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQxMzoiaHR0cDovL2JkMzhhMzYzMzk5Ny5uZ3Jvay1mcmVlLmFwcC9jdXN0b21lci9zdWNjZXNzP2Ftb3VudD01NDkwMDAmZXh0cmFEYXRhPTE2Jm1lc3NhZ2U9U3VjY2Vzc2Z1bC4mb3JkZXJJZD0xNzU3OTM4NTcwJm9yZGVySW5mbz1UaGFuaCUyMHRvJUMzJUExbiUyMCVDNCU5MSVDNiVBMW4lMjBoJUMzJUEwbmclMjAlMjMxNiZvcmRlclR5cGU9bW9tb193YWxsZXQmb3JkZXJfaWQ9MTYmcGFydG5lckNvZGU9TU9NT0JLVU4yMDE4MDUyOSZwYXlUeXBlPW5hcGFzJnJlcXVlc3RJZD0xNzU3OTM4NTcwJnJlc3BvbnNlVGltZT0xNzU3OTM4NjEwOTU5JnJlc3VsdENvZGU9MCZzaWduYXR1cmU9MzI3NTRjNjhmOTM4MjVlNjk1YzAwZjU2M2Y4ZDUwYTRhMDNjNjA0OGE2M2MwYzVlNjU4NTBkNzA1OGQ3YjU0MSZ0cmFuc0lkPTQ1Nzc0MDg4MjAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDtzOjQ6ImNhcnQiO2E6MDp7fX0=', 1757938613),
-('sQdOm8ICat7eYBHZu6BkOaEKXHQzUadMYpVqgt4W', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNUZyRXJGTHl3NUpudVRrRFU4Y2x1Q2ZVYjhDdnNlaEVzR2NDd2ZHZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938302),
-('Yg4P8v14x8L9N7ARsp1SD0UwPTdAAOpk4vUaDgUL', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoicTRRUjJqTnc3d0ppZzJRZzZLdE5TUW1QVFFtSXViRGlkTk8wRmZEdyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937969);
+('44FCwRc1iKtxFiKeO3ILz6Hir9SfOh3s0DBWfEAb', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidDdVSGRBZGRxMjE1MGxKSk5ZWlRqRjVQSGF0alBFUWpMZ3Y3TjJxYSI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1758213333),
+('N9YwHwNwd1LucuSg9BnMihCdX2iBKxVguVveCYqa', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiM3lwUmF1YzZ3cWhuVE1kWnpZQlJPbHZZeGJhTllPSjc4SlQ1NWVvMSI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1758213334),
+('Ua8Ungtg6jN8R52oYj81kp55U2FXAi1v5yik48e8', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiaTVXU1Zjc0pQTzNzMmlna05KajR4ZFhkVkFsV1U0SkFXRTF6Y0t0UCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC93aXNobGlzdCI7fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo1O3M6NDoiY2FydCI7YToxOntzOjI3OiIyXzM1XyMwMDAwMDBfRGEgbmjDom4gdOG6oW8iO2E6ODp7czoyOiJpZCI7aToyO3M6NDoibmFtZSI7czozNjoiR2nDoHkgYsOtdCBtxalpIG5o4buNbiBnw7N0IHN0aWxldHRvIjtzOjU6InByaWNlIjtzOjk6Ijg1NTAwMC4wMCI7czo1OiJpbWFnZSI7czozODoicHJvZHVjdHMvMTc1NzY3MDI5MV9naWF5Yml0bXVpbmhvbi5qcGciO3M6NDoic2l6ZSI7czoyOiIzNSI7czo1OiJjb2xvciI7czo3OiIjMDAwMDAwIjtzOjg6Im1hdGVyaWFsIjtzOjE0OiJEYSBuaMOibiB04bqhbyI7czo4OiJxdWFudGl0eSI7czoxOiIxIjt9fX0=', 1758219441);
 
 -- --------------------------------------------------------
 
@@ -435,8 +427,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `phone`, `address`) VALUES
 (4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', 'jqHXoNs9KXetj2HiyxB6flL2WnWVBuU3luo9vNPVpyhOcSfNU4QeV6S0PyG2', '2025-09-12 00:21:15', '2025-09-12 07:02:51', 'customer', '0944763697', 'Hà Nội'),
-(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'j7NI0Q0FdKQoRBoIBG8gJEPBjPFUWmjRut9hyxIiGKGyZMMkUEm5TyLRDrL2', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội'),
-(10, 'Lan', 'lantruong346@gmail.com', '2025-09-15 07:55:37', '$2y$12$dyCpz7pTZhRbFFg2a6v2Xe3..blEWE/4UXFvfdZ8hZ4T4m3j5J2Pu', 'kZTS8b5ACrdqkcJ3xbmMTPHLxFQh5UG2ZkrKONaapJ2J4CVZDsZEemxmPukH', '2025-09-15 00:53:06', '2025-09-15 00:53:06', 'customer', '0123456789', 'Hà Giang');
+(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'aLOpAQjfSgGjvjj1YKBTSGuonW4uOnU0oEQuKoYsPuJ2nL6iXTY7cV82k52g', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội'),
+(10, 'Lan', 'lantruong346@gmail.com', '2025-09-15 07:55:37', '$2y$12$dyCpz7pTZhRbFFg2a6v2Xe3..blEWE/4UXFvfdZ8hZ4T4m3j5J2Pu', 'Y5reakdmmk9SOrcsVWeD7STDGTVP8c65mO0dmql2ZRh08TqGFY5rSGlQtfhd', '2025-09-15 00:53:06', '2025-09-15 00:53:06', 'customer', '0123456789', 'Hà Giang');
 
 -- --------------------------------------------------------
 
@@ -492,7 +484,88 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (81, 5, NULL, NULL, '2025-09-15 13:31:38', '2025-09-15 06:31:38', '2025-09-15 06:31:38', NULL),
 (82, 5, NULL, NULL, '2025-09-15 13:41:07', '2025-09-15 06:41:07', '2025-09-15 06:41:07', NULL),
 (83, 5, NULL, 19, '2025-09-15 13:41:19', '2025-09-15 06:41:19', '2025-09-15 06:41:19', NULL),
-(84, 5, 8, 19, '2025-09-15 13:41:19', '2025-09-15 06:41:19', '2025-09-15 06:41:19', 50000.00);
+(84, 5, 8, 19, '2025-09-15 13:41:19', '2025-09-15 06:41:19', '2025-09-15 06:41:19', 50000.00),
+(85, 5, NULL, NULL, '2025-09-18 04:17:12', '2025-09-17 21:17:12', '2025-09-17 21:17:12', NULL),
+(86, 5, NULL, NULL, '2025-09-18 04:18:42', '2025-09-17 21:18:42', '2025-09-17 21:18:42', NULL),
+(87, 5, NULL, NULL, '2025-09-18 04:20:18', '2025-09-17 21:20:18', '2025-09-17 21:20:18', NULL),
+(88, 5, NULL, NULL, '2025-09-18 04:20:33', '2025-09-17 21:20:33', '2025-09-17 21:20:33', NULL),
+(89, 5, NULL, NULL, '2025-09-18 06:46:45', '2025-09-17 23:46:45', '2025-09-17 23:46:45', NULL),
+(90, 5, NULL, NULL, '2025-09-18 06:49:57', '2025-09-17 23:49:57', '2025-09-17 23:49:57', NULL),
+(91, 5, NULL, NULL, '2025-09-18 06:51:19', '2025-09-17 23:51:19', '2025-09-17 23:51:19', NULL),
+(92, 5, NULL, NULL, '2025-09-18 06:51:38', '2025-09-17 23:51:38', '2025-09-17 23:51:38', NULL),
+(93, 5, NULL, NULL, '2025-09-18 06:52:06', '2025-09-17 23:52:06', '2025-09-17 23:52:06', NULL),
+(94, 5, NULL, NULL, '2025-09-18 06:55:10', '2025-09-17 23:55:10', '2025-09-17 23:55:10', NULL),
+(95, 5, NULL, NULL, '2025-09-18 06:55:58', '2025-09-17 23:55:58', '2025-09-17 23:55:58', NULL),
+(96, 5, NULL, NULL, '2025-09-18 06:56:54', '2025-09-17 23:56:54', '2025-09-17 23:56:54', NULL),
+(97, 5, NULL, NULL, '2025-09-18 06:57:54', '2025-09-17 23:57:54', '2025-09-17 23:57:54', NULL),
+(98, 5, NULL, NULL, '2025-09-18 06:58:52', '2025-09-17 23:58:52', '2025-09-17 23:58:52', NULL),
+(99, 5, NULL, NULL, '2025-09-18 06:59:09', '2025-09-17 23:59:09', '2025-09-17 23:59:09', NULL),
+(100, 5, NULL, NULL, '2025-09-18 07:01:03', '2025-09-18 00:01:03', '2025-09-18 00:01:03', NULL),
+(101, 5, NULL, NULL, '2025-09-18 07:03:05', '2025-09-18 00:03:05', '2025-09-18 00:03:05', NULL),
+(102, 5, NULL, NULL, '2025-09-18 07:04:30', '2025-09-18 00:04:30', '2025-09-18 00:04:30', NULL),
+(103, 5, NULL, NULL, '2025-09-18 07:09:23', '2025-09-18 00:09:23', '2025-09-18 00:09:23', NULL),
+(104, 5, NULL, NULL, '2025-09-18 07:10:29', '2025-09-18 00:10:29', '2025-09-18 00:10:29', NULL),
+(105, 5, NULL, NULL, '2025-09-18 07:10:39', '2025-09-18 00:10:39', '2025-09-18 00:10:39', NULL),
+(106, 5, NULL, NULL, '2025-09-18 07:10:55', '2025-09-18 00:10:55', '2025-09-18 00:10:55', NULL),
+(107, 5, NULL, NULL, '2025-09-18 07:11:16', '2025-09-18 00:11:16', '2025-09-18 00:11:16', NULL),
+(108, 5, NULL, NULL, '2025-09-18 07:12:12', '2025-09-18 00:12:12', '2025-09-18 00:12:12', NULL),
+(109, 5, NULL, NULL, '2025-09-18 07:13:13', '2025-09-18 00:13:13', '2025-09-18 00:13:13', NULL),
+(110, 5, NULL, NULL, '2025-09-18 07:15:22', '2025-09-18 00:15:22', '2025-09-18 00:15:22', NULL),
+(111, 5, NULL, NULL, '2025-09-18 07:17:02', '2025-09-18 00:17:02', '2025-09-18 00:17:02', NULL),
+(112, 5, NULL, NULL, '2025-09-18 07:18:14', '2025-09-18 00:18:14', '2025-09-18 00:18:14', NULL),
+(113, 5, NULL, NULL, '2025-09-18 07:19:12', '2025-09-18 00:19:12', '2025-09-18 00:19:12', NULL),
+(114, 5, NULL, NULL, '2025-09-18 07:20:30', '2025-09-18 00:20:30', '2025-09-18 00:20:30', NULL),
+(115, 5, NULL, NULL, '2025-09-18 07:21:54', '2025-09-18 00:21:54', '2025-09-18 00:21:54', NULL),
+(116, 5, NULL, NULL, '2025-09-18 07:23:21', '2025-09-18 00:23:21', '2025-09-18 00:23:21', NULL),
+(117, 5, NULL, NULL, '2025-09-18 07:24:40', '2025-09-18 00:24:40', '2025-09-18 00:24:40', NULL),
+(118, 5, NULL, NULL, '2025-09-18 07:24:57', '2025-09-18 00:24:57', '2025-09-18 00:24:57', NULL),
+(119, 5, NULL, NULL, '2025-09-18 07:28:39', '2025-09-18 00:28:39', '2025-09-18 00:28:39', NULL),
+(120, 5, NULL, NULL, '2025-09-18 07:28:48', '2025-09-18 00:28:48', '2025-09-18 00:28:48', NULL),
+(121, 5, NULL, NULL, '2025-09-18 07:28:54', '2025-09-18 00:28:54', '2025-09-18 00:28:54', NULL),
+(122, 5, NULL, NULL, '2025-09-18 07:31:07', '2025-09-18 00:31:07', '2025-09-18 00:31:07', NULL),
+(123, 5, NULL, NULL, '2025-09-18 07:31:15', '2025-09-18 00:31:15', '2025-09-18 00:31:15', NULL),
+(124, 5, NULL, NULL, '2025-09-18 07:31:21', '2025-09-18 00:31:21', '2025-09-18 00:31:21', NULL),
+(125, 5, NULL, NULL, '2025-09-18 07:37:12', '2025-09-18 00:37:12', '2025-09-18 00:37:12', NULL),
+(126, 5, NULL, NULL, '2025-09-18 07:37:18', '2025-09-18 00:37:18', '2025-09-18 00:37:18', NULL),
+(127, 5, NULL, NULL, '2025-09-18 07:38:58', '2025-09-18 00:38:58', '2025-09-18 00:38:58', NULL),
+(128, 5, NULL, NULL, '2025-09-18 07:39:06', '2025-09-18 00:39:06', '2025-09-18 00:39:06', NULL),
+(129, 5, NULL, NULL, '2025-09-18 07:39:13', '2025-09-18 00:39:13', '2025-09-18 00:39:13', NULL),
+(130, 5, NULL, NULL, '2025-09-18 07:41:32', '2025-09-18 00:41:32', '2025-09-18 00:41:32', NULL),
+(131, 5, NULL, NULL, '2025-09-18 07:41:39', '2025-09-18 00:41:39', '2025-09-18 00:41:39', NULL),
+(132, 5, NULL, NULL, '2025-09-18 07:44:51', '2025-09-18 00:44:51', '2025-09-18 00:44:51', NULL),
+(133, 5, NULL, NULL, '2025-09-18 07:45:03', '2025-09-18 00:45:03', '2025-09-18 00:45:03', NULL),
+(134, 5, NULL, NULL, '2025-09-18 07:48:13', '2025-09-18 00:48:13', '2025-09-18 00:48:13', NULL),
+(135, 5, NULL, NULL, '2025-09-18 07:49:21', '2025-09-18 00:49:21', '2025-09-18 00:49:21', NULL),
+(136, 5, NULL, NULL, '2025-09-18 07:49:44', '2025-09-18 00:49:44', '2025-09-18 00:49:44', NULL),
+(137, 5, NULL, NULL, '2025-09-18 07:50:58', '2025-09-18 00:50:58', '2025-09-18 00:50:58', NULL),
+(138, 5, NULL, NULL, '2025-09-18 07:52:21', '2025-09-18 00:52:21', '2025-09-18 00:52:21', NULL),
+(139, 5, NULL, NULL, '2025-09-18 07:54:52', '2025-09-18 00:54:52', '2025-09-18 00:54:52', NULL),
+(140, 5, NULL, NULL, '2025-09-18 07:55:29', '2025-09-18 00:55:29', '2025-09-18 00:55:29', NULL),
+(141, 5, NULL, NULL, '2025-09-18 07:55:42', '2025-09-18 00:55:42', '2025-09-18 00:55:42', NULL),
+(142, 5, NULL, NULL, '2025-09-18 07:56:12', '2025-09-18 00:56:12', '2025-09-18 00:56:12', NULL),
+(143, 5, NULL, NULL, '2025-09-18 07:56:22', '2025-09-18 00:56:22', '2025-09-18 00:56:22', NULL),
+(144, 5, NULL, 20, '2025-09-18 08:06:12', '2025-09-18 01:06:12', '2025-09-18 01:06:12', NULL),
+(145, 5, NULL, NULL, '2025-09-18 17:23:53', '2025-09-18 10:23:53', '2025-09-18 10:23:53', NULL),
+(146, 5, NULL, NULL, '2025-09-18 17:23:59', '2025-09-18 10:23:59', '2025-09-18 10:23:59', NULL),
+(147, 5, NULL, NULL, '2025-09-18 17:27:20', '2025-09-18 10:27:20', '2025-09-18 10:27:20', NULL),
+(148, 5, NULL, NULL, '2025-09-18 17:33:28', '2025-09-18 10:33:28', '2025-09-18 10:33:28', NULL),
+(149, 5, NULL, NULL, '2025-09-18 17:33:32', '2025-09-18 10:33:32', '2025-09-18 10:33:32', NULL),
+(150, 5, NULL, NULL, '2025-09-18 17:34:02', '2025-09-18 10:34:02', '2025-09-18 10:34:02', NULL),
+(151, 5, NULL, NULL, '2025-09-18 17:34:08', '2025-09-18 10:34:08', '2025-09-18 10:34:08', NULL),
+(152, 5, NULL, NULL, '2025-09-18 17:36:03', '2025-09-18 10:36:03', '2025-09-18 10:36:03', NULL),
+(153, 5, NULL, NULL, '2025-09-18 17:36:05', '2025-09-18 10:36:05', '2025-09-18 10:36:05', NULL),
+(154, 5, NULL, NULL, '2025-09-18 17:36:18', '2025-09-18 10:36:18', '2025-09-18 10:36:18', NULL),
+(155, 5, NULL, NULL, '2025-09-18 17:36:23', '2025-09-18 10:36:23', '2025-09-18 10:36:23', NULL),
+(156, 5, NULL, NULL, '2025-09-18 17:41:27', '2025-09-18 10:41:27', '2025-09-18 10:41:27', NULL),
+(157, 5, NULL, NULL, '2025-09-18 17:41:31', '2025-09-18 10:41:31', '2025-09-18 10:41:31', NULL),
+(158, 5, NULL, NULL, '2025-09-18 17:44:03', '2025-09-18 10:44:03', '2025-09-18 10:44:03', NULL),
+(159, 5, NULL, NULL, '2025-09-18 17:51:05', '2025-09-18 10:51:05', '2025-09-18 10:51:05', NULL),
+(160, 5, NULL, NULL, '2025-09-18 17:51:10', '2025-09-18 10:51:10', '2025-09-18 10:51:10', NULL),
+(161, 5, NULL, NULL, '2025-09-18 17:54:25', '2025-09-18 10:54:25', '2025-09-18 10:54:25', NULL),
+(162, 5, NULL, NULL, '2025-09-18 17:58:14', '2025-09-18 10:58:14', '2025-09-18 10:58:14', NULL),
+(163, 5, NULL, NULL, '2025-09-18 18:09:10', '2025-09-18 11:09:10', '2025-09-18 11:09:10', NULL),
+(164, 5, NULL, NULL, '2025-09-18 18:09:33', '2025-09-18 11:09:33', '2025-09-18 11:09:33', NULL),
+(165, 5, NULL, NULL, '2025-09-18 18:09:47', '2025-09-18 11:09:47', '2025-09-18 11:09:47', NULL);
 
 --
 -- Bẫy `user_histories`
@@ -509,6 +582,30 @@ CREATE TRIGGER `trg_user_histories_before_insert` BEFORE INSERT ON `user_histori
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `size` varchar(50) DEFAULT NULL,
+  `material` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `created_at`, `updated_at`, `color`, `size`, `material`) VALUES
+(9, 5, 2, '2025-09-18 11:09:47', '2025-09-18 11:09:47', '#000000', '35', 'Da nhân tạo');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -613,6 +710,14 @@ ALTER TABLE `user_histories`
   ADD KEY `fk_user_histories_coupon` (`coupon_id`);
 
 --
+-- Chỉ mục cho bảng `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_product_variant` (`user_id`,`product_id`,`color`,`size`,`material`),
+  ADD KEY `wishlists_product_id_foreign` (`product_id`);
+
+--
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
@@ -644,19 +749,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -668,7 +773,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
@@ -680,7 +785,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
+
+--
+-- AUTO_INCREMENT cho bảng `wishlists`
+--
+ALTER TABLE `wishlists`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -725,6 +836,13 @@ ALTER TABLE `reviews`
 ALTER TABLE `user_histories`
   ADD CONSTRAINT `fk_user_histories_coupon` FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_user_histories_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `wishlists_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlists_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
