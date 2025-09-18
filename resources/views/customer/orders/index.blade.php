@@ -96,7 +96,12 @@
 
                                                 <div class="text-end ms-auto">
                                                     <div style="font-weight:800;font-size:18px;color:#222;">
-                                                        {{ number_format($order->final_total ?? 0,0,',','.') }} đ
+                                                        {{ number_format($order->final_total ?? $order->total_amount ?? 0,0,',','.') }} đ
+                                                        @if(!empty($order->discount_amount) && $order->discount_amount > 0)
+                                                            <span style="color:#e75480; font-size:13px; font-weight:500;">
+                                                                (Đã giảm {{ number_format($order->discount_amount,0,',','.') }} đ)
+                                                            </span>
+                                                        @endif
                                                     </div>
 
                                                     <div class="mt-2 d-flex flex-wrap gap-2 justify-content-end">
