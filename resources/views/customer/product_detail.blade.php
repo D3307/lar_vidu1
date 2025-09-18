@@ -132,6 +132,13 @@
                             <i class="fa fa-bolt me-2"></i> Mua ngay
                         </button>
                     </div>
+                    {{-- Nút thêm vào danh sách yêu thích --}}
+                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST" class="mt-3">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            <i class="fa fa-heart me-2"></i> Thêm vào danh sách yêu thích
+                        </button>
+                    </form>
                 @else
                     <div class="alert alert-danger mt-3">
                         Sản phẩm này hiện đã <strong>hết hàng</strong>.
