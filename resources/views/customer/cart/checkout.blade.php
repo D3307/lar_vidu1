@@ -1,91 +1,90 @@
 @extends('layouts.app')
 
-@section('title', 'Checkout')
+@section('title', 'Thanh toán')
 
 @section('content')
 <div class="container py-5">
-    <h2 class="mb-2 text-center fw-bold" style="font-size:2.2rem; color:#222;">Checkout</h2>
+    <h2 class="mb-2 text-center fw-bold" style="font-size:2.2rem; color:#222;">Thanh toán</h2>
     <div class="text-center mb-4">
-        <span>Bạn có mã giảm giá? <a href="#" style="color:#e75480; font-weight:600;">Click here</a> để nhập</span>
+        <span>Bạn có mã giảm giá? <a href="#" style="color:#e75480; font-weight:600;">Nhấn vào đây</a> để nhập</span>
     </div>
     <div class="row justify-content-center">
-        <!-- Billing Details -->
+        <!-- Thông tin thanh toán -->
         <div class="col-lg-7">
             <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
-                <h5 class="fw-bold mb-4" style="color:#e75480;">BILLING DETAILS</h5>
+                <h5 class="fw-bold mb-4" style="color:#e75480;">THÔNG TIN THANH TOÁN</h5>
                 <form action="{{ route('checkout') }}" method="POST">
                     @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">First name*</label>
-                            <input type="text" class="form-control border-pink" name="first_name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Last name*</label>
-                            <input type="text" class="form-control border-pink" name="last_name" required>
+                            <label class="form-label fw-semibold">Họ và tên</label>
+                            <input type="text" class="form-control border-pink" name="name" required
+                                value="{{ old('name', Auth::user()->name ?? '') }}">
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Company name <span class="text-muted">(optional)</span></label>
+                            <label class="form-label">Tên công ty <span class="text-muted">(không bắt buộc)</span></label>
                             <input type="text" class="form-control border-pink" name="company">
                         </div>
                         <div class="col-12">
-                            <label class="form-label fw-semibold">Country / Region*</label>
+                            <label class="form-label fw-semibold">Quốc gia / Khu vực*</label>
                             <select class="form-select border-pink" name="country" required>
                                 <option value="">Chọn quốc gia</option>
                                 <option value="VN" selected>Việt Nam</option>
-                                <option value="US">United States (US)</option>
+                                <option value="US">Hoa Kỳ</option>
                                 <!-- Thêm các quốc gia khác nếu cần -->
                             </select>
                         </div>
                         <div class="col-12">
-                            <label class="form-label fw-semibold">Street address*</label>
-                            <input type="text" class="form-control border-pink mb-2" name="address" placeholder="House number and street name" required>
-                            <input type="text" class="form-control border-pink" name="address2" placeholder="Apartment, suite, unit, etc. (optional)">
+                            <label class="form-label fw-semibold">Địa chỉ*</label>
+                            <input type="text" class="form-control border-pink mb-2" name="address" placeholder="Số nhà và tên đường" required>
+                            <input type="text" class="form-control border-pink" name="address2" placeholder="Căn hộ, tầng, đơn vị, v.v. (không bắt buộc)">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Town / City*</label>
+                            <label class="form-label fw-semibold">Tỉnh / Thành phố*</label>
                             <input type="text" class="form-control border-pink" name="city" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Country <span class="text-muted">(optional)</span></label>
+                            <label class="form-label">Quốc gia (không bắt buộc)</label>
                             <input type="text" class="form-control border-pink" name="country_optional">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Postcode*</label>
+                            <label class="form-label fw-semibold">Mã bưu điện*</label>
                             <input type="text" class="form-control border-pink" name="postcode" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Phone*</label>
-                            <input type="text" class="form-control border-pink" name="phone" required>
+                            <label class="form-label fw-semibold">Số điện thoại*</label>
+                            <input type="text" class="form-control border-pink" name="phone" required
+                                value="{{ old('phone', Auth::user()->phone ?? '') }}">
                         </div>
                         <div class="col-12">
-                            <label class="form-label fw-semibold">Email address*</label>
-                            <input type="email" class="form-control border-pink" name="email" required>
+                            <label class="form-label fw-semibold">Email*</label>
+                            <input type="email" class="form-control border-pink" name="email" required
+                                value="{{ old('email', Auth::user()->email ?? '') }}">
                         </div>
                         <div class="col-12">
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" id="ship-diff" name="ship_diff">
                                 <label class="form-check-label" for="ship-diff">
-                                    Ship to a different address?
+                                    Giao hàng tới địa chỉ khác?
                                 </label>
                             </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label">Order notes <span class="text-muted">(optional)</span></label>
+                            <label class="form-label">Ghi chú đơn hàng <span class="text-muted">(không bắt buộc)</span></label>
                             <textarea class="form-control border-pink" name="order_notes" rows="2"></textarea>
                         </div>
                     </div>
             </div>
         </div>
-        <!-- Order Summary -->
+        <!-- Đơn hàng -->
         <div class="col-lg-5">
             <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
-                <h5 class="fw-bold mb-4" style="color:#e75480;">YOUR ORDER</h5>
+                <h5 class="fw-bold mb-4" style="color:#e75480;">ĐƠN HÀNG CỦA BẠN</h5>
                 <table class="table mb-3">
                     <thead>
                         <tr style="border-bottom:1.5px solid #eee;">
-                            <th class="fw-semibold" style="color:#222;">Product</th>
-                            <th class="fw-semibold text-end" style="color:#222;">Sub-total</th>
+                            <th class="fw-semibold" style="color:#222;">Sản phẩm</th>
+                            <th class="fw-semibold text-end" style="color:#222;">Tạm tính</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,28 +99,28 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td class="fw-bold">Sub-total</td>
+                            <td class="fw-bold">Tạm tính</td>
                             <td class="fw-bold text-end">{{ number_format($total,0,',','.') }} đ</td>
                         </tr>
                         <tr>
-                            <td class="fw-bold">Shipping</td>
+                            <td class="fw-bold">Phí vận chuyển</td>
                             <td class="text-end">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="shipping" id="flat" value="flat" checked>
-                                    <label class="form-check-label" for="flat">Flat rate 30,000đ</label>
+                                    <label class="form-check-label" for="flat">Giao hàng tiêu chuẩn 30,000đ</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="shipping" id="free" value="free">
-                                    <label class="form-check-label" for="free">Free shipping</label>
+                                    <label class="form-check-label" for="free">Miễn phí vận chuyển</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="shipping" id="pickup" value="pickup">
-                                    <label class="form-check-label" for="pickup">Local pickup</label>
+                                    <label class="form-check-label" for="pickup">Nhận tại cửa hàng</label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td class="fw-bold" style="font-size:1.1rem;">Total</td>
+                            <td class="fw-bold" style="font-size:1.1rem;">Tổng cộng</td>
                             <td class="fw-bold text-end" style="font-size:1.1rem; color:#e75480;">
                                 {{ number_format($finalTotal ?? $total,0,',','.') }} đ
                             </td>
@@ -130,37 +129,27 @@
                 </table>
                 <div class="mb-3">
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="payment" id="bank" value="bank" required>
-                        <label class="form-check-label fw-semibold" for="bank">
-                            Direct bank transfer
-                        </label>
-                        <div class="text-muted small ms-4">
-                            Make your payment directly into our bank account.<br>
-                            Please use your Order ID as the payment reference.<br>
-                            Your order will not be shipped until the funds have cleared in our account.
-                        </div>
-                    </div>
-                    <div class="form-check mb-2">
                         <input class="form-check-input" type="radio" name="payment" id="cod" value="cod" required>
                         <label class="form-check-label fw-semibold" for="cod">
-                            Cash on delivery
+                            Thanh toán khi nhận hàng
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="payment" id="paypal" value="paypal" required>
-                        <label class="form-check-label fw-semibold" for="paypal">
-                            Paypal <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="Paypal" style="height:18px;vertical-align:middle;">
+                        <input class="form-check-input" type="radio" name="payment" id="momo" value="momo" required>
+                        <label class="form-check-label fw-semibold" for="momo">
+                            Thanh toán qua Momo
+                            <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="Momo" style="height:18px;vertical-align:middle;">
                         </label>
                     </div>
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="agree" required>
                     <label class="form-check-label" for="agree">
-                        I agree to the website <a href="#" style="color:#e75480;">Terms and Conditions</a>
+                        Tôi đồng ý với <a href="#" style="color:#e75480;">Điều khoản & Điều kiện</a> của website
                     </label>
                 </div>
                 <button type="submit" class="btn w-100 text-white fw-bold py-2" style="background:#222; font-size:1.1rem; letter-spacing:1px;">
-                    PLACE ORDER
+                    ĐẶT HÀNG
                 </button>
                 </form>
             </div>
