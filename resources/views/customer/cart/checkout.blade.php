@@ -37,6 +37,8 @@
 
                     <form action="{{ route('checkout') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="coupon_id" value="{{ $couponId ?? '' }}">
+                        
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Họ và tên</label>

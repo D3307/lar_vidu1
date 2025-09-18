@@ -116,22 +116,19 @@ class OrderController extends Controller
         $total = collect($cartItems)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
         // xử lý coupon (chỉ đọc ở đây, sẽ kiểm tra và cập nhật lại trong transaction)
-        $coupon = null;
+        $couponId = $request->input('coupon_id');
+        $coupon   = $couponId ? Coupon::find($couponId) : null;
         $discount = 0;
-        if ($request->filled('coupon_id')) {
-            $coupon = Coupon::find($request->coupon_id);
-            if ($coupon && $total >= ($coupon->min_order_value ?? 0)) {
-                if ($coupon->discount_type === 'percent') {
-                    $discount = (int) round($total * ($coupon->discount / 100));
-                } else {
-                    $discount = $coupon->discount;
-                }
-                $discount = min($discount, $total);
+
+        if ($coupon) {
+            if ($coupon->discount_type === 'percent') {
+                $discount = (int) round($total * ($coupon->discount / 100));
             } else {
-                // coupon không hợp lệ cho đơn này -> bỏ qua
-                $coupon = null;
+                $discount = $coupon->discount;
             }
+            $discount = min($discount, $total);
         }
+
 
         $finalTotal = $total - $discount;
 
@@ -195,15 +192,6 @@ class OrderController extends Controller
 
             // cập nhật coupon.used_count & tạo lịch sử dùng coupon
             if ($coupon) {
-                // khóa coupon
-                $couponLocked = Coupon::lockForUpdate()->find($coupon->id);
-                if ($couponLocked) {
-                    if (!is_null($couponLocked->usage_limit) && $couponLocked->used_count >= $couponLocked->usage_limit) {
-                        throw new \Exception("Mã giảm giá đã hết lượt sử dụng.");
-                    }
-                    $couponLocked->increment('used_count'); // tăng 1
-                }
-
                 // Lưu lịch sử dùng coupon
                 UserHistory::create([
                     'user_id'   => Auth::id(),
