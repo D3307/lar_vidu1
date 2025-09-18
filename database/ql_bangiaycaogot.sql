@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 15, 2025 lúc 03:49 PM
+-- Thời gian đã tạo: Th9 18, 2025 lúc 05:38 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -199,20 +199,18 @@ INSERT INTO `orders` (`id`, `name`, `phone`, `address`, `user_id`, `total`, `dis
 (3, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 3570000, 'delivered', 'paid', '2025-09-12 05:49:23', '2025-09-14 19:29:09', 'cod', 10),
 (4, 'Thảo', '0944763697', 'Hà Nội', 4, 4275000.00, 120000, 4155000, 'shipping', 'unpaid', '2025-09-12 05:55:25', '2025-09-14 22:44:54', 'cod', 10),
 (5, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 120000, 620000, 'pending', 'unpaid', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 'cod', 10),
-(6, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'processing', 'paid', '2025-09-14 23:01:28', '2025-09-14 23:01:28', 'momo', 7),
-(7, 'Linh', '0987654321', 'Hà Nội', 5, 499000.00, 99800, 399200, 'processing', 'paid', '2025-09-14 23:07:56', '2025-09-14 23:07:56', 'momo', 3),
+(6, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'shipping', 'paid', '2025-09-14 23:01:28', '2025-09-15 07:04:25', 'momo', 7),
 (8, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 5000, 940000, 'delivered', 'paid', '2025-09-14 23:24:01', '2025-09-15 05:24:41', 'momo', 4),
 (9, 'Lan', '098765431', 'Ha Noi', 10, 549000.00, 146700, 402300, 'processing', 'paid', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 'momo', 1),
-(10, 'Linh', '0987654321', 'Ha Noi', 5, 855000.00, 128250, 726750, 'delivered', 'paid', '2025-09-15 03:37:42', '2025-09-15 05:24:26', 'momo', 5),
 (11, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'processing', 'paid', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 'momo', 3),
 (12, 'Lan', '0123456789', 'Ha Noi', 10, 370000.00, 37000, 333000, 'shipping', 'paid', '2025-09-15 03:53:07', '2025-09-15 05:24:12', 'momo', 2),
 (13, 'Lan', '0987654321', 'Ha Noi', 10, 549000.00, 50000, 499000, 'cancelled', 'paid', '2025-09-15 03:56:48', '2025-09-15 05:24:02', 'momo', 8),
 (14, 'Lan', '09763733737', 'Ha Noi', 10, 499000.00, 149700, 349300, 'processing', 'paid', '2025-09-15 04:05:43', '2025-09-15 05:21:22', 'momo', 1),
 (15, 'Lan', '0123456789', 'Ha Noi', 10, 499000.00, 49900, 449100, 'delivered', 'paid', '2025-09-15 04:16:13', '2025-09-15 05:23:56', 'momo', 2),
 (16, 'Lan', '0987654321', 'Hà Nội', 10, 549000.00, 164700, 384300, 'cancelled', 'paid', '2025-09-15 05:02:23', '2025-09-15 05:23:51', 'momo', 1),
-(17, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 05:47:48', '2025-09-15 05:47:48', 'cod', 8),
-(18, 'Linh', '0987654321', 'Hà Nội', 5, 945000.00, 189000, 756000, 'processing', 'paid', '2025-09-15 06:00:58', '2025-09-15 06:01:47', 'momo', 10),
-(19, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 06:41:19', '2025-09-15 06:41:19', 'cod', 8);
+(17, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 05:47:48', '2025-09-15 07:06:20', 'cod', 8),
+(18, 'Linh', '0987654321', 'Hà Nội', 5, 945000.00, 189000, 756000, 'cancelled', 'paid', '2025-09-15 06:00:58', '2025-09-15 06:59:44', 'momo', 10),
+(19, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'pending', 'unpaid', '2025-09-15 06:41:19', '2025-09-15 07:06:13', 'cod', 8);
 
 --
 -- Bẫy `orders`
@@ -269,10 +267,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `qua
 (7, 5, 4, NULL, NULL, 1, 740000.00, '2025-09-12 05:57:53', '2025-09-12 05:57:53'),
 (8, 6, 15, '#000000', '35', 1, 450000.00, '2025-09-14 23:01:28', '2025-09-14 23:01:28'),
 (9, 6, 5, '#000000', '35', 1, 599000.00, '2025-09-14 23:01:28', '2025-09-14 23:01:28'),
-(10, 7, 6, NULL, NULL, 1, 499000.00, '2025-09-14 23:07:56', '2025-09-14 23:07:56'),
 (11, 8, 3, '#fffdd0', '35', 1, 945000.00, '2025-09-14 23:24:01', '2025-09-14 23:24:01'),
 (12, 9, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 00:58:44', '2025-09-15 00:58:44'),
-(13, 10, 2, '#fffdd0', '35', 1, 855000.00, '2025-09-15 03:37:42', '2025-09-15 03:37:42'),
 (14, 11, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 03:47:20', '2025-09-15 03:47:20'),
 (15, 12, 13, NULL, NULL, 1, 370000.00, '2025-09-15 03:53:07', '2025-09-15 03:53:07'),
 (16, 13, 8, '#a52a2a', '35', 1, 549000.00, '2025-09-15 03:56:48', '2025-09-15 03:56:48'),
@@ -400,25 +396,17 @@ CREATE TABLE `sessions` (
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('1TOyFkvsZCmcbDV0J6GmBDhYgTE9ly8CsOPb9Npv', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoic0NXNnBZczRJQTRqM1NVZmwyOTBkSThGbnB3ZWNTZTluZFZWWklvSCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937973),
 ('98xwsVfI18no07OTqU1oA7H0sBIdRHFvqmsexXfX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibEFzVlQwTWhYaGlXdFNYNTJyN1ZHZzd4d0dMRFN4TGhpcnlZQ2w5ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938149),
-('adcLtCfSLlymc7UsQvsHu8gOVLWSUAUB4a52hZrg', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoibXo3TW9Zem8ySXJxZGd2aEdmVmpHeXY5WERMVTFCbE9FT2V5UzhOaSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937506),
-('bdykxbdZziXVNongDcTt8xUqwMMc5d35aYqoEzPw', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiZDVuZnh2Q3FGYXRLcHlqZGI4YWJnVHVBaEh6Y1g3bFBVZVh1Zmx5YiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937331),
 ('d3MxFjhnwKRhekhNVkp2fAZw69yrrtKA3kXcYnKO', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiaTdxNkVrTmduWXdEc2ZJTjgycDA0b1o2SHlxU3JpaDBKY1RPWnhHSiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938636),
-('dAQx14fElIf2DQ8ytQ7BchL13Pj8R3HPcLaMLEhr', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiZDdVVDBQT3E3dGZLcXd3dTdiRXhYa1NkVUh3QWhMSjBwQ2RiSkdWRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937327),
 ('dlVsLfd9CwNwwDEcfUYYJsXUIn7j37PrjKQQKKCW', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiU1RpVXY2c2syQlJEQUZvVzk3UGZGUDhtQXNuOE1raWhnRzdzQ3V5MCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938608),
 ('G3WLpFhLnj72D7182Pg9Mw5ltSyZJNBLt1JDAhcR', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiT1B0ZWRJdWJRaGRzT2tiZVRiYmJjRk04ZkhlRlNSYjBNTHJ6Vnc0eiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938327),
 ('ICoQvRrNCngdHBB4zdOHCbA5wCM2NNq69P4hcPqE', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiN3JkZm5KVTZSSVI4aWx0S0FZV1Nlekh4eVpmd0VVRW5XMHJZWW5iRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937998),
-('Jw7gwpJ04JfqHQyhAqd0z1LgTWAyfTe6FjfDxAb3', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZEdvZ0VVbnBqRHJWcDBvU3hVY1JwU0l3MkJzQVQydmRyOUtYR3l4ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9vcmRlcnM/cGFnZT0xIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1757944133),
+('Jw7gwpJ04JfqHQyhAqd0z1LgTWAyfTe6FjfDxAb3', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiZEdvZ0VVbnBqRHJWcDBvU3hVY1JwU0l3MkJzQVQydmRyOUtYR3l4ZyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hY2NvdW50P3BhZ2U9MiI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1757945223),
 ('KE9gYhMLoRQGFTk4qBfivMpYfvLI22i8UOIJl5ZC', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiSUVQUXIwdFpvekJ2cmR4SEcyNGVvSGFDVHJlMGoyN0ZJOHFvcThabiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938612),
 ('niAqZywYwYDdKGxuOUhKr71nEIf1KEahzpvT3xYF', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTUJoZDZlbUxXcG1MekRZUTBzaDRpUUtUY1NXektyNGJPRXFrUmZXYyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938298),
 ('NzML44gisorLEVIePbouqxoJghPRv0752m0xYtyz', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiUHpuemNnTDlTVmFwWk5KdnI4YnZUelBmR0tUNVlrVVc3dEZYZk9TRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938477),
 ('P93i7LYYjz6IsfMAj2c2pLjEsaIroQRwVxLfNrBX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiVTNHbm0zZU1PZzZ0bGdaRmxYc3p2MFo3S3lvM2l4MkR1Ujg2UVVzcSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937764),
 ('S1PHCBk8JpBcx2X2zSmmGClZCjizTC44LrOEquHI', 10, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiQkdtbk9ETmRaOVFaR0k2TnpaU0VOcHlNZktidVB3d1g3TGY4aXo1TyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQxMzoiaHR0cDovL2JkMzhhMzYzMzk5Ny5uZ3Jvay1mcmVlLmFwcC9jdXN0b21lci9zdWNjZXNzP2Ftb3VudD01NDkwMDAmZXh0cmFEYXRhPTE2Jm1lc3NhZ2U9U3VjY2Vzc2Z1bC4mb3JkZXJJZD0xNzU3OTM4NTcwJm9yZGVySW5mbz1UaGFuaCUyMHRvJUMzJUExbiUyMCVDNCU5MSVDNiVBMW4lMjBoJUMzJUEwbmclMjAlMjMxNiZvcmRlclR5cGU9bW9tb193YWxsZXQmb3JkZXJfaWQ9MTYmcGFydG5lckNvZGU9TU9NT0JLVU4yMDE4MDUyOSZwYXlUeXBlPW5hcGFzJnJlcXVlc3RJZD0xNzU3OTM4NTcwJnJlc3BvbnNlVGltZT0xNzU3OTM4NjEwOTU5JnJlc3VsdENvZGU9MCZzaWduYXR1cmU9MzI3NTRjNjhmOTM4MjVlNjk1YzAwZjU2M2Y4ZDUwYTRhMDNjNjA0OGE2M2MwYzVlNjU4NTBkNzA1OGQ3YjU0MSZ0cmFuc0lkPTQ1Nzc0MDg4MjAiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDtzOjQ6ImNhcnQiO2E6MDp7fX0=', 1757938613),
 ('sQdOm8ICat7eYBHZu6BkOaEKXHQzUadMYpVqgt4W', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNUZyRXJGTHl3NUpudVRrRFU4Y2x1Q2ZVYjhDdnNlaEVzR2NDd2ZHZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757938302),
-('Sx4eHhlkonk0ZYu48Snb2Hs7KDnn6VVu50XUmrBA', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiYkhCSGxBS1NocVVQQnN0aERoNE5FR2NVSkVaWGZURUNYOUVTRldXRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937589),
-('TlBH3w8QmKLmnJDcsqsD42LcydtRr8LJBMsubIxP', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoia2FtVmpKelM5dWRaRFh5d1k4VzBxM3lNSldzWFBnSjVUclA4WGllTSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937613),
-('U4QtRqrUOjvjlsr6SmHOq9iXH1IZzvCD8Sm3uZWB', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTWgxbGUxTk9teVYzVW1PelpTZFhQbldUb3ZHWjI5YXJxVVZaSkhGUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937585),
-('x4z489ArGdEuNlI1kdECoS0WzfM6LK9zQIJNszBX', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiOUdxY3h3UXl1WXZOS1BrQlpORWZhYVdoOUs1MWc2TmNRajJYVHdZUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757936937),
-('x5LRFhqboebSICvhQBHN8BedVfjzgPpM3YNIp33p', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiNjFGNmR3a2s2UEwzc2Vvd1BWbml5TnROcWFBUzY5Qk1TT21WcFVPcyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937356),
 ('Yg4P8v14x8L9N7ARsp1SD0UwPTdAAOpk4vUaDgUL', NULL, '127.0.0.1', 'Apache-HttpClient/4.5.13 (Java/15.0.2)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoicTRRUjJqTnc3d0ppZzJRZzZLdE5TUW1QVFFtSXViRGlkTk8wRmZEdyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1757937969);
 
 -- --------------------------------------------------------
@@ -486,17 +474,13 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (56, 5, 3, 11, '2025-09-15 10:47:20', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 20.00),
 (58, 10, NULL, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', NULL),
 (59, 10, 2, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', 10.00),
-(61, 10, NULL, NULL, '2025-09-15 10:56:18', '2025-09-15 03:56:18', '2025-09-15 03:56:18', NULL),
-(62, 10, NULL, NULL, '2025-09-15 10:56:23', '2025-09-15 03:56:23', '2025-09-15 03:56:23', NULL),
 (63, 10, NULL, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', NULL),
 (64, 10, 8, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', 50000.00),
 (65, 10, NULL, NULL, '2025-09-15 11:05:30', '2025-09-15 04:05:30', '2025-09-15 04:05:30', NULL),
 (66, 10, NULL, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', NULL),
 (67, 10, 1, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', 30.00),
-(68, 10, NULL, NULL, '2025-09-15 11:09:05', '2025-09-15 04:09:05', '2025-09-15 04:09:05', NULL),
 (69, 10, NULL, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', NULL),
 (70, 10, 2, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', 10.00),
-(72, 10, NULL, NULL, '2025-09-15 12:01:58', '2025-09-15 05:01:58', '2025-09-15 05:01:58', NULL),
 (73, 10, NULL, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', NULL),
 (74, 10, 1, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', 30.00),
 (75, 5, NULL, NULL, '2025-09-15 12:45:34', '2025-09-15 05:45:34', '2025-09-15 05:45:34', NULL),
