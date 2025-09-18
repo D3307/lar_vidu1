@@ -82,7 +82,10 @@
                         @endforeach
                     </div>
                     <input type="hidden" name="size" id="selected-size">
-                    <a href="#" class="ms-2" style="font-size:0.95rem; color:#e75480;">Size Guide</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#sizeGuideModal" 
+                    class="ms-2" style="font-size:0.95rem; color:#e75480;">
+                        Hướng dẫn chọn size
+                    </a>
                 </div>
                 {{-- Material --}}
                 <div class="mb-3">
@@ -136,6 +139,11 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">
                     <i class="fa fa-star me-1"></i> Đánh giá ({{ $product->reviews->count() }})
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="sizeguide-tab" data-bs-toggle="tab" data-bs-target="#sizeguide" type="button" role="tab">
+                    <i class="fa fa-ruler-combined me-1"></i> Hướng dẫn chọn size
                 </button>
             </li>
         </ul>
@@ -204,7 +212,94 @@
                     <div class="alert alert-info text-center mb-0" style="border-radius: 8px;">Chưa có đánh giá nào cho sản phẩm này.</div>
                 @endif
             </div>
+
+            {{-- Hướng dẫn chọn size --}}
+            <div class="tab-pane fade" id="sizeguide" role="tabpanel" aria-labelledby="sizeguide-tab">
+                <div class="p-3">
+                    <h6 class="fw-bold mb-3">Các bước đo size giày</h6>
+                    <ol class="ps-3">
+                        <li class="mb-2">Chuẩn bị một tờ giấy A4, bút và thước kẻ.</li>
+                        <li class="mb-2">Đặt bàn chân lên giấy, vẽ khung bàn chân.</li>
+                        <li class="mb-2">Dùng thước đo chiều dài lớn nhất của bàn chân.</li>
+                        <li class="mb-2">So sánh số đo với bảng size để chọn size phù hợp.</li>
+                    </ol>
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <img src="{{ asset('storage/sizeguide/size_step_01.jpg') }}" alt="Bước 1" class="img-fluid rounded shadow-sm">
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('storage/sizeguide/size_step_02.png') }}" alt="Bước 2" class="img-fluid rounded shadow-sm">
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Bảng quy đổi size giày</h5>
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+        <tr>
+            <th>SIZE</th>
+            <th>Chiều dài (cm)</th>
+            <th>Vòng khớp ngón (Ngồi, cm)</th>
+            <th>Vòng khớp ngón (Đứng, cm)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
+        <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
+        <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
+        <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
+        <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
+        <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
+        <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
+        </tbody>
+    </table>
+
+    <p class="mt-3"><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
+    <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- Modal Hướng dẫn chọn size -->
+    <div class="modal fade" id="sizeGuideModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Hướng dẫn chọn size giày</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <p><b>Bước 1:</b> Đặt bàn chân lên giấy trắng, dùng bút vẽ bo hết bàn chân.</p>
+            <img src="{{ asset('storage/sizeguide/size_step_01.jpg') }}" class="img-fluid mb-3" alt="Đo chiều dài">
+
+            <p><b>Bước 2:</b> Dùng thước hoặc dây đo vòng khớp ngón chân rộng nhất.</p>
+            <img src="{{ asset('storage/sizeguide/size_step_02.png') }}" class="img-fluid mb-3" alt="Đo vòng khớp ngón">
+
+            <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>SIZE</th>
+                    <th>Chiều dài (cm)</th>
+                    <th>Vòng khớp ngón (Ngồi, cm)</th>
+                    <th>Vòng khớp ngón (Đứng, cm)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
+                <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
+                <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
+                <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
+                <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
+                <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
+                <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
+            <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
+        </div>
+        </div>
+    </div>
     </div>
 </div>
 
