@@ -8,7 +8,7 @@
         <div class="col-lg-8">
             <div style="background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden;">
                 <div style="background: linear-gradient(90deg, #e75480 0%, #7a2130 100%); padding: 28px 20px; color: #fff; text-align: center;">
-                    @if($order && $order->payment_status === 'paid')
+                    @if($order && $order->status === 'paid')
                         <h1 style="margin:0; font-size:28px;">✅ Thanh toán thành công!</h1>
                         <p style="margin:6px 0 0; opacity:0.95;">Cảm ơn bạn. Đơn hàng đã được thanh toán thành công.</p>
                     @else

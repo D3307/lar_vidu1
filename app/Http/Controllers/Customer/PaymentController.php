@@ -32,8 +32,8 @@ class PaymentController extends Controller
         $redirectRelative = route('customer.success', ['order_id' => $order->id], false);
         $ipnRelative      = route('payment.momo.callback', [], false);
 
-        $redirectUrl = $ngrok ? rtrim($ngrok, '/') . $redirectRelative : route('customer.success', ['order_id' => $order->id]);
-        $ipnUrl      = $ngrok ? rtrim($ngrok, '/') . $ipnRelative : route('payment.momo.callback');
+        $redirectUrl = route('customer.success', ['order_id' => $order->id]);
+        $ipnUrl      = route('payment.momo.callback');
 
         $extraData = (string) $order->id; // truyền id đơn hàng để callback nhận diện
 

@@ -26,41 +26,58 @@ class OrderController extends Controller
 
     // Hiển thị form checkout (GET)
     public function showCheckoutForm(Request $request)
-    {
-        $sessionCart = session('cart', []);
-        $selectedKeys = $request->query('selected', []);
-        $buyNow = session('buy_now', null);
+{
+    $sessionCart = session('cart', []);
+    $selectedKeys = $request->query('selected', []);
+    $buyNow = session('buy_now', null);
 
-        if ($buyNow) {
-            $cart = ['buy_now' => $buyNow];
-            $selected = ['buy_now'];
-        } elseif (!empty($selectedKeys)) {
-            $cart = [];
-            foreach ($selectedKeys as $key) {
-                if (isset($sessionCart[$key])) $cart[$key] = $sessionCart[$key];
-            }
-            $selected = $selectedKeys;
-        } else {
-            $cart = $sessionCart;
-            $selected = array_keys($sessionCart);
+    if ($buyNow) {
+        $cart = ['buy_now' => $buyNow];
+        $selected = ['buy_now'];
+    } elseif (!empty($selectedKeys)) {
+        $cart = [];
+        foreach ($selectedKeys as $key) {
+            if (isset($sessionCart[$key])) $cart[$key] = $sessionCart[$key];
         }
-
-        if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', 'Vui lòng chọn sản phẩm để thanh toán.');
-        }
-
-        $total = collect($cart)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
-        $user = auth()->user();
-
-        $coupons = Coupon::where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
-            ->get();
-
-        $discount = session('discount', 0);
-        $finalTotal = $total - $discount;
-
-        return view('customer.cart.checkout', compact('cart', 'total', 'user', 'selected', 'coupons', 'discount', 'finalTotal'));
+        $selected = $selectedKeys;
+    } else {
+        $cart = $sessionCart;
+        $selected = array_keys($sessionCart);
     }
+
+    if (empty($cart)) {
+        return redirect()->route('cart.index')->with('error', 'Vui lòng chọn sản phẩm để thanh toán.');
+    }
+
+    $total = collect($cart)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
+    $user = auth()->user();
+
+    $coupons = Coupon::where('start_date', '<=', now())
+        ->where('end_date', '>=', now())
+        ->get();
+
+    // Xử lý coupon giống checkout cũ
+    $discount = 0;
+    $couponId = $request->input('coupon_id');
+    if ($couponId) {
+        $coupon = Coupon::find($couponId);
+        if ($coupon && $total >= $coupon->min_order_value) {
+            if ($coupon->discount_type === 'percent') {
+                $discount = (int) round($total * ($coupon->discount / 100));
+            } else {
+                $discount = $coupon->discount;
+            }
+            $discount = min($discount, $total); // không để âm
+        }
+    }
+
+    $finalTotal = $total - $discount;
+
+    return view('customer.cart.checkout', compact(
+        'cart', 'total', 'user', 'selected', 'coupons', 'discount', 'finalTotal', 'couponId'
+    ));
+}
+
 
     // POST: tạo order
     public function checkout(Request $request)

@@ -5,9 +5,7 @@
 @section('content')
 <div class="container py-5">
     <h2 class="mb-2 text-center fw-bold" style="font-size:2.2rem; color:#222;">Thanh toán</h2>
-    <div class="text-center mb-4">
-        <span>Bạn có mã giảm giá? <a href="#" style="color:#e75480; font-weight:600;">Nhấn vào đây</a> để nhập</span>
-    </div>
+
     <div class="row justify-content-center">
         <!-- Thông tin thanh toán -->
         <div class="col-lg-7">
@@ -31,7 +29,6 @@
                                 <option value="">Chọn quốc gia</option>
                                 <option value="VN" selected>Việt Nam</option>
                                 <option value="US">Hoa Kỳ</option>
-                                <!-- Thêm các quốc gia khác nếu cần -->
                             </select>
                         </div>
                         <div class="col-12">
@@ -73,9 +70,31 @@
                             <label class="form-label">Ghi chú đơn hàng <span class="text-muted">(không bắt buộc)</span></label>
                             <textarea class="form-control border-pink" name="order_notes" rows="2"></textarea>
                         </div>
+
+                        <!-- MÃ GIẢM GIÁ (đưa xuống dưới ghi chú đơn hàng) -->
+                        <div class="col-12 mt-3">
+                            <h5 class="fw-bold mb-3" style="color:#e75480;">MÃ GIẢM GIÁ</h5>
+                            <form method="GET" action="{{ route('checkout.form') }}">
+                                <label for="coupon_id">Chọn mã giảm giá:</label>
+                                <select name="coupon_id" id="coupon_id" class="form-select border-pink" onchange="this.form.submit()">
+                                    <option value="">-- Không áp dụng --</option>
+                                    @foreach($coupons as $c)
+                                        <option value="{{ $c->id }}" {{ (isset($couponId) && $couponId == $c->id) ? 'selected' : '' }}>
+                                            {{ $c->code }} - 
+                                            @if($c->discount_type === 'percent')
+                                                Giảm {{ $c->discount }}%
+                                            @else
+                                                Giảm {{ number_format($c->discount,0,',','.') }} đ
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
                     </div>
             </div>
         </div>
+
         <!-- Đơn hàng -->
         <div class="col-lg-5">
             <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
@@ -90,18 +109,36 @@
                     <tbody>
                         @foreach($cart as $item)
                         <tr>
-                            <td>
-                                <span class="fw-semibold">{{ $item['name'] }}</span>
-                            </td>
+                            <td><span class="fw-semibold">{{ $item['name'] }}</span></td>
                             <td class="text-end">
                                 {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
                             </td>
                         </tr>
                         @endforeach
+
+                        <!-- Tạm tính -->
                         <tr>
                             <td class="fw-bold">Tạm tính</td>
                             <td class="fw-bold text-end">{{ number_format($total,0,',','.') }} đ</td>
                         </tr>
+
+                        <!-- Giảm giá -->
+                        @if($discount > 0)
+                        <tr>
+                            <td class="fw-bold">Giảm giá</td>
+                            <td class="fw-bold text-end" style="color:#e75480;">-{{ number_format($discount,0,',','.') }} đ</td>
+                        </tr>
+                        @endif
+
+                        <!-- Thành tiền -->
+                        <tr>
+                            <td class="fw-bold" style="font-size:1.1rem;">Thành tiền</td>
+                            <td class="fw-bold text-end" style="font-size:1.1rem; color:#e75480;">
+                                {{ number_format($finalTotal ?? $total,0,',','.') }} đ
+                            </td>
+                        </tr>
+
+                        <!-- Phí vận chuyển -->
                         <tr>
                             <td class="fw-bold">Phí vận chuyển</td>
                             <td class="text-end">
@@ -119,6 +156,8 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Tổng cộng -->
                         <tr>
                             <td class="fw-bold" style="font-size:1.1rem;">Tổng cộng</td>
                             <td class="fw-bold text-end" style="font-size:1.1rem; color:#e75480;">
@@ -127,6 +166,8 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <!-- Phương thức thanh toán -->
                 <div class="mb-3">
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="radio" name="payment" id="cod" value="cod" required>
@@ -141,13 +182,23 @@
                             <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="Momo" style="height:18px;vertical-align:middle;">
                         </label>
                     </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment" id="vnpay" value="vnpay" required>
+                        <label class="form-check-label fw-semibold" for="vnpay">
+                            Thanh toán qua VNPay
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/VNPAY_Logo.png" alt="VNPay" style="height:18px;vertical-align:middle;">
+                        </label>
+                    </div>
                 </div>
+
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="agree" required>
                     <label class="form-check-label" for="agree">
                         Tôi đồng ý với <a href="#" style="color:#e75480;">Điều khoản & Điều kiện</a> của website
                     </label>
                 </div>
+
+                <!-- Nút đặt hàng -->
                 <button type="submit" class="btn w-100 text-white fw-bold py-2" style="background:#222; font-size:1.1rem; letter-spacing:1px;">
                     ĐẶT HÀNG
                 </button>
@@ -158,28 +209,15 @@
 </div>
 
 <style>
-body {
-    background: #fafbfc;
-}
-.bg-white {
-    background: #fff !important;
-}
-.border-pink {
-    border: 1.5px solid #e75480 !important;
-}
+body { background: #fafbfc; }
+.bg-white { background: #fff !important; }
+.border-pink { border: 1.5px solid #e75480 !important; }
 .form-control:focus, .form-select:focus {
     border-color: #e75480 !important;
     box-shadow: 0 0 0 0.15rem rgba(231,84,128,0.10);
 }
-.form-check-input:checked {
-    background-color: #e75480;
-    border-color: #e75480;
-}
-.btn {
-    border-radius: 8px;
-}
-.table th, .table td {
-    vertical-align: middle;
-}
+.form-check-input:checked { background-color: #e75480; border-color: #e75480; }
+.btn { border-radius: 8px; }
+.table th, .table td { vertical-align: middle; }
 </style>
 @endsection
