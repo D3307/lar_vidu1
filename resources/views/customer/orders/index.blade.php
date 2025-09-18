@@ -110,16 +110,6 @@
                                                                     border-radius:8px;">
                                                             Xem chi tiết →
                                                         </span>
-
-                                                        <!-- Đánh giá -->
-                                                        @if($order->status === 'delivered' && $order->user_id === auth()->id())
-                                                            @if($order->reviews->isEmpty())
-                                                                <a href="{{ route('customer.review', $order->id) }}" 
-                                                                class="btn-review">Đánh giá</a>
-                                                            @else
-                                                                <span class="btn-reviewed">Đã đánh giá</span>
-                                                            @endif
-                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

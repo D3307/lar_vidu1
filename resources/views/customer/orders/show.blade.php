@@ -105,6 +105,15 @@
                                 style="background:#e75480;color:#fff;border:none;">
                             🖨 In đơn hàng
                         </button>
+
+                        <!-- Đánh giá -->
+                        @if($order->status === 'delivered' && $order->user_id === auth()->id())
+                            @if($order->reviews->isEmpty())
+                                <a href="{{ route('customer.review', [$order->id, $item->product->id]) }}" class="btn btn-outline-danger">Đánh giá</a>
+                            @else
+                                <span class="btn-reviewed">Đã đánh giá</span>
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
