@@ -1,136 +1,196 @@
 @extends('layouts.app')
 
-@section('title', 'Đặt hàng')
+@section('title', 'Checkout')
 
 @section('content')
-<div class="container my-5">
-    <h2 class="mb-4 text-center" style="color: #e75480;">🛍️ Đặt hàng</h2>
-
+<div class="container py-5">
+    <h2 class="mb-2 text-center fw-bold" style="font-size:2.2rem; color:#222;">Checkout</h2>
+    <div class="text-center mb-4">
+        <span>Bạn có mã giảm giá? <a href="#" style="color:#e75480; font-weight:600;">Click here</a> để nhập</span>
+    </div>
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-body p-4">
-                    <form action="{{ route('checkout') }}" method="POST">
-                        @csrf
-
-                        {{-- nếu có selected keys thì giữ lại --}}
-                        @if(!empty($selected))
-                            @foreach($selected as $key)
-                                <input type="hidden" name="selected[]" value="{{ $key }}">
-                            @endforeach
-                        @endif
-
-                        {{-- hiển thị danh sách item --}}
-                        <div class="mb-3">
-                            <h5>Sản phẩm</h5>
-                            @foreach($cart as $k => $item)
-                                <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ asset('storage/'.$item['image']) }}" alt="{{ $item['name'] }}"
-                                        style="width:64px;height:64px;object-fit:cover;border-radius:6px;margin-right:12px;">
-                                    <div>
-                                        <div style="font-weight:700">{{ $item['name'] }}</div>
-                                        <div class="text-muted">
-                                            {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+        <!-- Billing Details -->
+        <div class="col-lg-7">
+            <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
+                <h5 class="fw-bold mb-4" style="color:#e75480;">BILLING DETAILS</h5>
+                <form action="{{ route('checkout') }}" method="POST">
+                    @csrf
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">First name*</label>
+                            <input type="text" class="form-control border-pink" name="first_name" required>
                         </div>
-
-                        {{-- thông tin giao hàng --}}
-                        <div class="mb-3">
-                            <label for="name" class="form-label" style="color:#e75480;">Họ và tên</label>
-                            <input type="text" class="form-control border-pink" id="name" name="name"
-                                   value="{{ old('name', $user->name ?? '') }}" required>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Last name*</label>
+                            <input type="text" class="form-control border-pink" name="last_name" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label" style="color:#e75480;">Địa chỉ</label>
-                            <input type="text" class="form-control border-pink" id="address" name="address"
-                                   value="{{ old('address', $user->address ?? '') }}" required>
+                        <div class="col-12">
+                            <label class="form-label">Company name <span class="text-muted">(optional)</span></label>
+                            <input type="text" class="form-control border-pink" name="company">
                         </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label" style="color:#e75480;">Số điện thoại</label>
-                            <input type="text" class="form-control border-pink" id="phone" name="phone"
-                                   value="{{ old('phone', $user->phone ?? '') }}" required>
-                        </div>
-
-                        {{-- phương thức thanh toán --}}
-                        <div class="mb-3">
-                            <label for="payment" class="form-label" style="color:#e75480;">Phương thức thanh toán</label>
-                            <select class="form-select border-pink" id="payment" name="payment" required>
-                                <option value="cod">Thanh toán khi nhận hàng</option>
-                                <option value="momo">Thanh toán Online (Momo)</option>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Country / Region*</label>
+                            <select class="form-select border-pink" name="country" required>
+                                <option value="">Chọn quốc gia</option>
+                                <option value="VN" selected>Việt Nam</option>
+                                <option value="US">United States (US)</option>
+                                <!-- Thêm các quốc gia khác nếu cần -->
                             </select>
                         </div>
-
-                        {{-- chọn mã giảm giá --}}
-                        <div class="mb-3">
-                            <label for="coupon_id" class="form-label" style="color:#e75480;">Mã giảm giá</label>
-                            <select class="form-select border-pink" id="coupon_id" name="coupon_id">
-                                <option value="">-- Chọn mã giảm giá --</option>
-                                @foreach($coupons as $coupon)
-                                    <option value="{{ $coupon->id }}"
-                                        @if(old('coupon_id') == $coupon->id) selected @endif>
-                                        {{ $coupon->code }} -
-                                        @if($coupon->discount_type == 'percent')
-                                            Giảm {{ $coupon->discount }}%
-                                        @else
-                                            Giảm {{ number_format($coupon->discount,0,',','.') }}đ
-                                        @endif
-                                        (Đơn tối thiểu {{ number_format($coupon->min_order_value,0,',','.') }}đ)
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Street address*</label>
+                            <input type="text" class="form-control border-pink mb-2" name="address" placeholder="House number and street name" required>
+                            <input type="text" class="form-control border-pink" name="address2" placeholder="Apartment, suite, unit, etc. (optional)">
                         </div>
-
-                        {{-- tổng cộng --}}
-                        <div class="mb-3">
-                            <div style="font-size:1.1rem;">
-                                <span>Tổng tiền: </span>
-                                <span style="font-weight:700">{{ number_format($total,0,',','.') }} đ</span>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Town / City*</label>
+                            <input type="text" class="form-control border-pink" name="city" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Country <span class="text-muted">(optional)</span></label>
+                            <input type="text" class="form-control border-pink" name="country_optional">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Postcode*</label>
+                            <input type="text" class="form-control border-pink" name="postcode" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Phone*</label>
+                            <input type="text" class="form-control border-pink" name="phone" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Email address*</label>
+                            <input type="email" class="form-control border-pink" name="email" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" id="ship-diff" name="ship_diff">
+                                <label class="form-check-label" for="ship-diff">
+                                    Ship to a different address?
+                                </label>
                             </div>
-                            @if($discount > 0)
-                                <div style="color:#e75480;">
-                                    <span>Giảm giá: -{{ number_format($discount,0,',','.') }} đ</span>
-                                </div>
-                                <div style="font-size:1.2rem;font-weight:700;">
-                                    <span>Thành tiền: </span>
-                                    <span style="color:#e75480;">{{ number_format($finalTotal,0,',','.') }} đ</span>
-                                </div>
-                            @endif
                         </div>
-
-                        <button type="submit" class="btn w-100 text-white" style="background-color:#e75480;">
-                            Xác nhận thanh toán
-                        </button>
-                    </form>
+                        <div class="col-12">
+                            <label class="form-label">Order notes <span class="text-muted">(optional)</span></label>
+                            <textarea class="form-control border-pink" name="order_notes" rows="2"></textarea>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- Order Summary -->
+        <div class="col-lg-5">
+            <div class="bg-white rounded-3 shadow-sm p-4 mb-4">
+                <h5 class="fw-bold mb-4" style="color:#e75480;">YOUR ORDER</h5>
+                <table class="table mb-3">
+                    <thead>
+                        <tr style="border-bottom:1.5px solid #eee;">
+                            <th class="fw-semibold" style="color:#222;">Product</th>
+                            <th class="fw-semibold text-end" style="color:#222;">Sub-total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cart as $item)
+                        <tr>
+                            <td>
+                                <span class="fw-semibold">{{ $item['name'] }}</span>
+                            </td>
+                            <td class="text-end">
+                                {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
+                            </td>
+                        </tr>
+                        @endforeach
+                        <tr>
+                            <td class="fw-bold">Sub-total</td>
+                            <td class="fw-bold text-end">{{ number_format($total,0,',','.') }} đ</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Shipping</td>
+                            <td class="text-end">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="shipping" id="flat" value="flat" checked>
+                                    <label class="form-check-label" for="flat">Flat rate 30,000đ</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="shipping" id="free" value="free">
+                                    <label class="form-check-label" for="free">Free shipping</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="shipping" id="pickup" value="pickup">
+                                    <label class="form-check-label" for="pickup">Local pickup</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="font-size:1.1rem;">Total</td>
+                            <td class="fw-bold text-end" style="font-size:1.1rem; color:#e75480;">
+                                {{ number_format($finalTotal ?? $total,0,',','.') }} đ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment" id="bank" value="bank" required>
+                        <label class="form-check-label fw-semibold" for="bank">
+                            Direct bank transfer
+                        </label>
+                        <div class="text-muted small ms-4">
+                            Make your payment directly into our bank account.<br>
+                            Please use your Order ID as the payment reference.<br>
+                            Your order will not be shipped until the funds have cleared in our account.
+                        </div>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment" id="cod" value="cod" required>
+                        <label class="form-check-label fw-semibold" for="cod">
+                            Cash on delivery
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment" id="paypal" value="paypal" required>
+                        <label class="form-check-label fw-semibold" for="paypal">
+                            Paypal <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="Paypal" style="height:18px;vertical-align:middle;">
+                        </label>
+                    </div>
                 </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="agree" required>
+                    <label class="form-check-label" for="agree">
+                        I agree to the website <a href="#" style="color:#e75480;">Terms and Conditions</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn w-100 text-white fw-bold py-2" style="background:#222; font-size:1.1rem; letter-spacing:1px;">
+                    PLACE ORDER
+                </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .card { border-top: 4px solid #e75480; }
-    .border-pink {
-        border: 1px solid #e75480 !important;
-        font: #333;
-    }
-    .form-select.border-pink:focus {
-        border-color: #e75480 !important;
-        box-shadow: 0 0 0 0.25rem rgba(231, 84, 128, 0.25);
-    }
-    .form-select.border-pink option {
-        color: #333; /* mặc định đen để dễ đọc */
-        font-weight: 500;
-    }
-    .form-select.border-pink option:checked,
-    .form-select.border-pink option[selected] {
-        color: #e75480 !important;
-        font-weight: 700;
-    }
-    .form-select.border-pink option:hover {
-        background-color: #e75480;
-    }
+body {
+    background: #fafbfc;
+}
+.bg-white {
+    background: #fff !important;
+}
+.border-pink {
+    border: 1.5px solid #e75480 !important;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #e75480 !important;
+    box-shadow: 0 0 0 0.15rem rgba(231,84,128,0.10);
+}
+.form-check-input:checked {
+    background-color: #e75480;
+    border-color: #e75480;
+}
+.btn {
+    border-radius: 8px;
+}
+.table th, .table td {
+    vertical-align: middle;
+}
 </style>
 @endsection
