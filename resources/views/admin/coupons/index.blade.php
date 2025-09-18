@@ -30,12 +30,12 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $coupon->code }}</td>
-                    <td>{{ $coupon->type == 'percent' ? 'Phần trăm' : 'Cố định' }}</td>
+                    <td>{{ $coupon->discount_type == 'percent' ? 'Phần trăm' : 'Cố định' }}</td>
                     <td>
-                        @if($coupon->type == 'percent')
-                            {{ $coupon->value }} %
+                        @if($coupon->discount_type == 'percent')
+                            {{ $coupon->discount }} %
                         @else
-                            {{ number_format($coupon->value, 0, ',', '.') }} đ
+                            {{ number_format($coupon->discount, 0, ',', '.') }} đ
                         @endif
                     </td>
                     <td>{{ number_format($coupon->min_order_value, 0, ',', '.') }} đ</td>
