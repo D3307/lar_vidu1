@@ -10,16 +10,46 @@ use App\Models\UserHistory;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //Lấy tất cả sản phẩm
-        $products = Product::with('reviews')->paginate(6);
+        $query = Product::query()->with('reviews');
 
-        //Lấy tất cả danh mục sản phẩm
+        // Nếu lọc theo danh mục
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Lọc theo giá
+        if ($request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Sắp xếp
+        switch ($request->sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            default:
+                $query->latest();
+        }
+
+        $products = $query->paginate(6)->withQueryString();
         $categories = Category::all();
 
-        // Giả sử view hiển thị danh sách sản phẩm là resources/views/customer/products.blade.php
-        return view('customer.products', compact('products', 'categories'));
+        return view('customer.products', compact('products', 'categories'))
+            ->with('category', null);
     }
 
     public function show($id)

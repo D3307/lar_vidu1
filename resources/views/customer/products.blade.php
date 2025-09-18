@@ -35,6 +35,30 @@
             {{ isset($category) ? $category->name : 'Tất cả sản phẩm' }}
         </h1>
 
+        <!-- Bộ lọc và sắp xếp -->
+        <div class="filter-sort-bar mb-4">
+            <form method="GET" action="{{ route('customer.products') }}" class="filter-form">
+                <!-- Lọc giá -->
+                <input type="number" name="min_price" placeholder="Giá từ" value="{{ request('min_price') }}">
+                <input type="number" name="max_price" placeholder="Đến" value="{{ request('max_price') }}">
+
+                <!-- Nút lọc -->
+                <button type="submit">
+                    <i class="fa fa-filter"></i> Lọc
+                </button>
+            </form>
+
+            <form method="GET" action="{{ route('customer.products') }}" class="sort-form">
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="">-- Sắp xếp --</option>
+                    <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                    <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá giảm dần</option>
+                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Tên A → Z</option>
+                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Tên Z → A</option>
+                </select>
+            </form>
+        </div>
+
         @if($products->count() > 0)
             <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
                 @foreach($products as $product)
@@ -127,8 +151,120 @@
                     border-color: #eee;
                     cursor: not-allowed;
                 }
+                /* Khung chung */
+                .filter-sort-bar {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 15px;
+                    padding: 15px 20px;
+                    background: #fff;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                    flex-wrap: wrap;
+                }
+
+                /* Form lọc */
+                .filter-form {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                }
+
+                .filter-form input {
+                    width: 120px;
+                    padding: 8px 10px;
+                    border: 1px solid #ffd1dc;
+                    border-radius: 6px;
+                    font-size: 0.95rem;
+                    transition: 0.2s;
+                }
+
+                .filter-form input:focus {
+                    outline: none;
+                    border-color: #ff6b88;
+                    box-shadow: 0 0 0 2px rgba(255,107,136,0.15);
+                }
+
+                .filter-form button {
+                    background: #ff6b88;
+                    color: #fff;
+                    border: none;
+                    padding: 8px 14px;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: 0.2s;
+                }
+
+                .filter-form button:hover {
+                    background: #ff3b67;
+                }
+
+                /* Form sắp xếp */
+                .sort-form select {
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                    border: 1px solid #ffd1dc;
+                    font-size: 0.95rem;
+                    cursor: pointer;
+                    transition: 0.2s;
+                }
+
+                .sort-form select:focus {
+                    outline: none;
+                    border-color: #ff6b88;
+                    box-shadow: 0 0 0 2px rgba(255,107,136,0.15);
+                }
             </style>
         </div>
     </div>
 </div>
+
+<script>
+    // Lọc và sắp xếp sản phẩm bằng JavaScript
+    const filterPrice = document.getElementById("filterPrice");
+    const sortBy = document.getElementById("sortBy");
+    const productList = document.getElementById("productList");
+    const products = Array.from(productList.querySelectorAll(".product"));
+
+    function renderProducts(filteredProducts) {
+        productList.innerHTML = "";
+        filteredProducts.forEach(p => productList.appendChild(p));
+    }
+
+    function applyFilterAndSort() {
+        let filtered = [...products];
+
+        // --- LỌC ---
+        const priceFilter = filterPrice.value;
+        if (priceFilter) {
+            filtered = filtered.filter(p => {
+                const price = parseInt(p.dataset.price);
+                if (priceFilter === "0-500") return price < 500;
+                if (priceFilter === "500-1000") return price >= 500 && price <= 1000;
+                if (priceFilter === "1000+") return price > 1000;
+                return true;
+            });
+        }
+
+        // --- SẮP XẾP ---
+        const sortValue = sortBy.value;
+        if (sortValue === "price-asc") {
+            filtered.sort((a, b) => a.dataset.price - b.dataset.price);
+        } else if (sortValue === "price-desc") {
+            filtered.sort((a, b) => b.dataset.price - a.dataset.price);
+        }
+
+        renderProducts(filtered);
+    }
+
+    // Gắn sự kiện
+    filterPrice.addEventListener("change", applyFilterAndSort);
+    sortBy.addEventListener("change", applyFilterAndSort);
+
+    // Hiển thị mặc định
+    applyFilterAndSort();
+</script>
 @endsection

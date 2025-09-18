@@ -162,7 +162,7 @@
                             <h6 class="fw-bold mb-2"><i class="fa fa-truck me-2"></i>Vận chuyển & Đổi trả</h6>
                             <ul class="mb-0" style="font-size:0.97rem;">
                                 <li>Giao hàng toàn quốc, kiểm tra trước khi nhận</li>
-                                <li>Đổi trả trong 7 ngày nếu lỗi nhà sản xuất</li>
+                                <li>Đổi trả trong 3 ngày nếu lỗi nhà sản xuất</li>
                                 <li>Hỗ trợ khách hàng 24/7</li>
                             </ul>
                         </div>
