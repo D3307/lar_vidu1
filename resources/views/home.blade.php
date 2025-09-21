@@ -16,29 +16,29 @@
     <!-- Sản phẩm bán chạy -->
     <div class="container" style="margin-top: 4rem;">
         <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 1rem; color: #333; font-weight: 700;">SẢN PHẨM BÁN CHẠY</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 2rem;">Top những sản phẩm được mua nhiều nhất</p>
-        
-        <div class="product-grid">
-            @foreach($products as $product)
-                <a href="{{ route('customer.product_detail', $product->id) }}" 
-                style="text-decoration: none; color: inherit;">
-                    <div class="product-card" 
-                        style="background: white; border-radius: 10px; overflow: hidden; 
-                            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.3s;">
-                        <img src="{{ asset('storage/' . $product->image) }}" 
-                            alt="{{ $product->name }}" 
-                            style="width: 100%; height: 300px; object-fit: cover;">
-                        <div style="padding: 1rem;">
-                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #333;">
-                                {{ $product->name }}
-                            </h3>
-                            <p style="font-weight: bold; color: #ff6b88; font-size: 1.1rem;">
-                                {{ number_format($product->price, 0, ',', '.') }} ₫
-                            </p>
-                        </div>
+        <div class="swiper product-swiper">
+            <div class="swiper-wrapper">
+                @foreach($products as $product)
+                    <div class="swiper-slide">
+                        <a href="{{ route('customer.product_detail', $product->id) }}" style="text-decoration: none; color: inherit;">
+                            <div class="product-card" style="background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.3s;">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="width: 100%; height: 240px; object-fit: cover;">
+                                <div style="padding: 1rem;">
+                                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: #333;">{{ $product->name }}</h3>
+                                    <p style="font-weight: bold; color: #e75480; font-size: 1.1rem;">
+                                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            @endforeach
+                @endforeach
+            </div>
+            <!-- Nút điều hướng -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- Thanh chỉ số -->
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 
@@ -48,4 +48,44 @@
         <p style="color: #666;">Sử dụng mã WELCOME30 khi thanh toán</p>
         <a href="{{ route('customer.products') }}" class="btn" style="display: inline-block; margin-top: 1rem; background: #ff6b88; color: white; padding: 0.8rem 2rem;">Mua sắm ngay</a>
     </div>
+
+    <!-- SwiperJS khởi tạo -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new Swiper('.product-swiper', {
+            slidesPerView: 4,
+            spaceBetween: 24,
+            loop: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                1200: { slidesPerView: 4 },
+                900: { slidesPerView: 3 },
+                600: { slidesPerView: 2 },
+                0: { slidesPerView: 1 }
+            }
+        });
+    });
+    </script>
+
+    <style>
+    .product-swiper { padding-bottom: 40px; }
+    .swiper-slide { height: auto; }
+    .product-card:hover {
+        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 8px 24px rgba(231,84,128,0.10);
+    }
+    .swiper-button-next, .swiper-button-prev { color: #e75480; }
+    .swiper-pagination-bullet-active { background: #e75480; }
+    </style>
 @endsection

@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <style>
         :root {
             --bg: #fff9fb; 
@@ -291,6 +294,94 @@
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
+
+        /* Footer mới */
+        .shop-footer {
+            background: #fff;
+            border-top: 2px solid #f3e6ea;
+            color: #222;
+            font-size: 1rem;
+            letter-spacing: 0.1px;
+        }
+        .footer-title {
+            color: #e75480;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .footer-desc {
+            color: #444;
+            font-size: 1.02rem;
+            margin-bottom: 0;
+        }
+        .footer-heading {
+            color: #e75480;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.08rem;
+        }
+        .footer-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-list li {
+            margin-bottom: 8px;
+            color: #222;
+            font-size: 1.01rem;
+            display: flex;
+            align-items: center;
+        }
+        .footer-list a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.18s;
+        }
+        .footer-list a:hover {
+            color: #e75480;
+            text-decoration: underline;
+        }
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+        .footer-social-link {
+            color: #e75480;
+            background: #f9f3f3;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            transition: background 0.18s, color 0.18s;
+            text-decoration: none;
+        }
+        .footer-social-link:hover {
+            background: #e75480;
+            color: #fff;
+        }
+        .footer-hr {
+            border-top: 1.5px solid #f3e6ea;
+        }
+        @media (max-width: 900px) {
+            .shop-footer .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .footer-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        .footer-divider {
+            border-top: 2.5px solid #f3e6ea;
+            width: 100%;
+            margin-bottom: 0;
+        }
     </style>
     @stack('head')
 </head>
@@ -389,16 +480,42 @@
         @yield('content')
     </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div>
-                <h3>Về chúng tôi</h3>
-                <p>Thương hiệu giày cao gót hàng đầu Việt Nam</p>
+    <footer class="shop-footer mt-5">
+        <div class="footer-divider" style="color: #632231ff;"></div>
+        <div class="container py-4">
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <h5 class="footer-title mb-3">
+                        Bridal Shop
+                    </h5>
+                    <p class="footer-desc">
+                        Chuyên giày cao gót nữ thời trang, chất lượng, giá tốt. Đổi trả dễ dàng, giao hàng toàn quốc.
+                    </p>
+                    <div class="footer-social mt-3">
+                        <a href="#" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="footer-social-link"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="footer-heading">Liên hệ</h6>
+                    <ul class="footer-list">
+                        <li><i class="fa fa-map-marker-alt me-2"></i>41A Phú Diễn, Bắc Từ Liêm, Hà Nội</li>
+                        <li><i class="fa fa-phone me-2"></i>0123 456 789</li>
+                        <li><i class="fa fa-envelope me-2"></i>info@giaycaogot.com</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="footer-heading">Hỗ trợ khách hàng</h6>
+                    <ul class="footer-list">
+                        <li><a href="{{ route('customer.about') }}">Chính sách đổi trả</a></li>
+                        <li><a href="{{ route('customer.contact') }}">Liên hệ</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h3>Liên hệ</h3>
-                <p><i class="fas fa-envelope"></i> info@giaycaogot.com</p>
-                <p><i class="fas fa-phone"></i> 0123 456 789</p>
+            <hr class="footer-hr my-4">
+            <div class="text-center text-muted small">
+                &copy; {{ date('Y') }} GIAYCAOGOT. All rights reserved.
             </div>
         </div>
     </footer>

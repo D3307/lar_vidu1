@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product; // Thêm ở đầu file nếu chưa có
 
 class HomeController extends Controller
 {
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // Lấy 6 sản phẩm mới nhất
+        $products = Product::orderBy('created_at', 'desc')->take(6)->get();
+        return view('home', compact('products'));
     }
 }
