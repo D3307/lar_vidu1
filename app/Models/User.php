@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Order;
+use App\Models\Wishlist;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'phone',
+        'address',
         'role',
     ];
 
@@ -50,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     //Đơn hàng của khách hàng
     public function orders()
     {
-        return $this->hasMany(\App\Models\Order::class, 'user_id');
+        return $this->hasMany(Order::class, 'user_id');
     }
 
 

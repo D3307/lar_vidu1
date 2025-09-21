@@ -58,9 +58,14 @@
                 </span>
             </div>
 
-            <div class="form-group" style="margin-bottom: 1.5rem;">
-                <input type="checkbox" id="terms" name="terms" style="margin-right: 0.5rem;" required>
-                <label for="terms" style="color: #6b6b6b;">Tôi đồng ý với <a href="#" style="color: #7a2f3b; text-decoration: none;">Điều khoản dịch vụ</a> và <a href="#" style="color: #7a2f3b; text-decoration: none;">Chính sách bảo mật</a></label>
+            <div class="form-group" style="margin-bottom: 1.5rem; display: flex; align-items: center;">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms" style="color: #6b6b6b; margin: 0 0 0 0.5rem; cursor: pointer;">
+                    Tôi đồng ý với 
+                    <a href="#" style="color: #7a2f3b; text-decoration: none;">Điều khoản dịch vụ</a> 
+                    và 
+                    <a href="#" style="color: #7a2f3b; text-decoration: none;">Chính sách bảo mật</a>
+                </label>
             </div>
             
             <button type="submit" 
@@ -110,4 +115,15 @@
         }
     }
 </script>
+
+
+<style>
+/* Tùy biến checkbox */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7a2f3b; /* Hỗ trợ tốt trên Chrome, Edge, Firefox mới */
+    cursor: pointer;
+}
+</style>
 @endsection

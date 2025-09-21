@@ -26,6 +26,8 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'phone'    => 'nullable|string|max:15',
+            'address'  => 'nullable|string|max:255',
             'role'     => 'required|in:admin,customer',
         ]);
 
@@ -33,6 +35,8 @@ class UserController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'phone'    => $request->phone,
+            'address'  => $request->address,
             'role'     => $request->role,
         ]);
 
@@ -49,11 +53,13 @@ class UserController extends Controller
         $request->validate([
             'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
             'role'  => 'required|in:admin,customer',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
-        $data = $request->only(['name', 'email', 'role']);
+        $data = $request->only(['name', 'email', 'phone', 'address', 'role']);
         if ($request->password) {
             $data['password'] = Hash::make($request->password);
         }
