@@ -105,6 +105,9 @@
                 <div class="mb-3">
                     <span class="fw-bold">Số lượng</span>
                     <input type="number" name="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
+                    <span class="ms-2 text-muted" style="font-size:0.97rem;">
+                        (Còn lại: {{ $product->quantity }} sản phẩm)
+                    </span>
                 </div>
                 {{-- Nút --}}
                 @if($product->quantity > 0)
