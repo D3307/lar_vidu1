@@ -13,7 +13,7 @@
             <a href="{{ route('admin.reports.exportExcel') }}" 
                class="btn-export" 
                style="background:#7a2f3b; color:#fff; padding:10px 18px; border-radius:8px; text-decoration:none; font-size:0.95rem; font-weight:600;">
-               ⬇ Xuất file
+               <i class="fa fa-file-excel me-1"></i> Xuất file
             </a>
         </div>
     </div>
