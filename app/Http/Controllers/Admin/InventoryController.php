@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Inventory;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InventoriesExport;
 
 class InventoryController extends Controller
 {
@@ -32,7 +34,10 @@ class InventoryController extends Controller
 
     public function edit($id)
     {
-        $inventory = Inventory::with('product')->findOrFail($id);
+        $inventory = Inventory::with(['product', 'stockMovements' => function($q) {
+            $q->latest()->take(10); // lấy 10 bản ghi gần nhất
+        }])->findOrFail($id);
+
         return view('admin.inventories.edit', compact('inventory'));
     }
 
@@ -43,11 +48,74 @@ class InventoryController extends Controller
         ]);
 
         $inventory = Inventory::findOrFail($id);
+
+        // Tính số thay đổi
+        $oldQty = $inventory->quantity;
+        $newQty = $request->quantity;
+        $change = $newQty - $oldQty;
+
         $inventory->update([
-            'quantity' => $request->quantity
+            'quantity' => $newQty
         ]);
 
+        // Ghi log nhập/xuất
+        if ($change != 0) {
+            $type = $change > 0 ? 'import' : 'export';
+
+            \App\Models\StockMovement::create([
+                'inventory_id' => $inventory->id,
+                'type' => $type,
+                'quantity' => abs($change),
+                'note' => 'Cập nhật tồn kho thủ công'
+            ]);
+        }
+
         return redirect()->route('admin.inventories.index')
-                         ->with('success', 'Cập nhật số lượng tồn kho thành công');
+                        ->with('success', 'Cập nhật số lượng tồn kho thành công');
+    }
+
+    //Lịch sử nhập xuất
+    public function history($id)
+    {
+        $inventory = Inventory::with('product')->findOrFail($id);
+
+        $movements = $inventory->stockMovements()
+            ->latest()
+            ->paginate(10); // phân trang
+
+        return view('admin.inventories.history', compact('inventory', 'movements'));
+    }
+
+    //Xuất excel
+    public function exportExcel()
+    {
+        return Excel::download(new InventoriesExport, 'inventories.xlsx');
+    }
+
+    //Nhập xuất kho
+    public function import(Request $request, Inventory $inventory) {
+        $inventory->quantity += $request->quantity;
+        $inventory->save();
+
+        $inventory->movements()->create([
+            'type' => 'import',
+            'quantity' => $request->quantity,
+            'note' => $request->note,
+        ]);
+
+        return back()->with('success', 'Nhập kho thành công');
+    }
+
+    public function export(Request $request, Inventory $inventory) {
+        $inventory->quantity -= $request->quantity;
+        $inventory->save();
+
+        $inventory->movements()->create([
+            'type' => 'export',
+            'quantity' => $request->quantity,
+            'note' => $request->note,
+        ]);
+
+        return back()->with('success', 'Xuất kho thành công');
     }
 }

@@ -28,6 +28,7 @@
                     <td>{{ $inventory->updated_at->format('d/m/Y H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.inventories.edit', $inventory->id) }}" class="btn-action btn-edit">Sửa</a>
+                        <a href="{{ route('admin.inventories.history', $inventory->id) }}" class="btn-history-link">Lịch sử</a>
                     </td>
                 </tr>
                 @empty
@@ -132,6 +133,25 @@
         height: 14px;
         display: inline-block;
         vertical-align: middle;
+    }
+    .btn-history-link {
+        border: none;
+        background: #fff;
+        color: #7a2f3b;
+        border: 1px solid rgba(122,47,59,0.3);
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .2s;
+        font-weight: 500;
+        display: inline-block;
+    }
+    .btn-history-link:hover {
+        background: #f9f3f3;
+        color: #e75480;
+        border-color: #e75480;
     }
 </style>
 @endsection

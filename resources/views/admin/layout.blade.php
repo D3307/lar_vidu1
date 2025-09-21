@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>@yield('title','Admin')</title>
 
     <style>
@@ -16,6 +19,22 @@
             max-width:1400px;        
             margin:0 auto; 
             box-sizing:border-box;
+        }
+        .notification-menu {
+            position: relative; /* để dropdown bám vào ô này */
+        }
+
+        #notifDropdown {
+            display: none;
+            position: absolute;
+            right: 0;    /* sát bên phải icon chuông */
+            top: 40px;   /* xuống dưới icon chuông một chút */
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 100;
         }
 
         /* thu nhỏ sidebar */
@@ -85,17 +104,55 @@
 </head>
 <body>
     <header class="admin-header">
+        <!-- Logo bên trái -->
         <div style="display:flex;align-items:center;gap:12px">
             <div style="font-weight:800;color:#7a2f3b">Bridal Shop - Trang quản trị của Admin</div>
         </div>
-        <div class="user-menu" style="position:relative;">
-            <button type="button" style="background:transparent;border:none;display:flex;align-items:center;gap:10px;cursor:pointer;">
-                <span style="display:inline-block;width:38px;height:38px;background:#f0d4db;border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                    <i class="fa-solid fa-user" style="color:#7a2f3b;font-size:1.4rem;"></i>
-                </span>
-                <span style="font-weight:600;color:#7a2f3b;">{{ Auth::user()->name ?? 'Admin' }}</span>
-                <i class="fa-solid fa-chevron-down" style="color:#7a2f3b;"></i>
-            </button>
+
+        <!-- Cụm bên phải: thông báo + user -->
+        <div style="display:flex;align-items:center;gap:20px;margin-right:20px;">
+            <!-- Thông báo -->
+<div class="notification-menu">
+    <button type="button" id="notifBtn" style="background:transparent;border:none;cursor:pointer;position:relative;">
+        <i class="fa-solid fa-bell" style="color:#7a2f3b;font-size:1.4rem;"></i>
+        @if($lowStockItems->count() > 0)
+            <span style="position:absolute;top:-6px;right:-6px;background:#c03651;color:#fff;
+                        font-size:0.7rem;padding:2px 6px;border-radius:50%;">
+                {{ $lowStockItems->count() }}
+            </span>
+        @endif
+    </button>
+
+    <!-- dropdown -->
+    <div id="notifDropdown">
+        <div style="padding:10px;font-weight:600;color:#7a2f3b;border-bottom:1px solid #eee;">
+            🔔 Thông báo kho
+            </div>
+            <div style="max-height:250px;overflow-y:auto;">
+                @forelse($lowStockItems as $item)
+                    <div style="padding:8px 12px;border-bottom:1px solid #f1f1f1;font-size:0.9rem;">
+                        <strong>{{ $item->product->name }}</strong><br>
+                        <span style="color:#c03651">Còn {{ $item->quantity }} / Min {{ $item->min_quantity }}</span>
+                    </div>
+                @empty
+                    <div style="padding:12px;text-align:center;color:#666;">
+                        ✅ Tồn kho ổn định
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+            <!-- User menu -->
+            <div class="user-menu" style="position:relative;">
+                <button type="button" style="background:transparent;border:none;display:flex;align-items:center;gap:10px;cursor:pointer;">
+                    <span style="display:inline-block;width:38px;height:38px;background:#f0d4db;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        <i class="fa-solid fa-user" style="color:#7a2f3b;font-size:1.4rem;"></i>
+                    </span>
+                    <span style="font-weight:600;color:#7a2f3b;">{{ Auth::user()->name ?? 'Admin' }}</span>
+                    <i class="fa-solid fa-chevron-down" style="color:#7a2f3b;"></i>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -171,6 +228,7 @@
         </main>
     </div>
 
+    <!-- Side Bar -->
     <script>
         (function(){
             var toggle = document.getElementById('dashToggle');
@@ -193,6 +251,27 @@
             // restore
             try { if(localStorage.getItem('adminDashOpen') === '1') setOpen(true); } catch(e){}
         })();
+    </script>
+
+    <!-- Notification -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('notifBtn');
+            const dropdown = document.getElementById('notifDropdown');
+
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+
+            // Ẩn dropdown khi click ra ngoài
+            document.addEventListener('click', function(e) {
+                if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
