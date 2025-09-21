@@ -301,7 +301,7 @@
             <div class="nav-links">
                 <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Trang chủ</a>
                 <a href="{{ route('customer.products') }}" class="{{ request()->routeIs('customer.products*') ? 'active' : '' }}">Sản phẩm</a>
-                <a href="{{ route('customer.about') }}" class="{{ request()->routeIs('customer.about') ? 'active' : '' }}">Giới thiệu</a>
+                <a href="{{ route('customer.about') }}" class="{{ request()->routeIs('customer.about') ? 'active' : '' }}">Chính sách đổi trả</a>
                 <a href="{{ route('customer.contact') }}" class="{{ request()->routeIs('customer.contact') ? 'active' : '' }}">Liên hệ</a>
 
                 {{-- Menu user --}}
