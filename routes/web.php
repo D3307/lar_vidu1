@@ -95,7 +95,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/payment/momo/{order}', [PaymentController::class, 'payWithMomo'])->name('payment.momo');
     Route::post('/payment/momo/callback', [PaymentController::class, 'momoCallback'])->name('payment.momo.callback');
     Route::get('/payment/momo/fake-callback/{orderId}', [PaymentController::class, 'fakeMomoCallback']);
-    Route::get('/payment/momo/return', [PaymentController::class, 'momoReturn'])->name('payment.momo.return');
+    Route::post('/momo/notify', [PaymentController::class, 'momoNotify'])->name('payment.momo.notify');
+    Route::get('/momo/return', [PaymentController::class, 'momoReturn'])->name('payment.momo.return');
     Route::get('/customer/success', [PaymentController::class, 'success'])->name('customer.success');
 
     //Đánh giá

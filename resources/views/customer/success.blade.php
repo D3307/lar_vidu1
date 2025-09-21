@@ -8,7 +8,7 @@
         <div class="col-lg-8">
             <div style="background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); overflow: hidden;">
                 <div style="background: linear-gradient(90deg, #e75480 0%, #7a2130 100%); padding: 28px 20px; color: #fff; text-align: center;">
-                    @if($order && $order->status === 'paid')
+                    @if($order && ($order->payment_status === 'paid' || $order->status === 'paid' || $order->status === 'processing'))
                         <h1 style="margin:0; font-size:28px;">✅ Thanh toán thành công!</h1>
                         <p style="margin:6px 0 0; opacity:0.95;">Cảm ơn bạn. Đơn hàng đã được thanh toán thành công.</p>
                     @else
@@ -18,17 +18,20 @@
                 </div>
 
                 <div style="padding:24px 28px;">
-                    @if(isset($order))
+                    @if($order)
                         <div style="display:flex;gap:18px;align-items:center;">
                             <div style="flex:1">
                                 <p style="margin:0;color:#666;"><strong>Mã đơn hàng:</strong> #{{ $order->id }}</p>
                                 <p style="margin:6px 0 0;color:#666;"><strong>Phương thức:</strong> {{ $order->payment_method ?? 'N/A' }}</p>
-                                <p style="margin:6px 0 0;color:#666;"><strong>Trạng thái thanh toán:</strong> {{ $order->payment_status ?? 'pending' }}</p>
+                                <p style="margin:6px 0 0;color:#666;">
+                                    <strong>Trạng thái thanh toán:</strong>
+                                    {{ $order->payment_status ?? $order->status ?? 'unpaid' }}
+                                </p>
                             </div>
                             <div style="text-align:right; min-width:160px;">
                                 @php
                                     $discount = $order->discount ?? 0;
-                                    $finalTotal = ($order->final_total ?? 0) - $discount;
+                                    $finalTotal = ($order->final_total ?? $order->total_amount ?? 0) - $discount;
                                 @endphp
                                 <p style="margin:0;color:#222;font-weight:700;font-size:18px;">
                                     {{ number_format($finalTotal, 0, ',', '.') }} VNĐ
@@ -53,7 +56,7 @@
                             Xem danh sách đơn hàng
                         </a>
 
-                        @if(isset($order))
+                        @if($order)
                             <a href="{{ route('orders.show', $order->id) }}" class="btn" style="background:#7a2130;color:#fff;border:1px solid rgba(0,0,0,0.05);">
                                 Xem chi tiết đơn hàng
                             </a>
@@ -70,7 +73,6 @@
 </div>
 
 <style>
-    /* Tinh chỉnh nhỏ cho trang success */
     .btn-primary { padding: 10px 18px; border-radius: 8px; }
     .btn { padding: 10px 16px; border-radius: 8px; }
 </style>

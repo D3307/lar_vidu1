@@ -21,7 +21,8 @@ class Order extends Model
         'total',
         'status',
         'payment_status',
-        'payment_method'
+        'payment_method',
+        'momo_order_id'
     ];
 
     // 🔗 1 đơn hàng thuộc về 1 khách hàng (user)
