@@ -83,46 +83,4 @@ class InventoryController extends Controller
     {
         return Excel::download(new InventoriesExport, 'inventories.xlsx');
     }
-
-    // ==== Nhập kho ====
-    public function import(Request $request, Inventory $inventory)
-    {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-            'note' => 'nullable|string|max:255'
-        ]);
-
-        $inventory->increment('quantity', $request->quantity);
-
-        $inventory->stockMovements()->create([
-            'type' => 'import',
-            'quantity' => $request->quantity,
-            'note' => $request->note ?? 'Nhập kho'
-        ]);
-
-        return back()->with('success', 'Nhập kho thành công');
-    }
-
-    // ==== Xuất kho ====
-    public function export(Request $request, Inventory $inventory)
-    {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-            'note' => 'nullable|string|max:255'
-        ]);
-
-        if ($inventory->quantity < $request->quantity) {
-            return back()->with('error', 'Số lượng tồn không đủ để xuất');
-        }
-
-        $inventory->decrement('quantity', $request->quantity);
-
-        $inventory->stockMovements()->create([
-            'type' => 'export',
-            'quantity' => $request->quantity,
-            'note' => $request->note ?? 'Xuất kho'
-        ]);
-
-        return back()->with('success', 'Xuất kho thành công');
-    }
 }

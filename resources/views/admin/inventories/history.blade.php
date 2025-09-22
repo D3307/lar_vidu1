@@ -11,9 +11,6 @@
             <a href="{{ route('admin.inventories.exportExcel') }}" class="btn-action btn-excel">
                 <i class="fa fa-file-excel me-1"></i> Xuất Excel
             </a>
-            <button class="btn-action btn-movement" data-bs-toggle="modal" data-bs-target="#movementModal">
-                <i class="fa fa-plus me-1"></i> Nhập/Xuất
-            </button>
         </div>
     </div>
 
@@ -71,41 +68,6 @@
         <a href="{{ route('admin.inventories.index') }}" class="btn-history-back">
             <i class="fa fa-arrow-left me-1"></i> Quay lại
         </a>
-    </div>
-</div>
-
-<!-- Modal thêm nhập/xuất -->
-<div class="modal fade" id="movementModal" tabindex="-1" aria-labelledby="movementModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="{{ route('admin.inventories.addMovement', $inventory->id) }}" method="POST" class="modal-content">
-            @csrf
-            <div class="modal-header">
-                <h5 class="modal-title" id="movementModalLabel">Thêm nhập/xuất kho</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="type" class="form-label">Loại</label>
-                    <select class="form-select" name="type" required>
-                        <option value="import">Nhập</option>
-                        <option value="export">Xuất</option>
-                        <option value="adjust">Điều chỉnh</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Số lượng</label>
-                    <input type="number" name="quantity" class="form-control" required min="1">
-                </div>
-                <div class="mb-3">
-                    <label for="note" class="form-label">Ghi chú</label>
-                    <textarea name="note" class="form-control" rows="2"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn-modal-save">Lưu</button>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -228,32 +190,6 @@
         background: #f9f3f3;
         color: #7a2f3b;
         border-color: #7a2f3b;
-    }
-    /* Nút modal */
-    .btn-modal-cancel {
-        border: 1.5px solid #ccc;
-        padding: 7px 18px;
-        border-radius: 8px;
-        font-weight: 500;
-        background: #fff;
-        color: #333;
-        transition: background .2s, color .2s;
-    }
-    .btn-modal-cancel:hover {
-        background: #f3f3f3;
-        color: #e75480;
-    }
-    .btn-modal-save {
-        padding: 7px 18px;
-        border-radius: 8px;
-        font-weight: 600;
-        background: #e75480;
-        color: #fff;
-        border: none;
-        transition: background .2s;
-    }
-    .btn-modal-save:hover {
-        background: #c13c6a;
     }
 </style>
 @endsection

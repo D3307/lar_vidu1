@@ -166,6 +166,4 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         //Route quản lý kho
         Route::get('inventories/{id}/history', [InventoryController::class, 'history'])->name('inventories.history');
         Route::get('inventories/export-excel', [InventoryController::class, 'exportExcel'])->name('inventories.exportExcel');
-        Route::post('inventories/{inventory}/import', [InventoryController::class, 'import'])->name('inventories.import');
-        Route::post('inventories/{inventory}/movement', [InventoryController::class, 'addMovement'])->name('inventories.addMovement');
     });
