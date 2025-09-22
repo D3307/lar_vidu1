@@ -85,6 +85,13 @@ class TransactionController extends Controller
     public function show($id)
     {
         $transaction = Transaction::with('details.inventory.product')->findOrFail($id);
-        return view('admin.transactions.show', compact('transaction'));
+
+        foreach ($transaction->details as $detail) {
+            $detail->setRelation('inventory', $detail->inventory->fresh());
+        }
+
+        $totalQuantity = $transaction->details->sum('quantity');
+
+        return view('admin.transactions.show', compact('transaction', 'totalQuantity'));
     }
 }

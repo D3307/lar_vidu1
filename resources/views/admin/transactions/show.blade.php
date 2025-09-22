@@ -76,7 +76,7 @@
                 <tr style="background:{{ $transaction->type == 'import' ? '#e8f5e8' : '#fff0f0' }};font-weight:bold;">
                     <td>Tổng cộng</td>
                     <td style="color:{{ $transaction->type == 'import' ? '#1abc9c' : '#e75480' }};">
-                        {{ $transaction->type == 'import' ? '+' : '-' }}{{ $transaction->details->sum('quantity') }}
+                        {{ $transaction->type == 'import' ? '+' : '-' }}{{ $totalQuantity }}
                     </td>
                     <td>-</td>
                 </tr>
