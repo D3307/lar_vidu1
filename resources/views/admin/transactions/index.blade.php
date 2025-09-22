@@ -1,22 +1,21 @@
 {{-- resources/views/admin/transactions/index.blade.php --}}
 @extends('admin.layout')
 
+@section('title', 'Quản lý phiếu ' . ($type == 'import' ? 'nhập' : 'xuất'))
+
 @section('content')
 <div class="admin-card">
+    <!-- Header -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <h3 style="margin:0;font-size:1.1rem;color:#222;">
-            @if($type == 'import')
-                <i class="fa fa-plus-circle me-2" style="color:#1abc9c;"></i>Danh sách phiếu nhập
-            @else
-                <i class="fa fa-minus-circle me-2" style="color:#e75480;"></i>Danh sách phiếu xuất
-            @endif
+        <h3 style="margin:0;font-size:1.1rem;color:#4b3a3f">
+            Danh sách {{ $type == 'import' ? 'phiếu nhập' : 'phiếu xuất' }}
         </h3>
-        <a href="{{ route('admin.transactions.create', ['type' => $type]) }}" class="btn-action btn-{{ $type == 'import' ? 'import' : 'export' }}">
-            <i class="fa fa-plus me-1"></i>
-            Tạo {{ $type == 'import' ? 'phiếu nhập' : 'phiếu xuất' }} mới
+        <a href="{{ route('admin.transactions.create', ['type' => $type]) }}" class="btn-add">
+            + Tạo {{ $type == 'import' ? 'phiếu nhập' : 'phiếu xuất' }}
         </a>
     </div>
 
+    <!-- Table -->
     <div class="table-wrapper">
         <table class="styled-table">
             <thead>
@@ -31,27 +30,23 @@
             <tbody>
                 @forelse($transactions as $tran)
                 <tr>
-                    <td class="fw-bold">
-                        #{{ str_pad($tran->id, 4, '0', STR_PAD_LEFT) }}
-                    </td>
+                    <td>#{{ str_pad($tran->id, 4, '0', STR_PAD_LEFT) }}</td>
                     <td>
                         @if($tran->type == 'import')
-                            <span class="badge-inventory badge-import">Phiếu nhập</span>
+                            <span class="badge-import">Phiếu nhập</span>
                         @else
-                            <span class="badge-inventory badge-export">Phiếu xuất</span>
+                            <span class="badge-export">Phiếu xuất</span>
                         @endif
                     </td>
                     <td>{{ $tran->note ?? '-' }}</td>
                     <td>{{ $tran->created_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.transactions.show', $tran->id) }}" class="btn-action btn-view">
-                            <i class="fa fa-eye me-1"></i> Chi tiết
-                        </a>
+                        <a href="{{ route('admin.transactions.show', $tran->id) }}" class="btn-action btn-edit">Chi tiết</a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center text-muted py-3">
+                    <td colspan="5" style="text-align:center;color:#999;padding:12px">
                         Chưa có {{ $type == 'import' ? 'phiếu nhập' : 'phiếu xuất' }} nào.
                     </td>
                 </tr>
@@ -60,163 +55,139 @@
         </table>
     </div>
 
-    <div style="margin-top:16px;">
+    <!-- Pagination -->
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
         {{ $transactions->links('vendor.pagination.bootstrap-4') }}
     </div>
 </div>
 
 <style>
-    .admin-card {
-        background: #fff;
-        padding: 18px;
-        border-radius: 16px;
-        box-shadow: 0 4px 18px rgba(231,84,128,0.06);
+    .admin-card { 
+        background:#fff; 
+        padding:18px; 
+        border-radius:14px; 
+        box-shadow:0 4px 12px rgba(0,0,0,0.05);
     }
-    .table-wrapper {
-        overflow-x: auto;
+    .btn-add { 
+        background:#f0d4db; 
+        color:#7a2f3b; 
+        padding:8px 14px; 
+        border-radius:8px; 
+        border:1px solid #e8cbd2;
+        text-decoration:none; 
+        font-size:0.95rem; 
+        transition:all .2s ease;
     }
-    .styled-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        border: 1px solid #f3e6ea;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #fff;
+    .btn-add:hover { 
+        background:#d64571; 
+        color:#fff;
     }
-    .styled-table th {
-        background: #f9f3f3;
-        color: #e75480;
-        font-weight: 700;
-        text-align: left;
-        padding: 12px 14px;
-        font-size: 1rem;
-        border-bottom: 2px solid #f3e6ea;
+    .table-wrapper { 
+        overflow-x:auto; 
     }
-    .styled-table td {
-        padding: 12px 14px;
-        border-top: 1px solid #f3e6ea;
-        font-size: 1rem;
-        color: #222;
-        background: #fff;
+    .styled-table { 
+        width:100%; 
+        border-collapse:separate; 
+        border-spacing:0;
+        border:1px solid rgba(0,0,0,0.06); 
+        border-radius:10px; 
+        overflow:hidden;
+    }
+    .styled-table th { 
+        background:#f9f3f3; 
+        color:#7a2f3b; 
+        font-weight:600; 
+        text-align:left;
+        padding:10px 12px; 
+        font-size:0.95rem;
+    }
+    .styled-table td { 
+        padding:10px 12px; 
+        border-top:1px solid rgba(0,0,0,0.05); 
+        font-size:0.95rem; 
+        color:#333;
     }
     .styled-table tr:hover td {
-        background: #fdf6f8;
-        transition: background 0.2s;
+        background:#fdf6f8;
     }
-    .badge-inventory {
-        display: inline-block;
-        padding: 6px 18px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.98rem;
-        letter-spacing: 0.5px;
-        border: none;
-        transition: background .2s, color .2s;
+    .badge-import, .badge-export {
+        display:inline-block;
+        padding:4px 10px;
+        border-radius:12px;
+        font-size:0.85rem;
+        font-weight:500;
     }
     .badge-import {
-        background: #e6f9f0;
-        color: #1abc9c;
-        border: 1.5px solid #1abc9c;
+        background:#e6f9f0;
+        color:#1abc9c;
+        border:1px solid #1abc9c;
     }
     .badge-export {
-        background: #fff0f0;
-        color: #e75480;
-        border: 1.5px solid #e75480;
+        background:#fff0f0;
+        color:#e75480;
+        border:1px solid #e75480;
     }
-    .btn-action {
-        padding: 6px 14px;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        border: none;
-        cursor: pointer;
-        transition: all 0.18s;
-        display: inline-flex;
-        align-items: center;
+    .btn-action { 
+        border:none; 
+        background:transparent; 
+        padding:6px 10px; 
+        border-radius:6px;
+        font-size:0.85rem; 
+        cursor:pointer; 
+        text-decoration:none; 
+        transition:background .2s;
+    }
+    .btn-edit { 
+        color:#7a2f3b; 
+        border:1px solid rgba(122,47,59,0.3);
+    }
+    .btn-edit:hover { 
+        background:#f9f3f3;
+    }
+    .pagination {
+        display: flex;
         gap: 6px;
-        text-decoration: none;
-    }
-    .btn-import {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .btn-import:hover {
-        background: #f1b0b7;
-        color: #721c24;
-        border-color: #f1b0b7;
-    }
-    .btn-export {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    .btn-export:hover {
-        background: #f1b0b7;
-        color: #721c24;
-        border-color: #f1b0b7;
-    }
-    .btn-view {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-        padding: 6px 12px;
-        font-size: 0.9rem;
-    }
-    .btn-view:hover {
-        background: #f1b0b7;
-        color: #721c24;
-        border-color: #f1b0b7;
-    }
-    .btn-submit {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-        padding: 10px 24px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.18s;
-    }
-    .btn-submit:hover {
-        background: #f1b0b7;
-        color: #721c24;
-    }
-    .btn-add-item {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-        border-radius: 6px;
-        padding: 6px 16px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.18s;
-    }
-    .btn-add-item:hover {
-        background: #f1b0b7;
-        color: #721c24;
-    }
-    .btn-history-back {
-        border: 1px solid #f5c6cb;
-        background: #f8d7da;
-        color: #721c24;
-        padding: 6px 16px;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        cursor: pointer;
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.18s;
-        display: inline-flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
         align-items: center;
-        gap: 6px;
     }
-    .btn-history-back:hover {
-        background: #f1b0b7;
-        color: #721c24;
-        border-color: #f1b0b7;
+    .pagination li { 
+        display: inline-block; 
+    }
+    .pagination li a,
+    .pagination li span {
+        display: inline-block;
+        padding: 6px 10px;
+        min-width: 40px;
+        text-align: center;
+        border-radius: 8px;
+        background: #fff;
+        color: #333;
+        border: 1px solid #eee;
+        font-size: 14px;
+        line-height: 1;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+    .pagination li a:hover { 
+        background: rgba(231,84,128,0.06); 
+    }
+    .pagination li.active span {
+        background: #e75480;
+        color: #fff;
+        border-color: #e75480;
+    }
+    .pagination li.disabled span {
+        opacity: 0.6;
+        cursor: default;
+    }
+    .pagination li a .page-icon,
+    .pagination li span .page-icon {
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        vertical-align: middle;
     }
 </style>
 @endsection

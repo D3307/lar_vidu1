@@ -49,7 +49,7 @@
     </div>
 
     <!-- Chi tiết sản phẩm -->
-    <h5 style="color:{{ $transaction->type == 'import' ? '#1abc9c' : '#e75480' }};margin-bottom:12px;">
+    <h5 style="color:{{ $transaction->type == 'import' ? '#000000' : '#e75480' }};margin-bottom:12px;">
         Chi tiết sản phẩm {{ $transaction->type == 'import' ? 'nhập' : 'xuất' }}
     </h5>
     <div class="table-wrapper">

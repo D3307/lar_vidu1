@@ -38,7 +38,7 @@
         }
 
         /* thu nhỏ sidebar */
-        .admin-sidebar { width:240px; } /* hoặc 260px nếu muốn rộng hơn */
+        .admin-sidebar { width:220px; } /* hoặc 260px nếu muốn rộng hơn */
         .admin-main { flex:1; }
 
         /* Dashboard collapsible block */
@@ -92,37 +92,48 @@
 
         /* Active/selected */
         .nav-item-active { background: rgba(238,198,214,0.12); color:#7a2f3b; font-weight:700; }
-        .submenu { margin:6px 4px; }
+        /* đồng nhất style submenu-toggle với các link khác */
         .submenu-toggle {
-            display:block;
-            padding:8px 10px;
-            border-radius:8px;
-            color:#4b3a3f;
-            text-decoration:none;
-            font-size:0.95rem;
-            cursor:pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            margin: 6px 4px;
+            border-radius: 8px;
+            color: #4b3a3f;
+            text-decoration: none;
+            font-size: 0.95rem;
+            cursor: pointer;
         }
-        .submenu-toggle:hover { background:#f9f3f3; }
+
+        /* icon (emoji hoặc fa) đều nằm trong ô rộng 20px để thẳng hàng */
+        .submenu-toggle i,
+        .submenu-toggle .emoji {
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+            display: inline-block;
+        }
+
+        /* hover giống các link khác */
+        .submenu-toggle:hover {
+            background: #f9f3f3;
+        }
+
+        /* submenu-list bên trong nhỏ hơn chút */
         .submenu-list {
-            display:none;
-            padding-left:14px;
+            display: none;
+            padding-left: 34px; /* lùi vào để phân cấp */
         }
+        .submenu.open .submenu-list { display: block; }
         .submenu-list a {
-            display:block;
-            padding:6px 10px;
-            border-radius:6px;
-            font-size:0.9rem;
-            color:#555;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #555;
         }
         .submenu-list a:hover { background:#f9f3f3; }
-        .submenu.open .submenu-list { display:block; }
-        /* responsive small screen */
-        @media (max-width:900px){
-            .admin-wrap { padding:12px; max-width:100%; }
-            .admin-sidebar { width:100%; }
-            .dash-toggle .hamburger { width:22px; height:14px; }
-            .dash-title { font-size:0.95rem; }
-        }
     </style>
 </head>
 <body>
@@ -173,7 +184,6 @@
                         <i class="fa-solid fa-user" style="color:#7a2f3b;font-size:1.4rem;"></i>
                     </span>
                     <span style="font-weight:600;color:#7a2f3b;">{{ Auth::user()->name ?? 'Admin' }}</span>
-                    <i class="fa-solid fa-chevron-down" style="color:#7a2f3b;"></i>
                 </button>
             </div>
         </div>
@@ -194,34 +204,43 @@
 
             <nav class="dash-list" id="dashList" aria-hidden="true">
                 <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'nav-item-active' : '' }}">Dashboard</a>
-                <a href="{{ route('admin.reports.summary') }}" class="{{ request()->routeIs('admin.reports.summary') ? 'nav-item-active' : '' }}">📑 Báo cáo</a>
-                <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.index') ? 'nav-item-active' : '' }}">📊 Biểu đồ</a>
-                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'nav-item-active' : '' }}">📂 Quản lý danh mục</a>
-                <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'nav-item-active' : '' }}">📦 Quản lý sản phẩm</a>
 
-                <!-- Dropdown Quản lý kho -->
+                <!-- Báo cáo thống kê -->
+                <div class="submenu">
+                    <a href="javascript:void(0)" 
+                    class="submenu-toggle {{ request()->is('admin/reports*') ? 'nav-item-active' : '' }}">
+                        <span class="emoji">📑</span>
+                        <span>Báo cáo thống kê</span>
+                    </a>
+                    <div class="submenu-list">
+                        <a href="{{ route('admin.reports.summary') }}" class="{{ request()->routeIs('admin.reports.summary') ? 'nav-item-active' : '' }}">
+                            <i class="fa-regular fa-file-lines"></i> Báo cáo
+                        </a>
+                        <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.index') ? 'nav-item-active' : '' }}">
+                            <i class="fa-solid fa-chart-column"></i> Biểu đồ
+                        </a>
+                    </div>
+                </div>
+
+                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'nav-item-active' : '' }}">📂 Quản lý danh mục</a>
+                <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'nav-item-active' : '' }}">👠 Quản lý sản phẩm</a>
+
+                <!-- Quản lý kho -->
                 <div class="submenu">
                     <a href="javascript:void(0)" 
                     class="submenu-toggle {{ request()->is('admin/inventories*') || request()->is('admin/transactions*') ? 'nav-item-active' : '' }}">
-                        📬 Quản lý kho <i class="fa-solid fa-chevron-down" style="font-size:0.8rem;margin-left:6px;"></i>
+                        <span class="emoji">📦</span>
+                        <span>Quản lý kho</span>
                     </a>
                     <div class="submenu-list">
-                        <!-- Tồn kho -->
-                        <a href="{{ route('admin.inventories.index') }}" 
-                        class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">
-                        📦 Tồn kho
+                        <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">
+                        <i class="fa-solid fa-boxes-stacked"></i> Tồn kho
                         </a>
-
-                        <!-- Phiếu nhập -->
-                        <a href="{{ route('admin.transactions.index', ['type' => 'import']) }}" 
-                        class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'import'])) ? 'nav-item-active' : '' }}">
-                        ➕ Phiếu nhập
+                        <a href="{{ route('admin.transactions.index', ['type' => 'import']) }}" class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'import'])) ? 'nav-item-active' : '' }}">
+                        <i class="fa-solid fa-circle-arrow-down"></i> Phiếu nhập
                         </a>
-
-                        <!-- Phiếu xuất -->
-                        <a href="{{ route('admin.transactions.index', ['type' => 'export']) }}" 
-                        class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'export'])) ? 'nav-item-active' : '' }}">
-                        ➖ Phiếu xuất
+                        <a href="{{ route('admin.transactions.index', ['type' => 'export']) }}" class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'export'])) ? 'nav-item-active' : '' }}">
+                        <i class="fa-solid fa-circle-arrow-up"></i> Phiếu xuất
                         </a>
                     </div>
                 </div>
