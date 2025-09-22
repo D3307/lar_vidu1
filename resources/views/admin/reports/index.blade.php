@@ -12,8 +12,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
             gap: 24px;
-            margin-bottom: 24px;
-            padding-bottom: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
         }
         .modern-card2 {
             background: #fff;
@@ -73,13 +73,13 @@
             gap: 24px;
             margin-bottom: 24px;
             align-items: stretch;
-            height: 370px;
+            height: 400px;
             padding-bottom: 30px;
         }
         .rect-chart {
             flex: 2 1 0;
             min-width: 0;
-            height: 370px;
+            height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -87,7 +87,7 @@
         .square-chart {
             flex: 1 1 0;
             min-width: 0;
-            height: 370px;
+            height: 400px;
             aspect-ratio: 1/1;
             display: flex;
             align-items: center;
@@ -164,11 +164,11 @@
     <!-- Các biểu đồ -->
     <div class="report-grid-charts">
         <div class="report-card rect-chart">
-            <h3>Doanh thu theo danh mục</h3>
+            <h3 style="font-size: 1.3rem;">Doanh thu theo danh mục</h3>
             <canvas id="categoryRevenueChart"></canvas>
         </div>
         <div class="report-card square-chart">
-            <h3>Doanh thu theo phương thức thanh toán</h3>
+            <h3 style="font-size: 1.1rem;">Doanh thu theo phương thức thanh toán</h3>
             <canvas id="revenueByPaymentMethodChart"></canvas>
         </div>
     </div>
@@ -176,7 +176,7 @@
     <!-- Biểu đồ doanh thu gộp (Ngày/Tháng/Năm) -->
     <div class="report-grid-full">
         <div class="full-width-card">
-            <h3>Doanh thu theo thời gian</h3>
+            <h3 style="font-size: 1.3rem;">Doanh thu theo thời gian</h3>
             <select id="timeSelect">
                 <option value="day">Theo ngày</option>
                 <option value="month">Theo tháng</option>

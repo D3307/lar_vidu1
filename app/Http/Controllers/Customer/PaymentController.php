@@ -120,7 +120,7 @@ class PaymentController extends Controller
         }
 
         // Thanh toán thất bại
-        return redirect()->route('user.cart.index')
+        return redirect()->route('customer.success')
                          ->with('error', 'Thanh toán thất bại. Vui lòng thử lại.');
     }
 

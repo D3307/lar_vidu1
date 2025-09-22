@@ -13,13 +13,13 @@
             <thead>
                 <tr>
                     <th style="width:10px">ID</th>
-                    <th style="max-width:200px">Sản phẩm</th>
-                    <th style="width:85px">Người dùng</th>
-                    <th style="width:70px">Đơn hàng</th>
-                    <th style="width:80px">Rating</th>
+                    <th style="width:200px">Sản phẩm</th>
+                    <th style="width:95px">Người dùng</th>
+                    <th style="width:60px">Đơn hàng</th>
+                    <th style="width:90px">Rating</th>
                     <th style="width:200px">Bình luận</th>
                     <th style="width:120px">Ngày</th>
-                    <th style="width:115px">Hành động</th>
+                    <th style="width:120px">Hành động</th>
                 </tr>
             </thead>
             <tbody>
