@@ -92,7 +92,30 @@
 
         /* Active/selected */
         .nav-item-active { background: rgba(238,198,214,0.12); color:#7a2f3b; font-weight:700; }
-
+        .submenu { margin:6px 4px; }
+        .submenu-toggle {
+            display:block;
+            padding:8px 10px;
+            border-radius:8px;
+            color:#4b3a3f;
+            text-decoration:none;
+            font-size:0.95rem;
+            cursor:pointer;
+        }
+        .submenu-toggle:hover { background:#f9f3f3; }
+        .submenu-list {
+            display:none;
+            padding-left:14px;
+        }
+        .submenu-list a {
+            display:block;
+            padding:6px 10px;
+            border-radius:6px;
+            font-size:0.9rem;
+            color:#555;
+        }
+        .submenu-list a:hover { background:#f9f3f3; }
+        .submenu.open .submenu-list { display:block; }
         /* responsive small screen */
         @media (max-width:900px){
             .admin-wrap { padding:12px; max-width:100%; }
@@ -175,7 +198,19 @@
                 <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.index') ? 'nav-item-active' : '' }}">📊 Biểu đồ</a>
                 <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'nav-item-active' : '' }}">📂 Quản lý danh mục</a>
                 <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'nav-item-active' : '' }}">📦 Quản lý sản phẩm</a>
-                <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">📬 Quản lý kho</a>
+
+                <!-- Dropdown Quản lý kho -->
+                <div class="submenu">
+                    <a href="javascript:void(0)" class="submenu-toggle {{ request()->is('admin/inventories*') ? 'nav-item-active' : '' }}">
+                        📬 Quản lý kho <i class="fa-solid fa-chevron-down" style="font-size:0.8rem;margin-left:6px;"></i>
+                    </a>
+                    <div class="submenu-list">
+                        <a href="{{ route('admin.inventories.import') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">➕ Phiếu nhập</a>
+                        <a href="{{ route('admin.inventories.export') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">➖ Phiếu xuất</a>
+                        <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">📦 Tồn kho</a>
+                    </div>
+                </div>
+
                 <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'nav-item-active' : '' }}">👤 Quản lý người dùng</a>
                 <a href="{{ route('admin.orders.orders') }}" class="{{ request()->routeIs('admin.orders.*') ? 'nav-item-active' : '' }}">📋 Quản lý đơn hàng</a>
                 <a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'nav-item-active' : '' }}">⭐ Quản lý đánh giá</a>
@@ -251,6 +286,17 @@
             // restore
             try { if(localStorage.getItem('adminDashOpen') === '1') setOpen(true); } catch(e){}
         })();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('.submenu-toggle').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    const parent = btn.closest('.submenu');
+                    parent.classList.toggle('open');
+                });
+            });
+        });
     </script>
 
     <!-- Notification -->

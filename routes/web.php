@@ -166,4 +166,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::get('inventories/export-excel', [InventoryController::class, 'exportExcel'])->name('inventories.exportExcel');
         Route::post('inventories/{inventory}/import', [InventoryController::class, 'import'])->name('inventories.import');
         Route::post('inventories/{inventory}/movement', [InventoryController::class, 'addMovement'])->name('inventories.addMovement');
+        Route::get('inventories/export', [InventoryController::class, 'export'])->name('inventories.export');
+        Route::post('inventories/import', [InventoryController::class, 'import'])->name('inventories.import');
+
     });
