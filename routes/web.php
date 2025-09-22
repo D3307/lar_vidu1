@@ -26,6 +26,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Customer\WishlistController;
+use App\Http\Controllers\Admin\TransactionController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -147,6 +148,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('orders', AdminOrderController::class);
         Route::resource('reviews', AdminReviewController::class);
         Route::resource('coupons', AdminCouponController::class);
+        Route::resource('transactions',TransactionController::class);
         
         //Route báo cáo - thống kê
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -166,7 +168,4 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::get('inventories/export-excel', [InventoryController::class, 'exportExcel'])->name('inventories.exportExcel');
         Route::post('inventories/{inventory}/import', [InventoryController::class, 'import'])->name('inventories.import');
         Route::post('inventories/{inventory}/movement', [InventoryController::class, 'addMovement'])->name('inventories.addMovement');
-        Route::get('inventories/export', [InventoryController::class, 'export'])->name('inventories.export');
-        Route::post('inventories/import', [InventoryController::class, 'import'])->name('inventories.import');
-
     });

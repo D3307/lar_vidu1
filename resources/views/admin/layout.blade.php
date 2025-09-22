@@ -201,13 +201,28 @@
 
                 <!-- Dropdown Quản lý kho -->
                 <div class="submenu">
-                    <a href="javascript:void(0)" class="submenu-toggle {{ request()->is('admin/inventories*') ? 'nav-item-active' : '' }}">
+                    <a href="javascript:void(0)" 
+                    class="submenu-toggle {{ request()->is('admin/inventories*') || request()->is('admin/transactions*') ? 'nav-item-active' : '' }}">
                         📬 Quản lý kho <i class="fa-solid fa-chevron-down" style="font-size:0.8rem;margin-left:6px;"></i>
                     </a>
                     <div class="submenu-list">
-                        <a href="{{ route('admin.inventories.import') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">➕ Phiếu nhập</a>
-                        <a href="{{ route('admin.inventories.export') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">➖ Phiếu xuất</a>
-                        <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">📦 Tồn kho</a>
+                        <!-- Tồn kho -->
+                        <a href="{{ route('admin.inventories.index') }}" 
+                        class="{{ request()->routeIs('admin.inventories.*') ? 'nav-item-active' : '' }}">
+                        📦 Tồn kho
+                        </a>
+
+                        <!-- Phiếu nhập -->
+                        <a href="{{ route('admin.transactions.index', ['type' => 'import']) }}" 
+                        class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'import'])) ? 'nav-item-active' : '' }}">
+                        ➕ Phiếu nhập
+                        </a>
+
+                        <!-- Phiếu xuất -->
+                        <a href="{{ route('admin.transactions.index', ['type' => 'export']) }}" 
+                        class="{{ request()->fullUrlIs(route('admin.transactions.index', ['type'=>'export'])) ? 'nav-item-active' : '' }}">
+                        ➖ Phiếu xuất
+                        </a>
                     </div>
                 </div>
 
