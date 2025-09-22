@@ -33,46 +33,53 @@ class TransactionController extends Controller
     {
         $request->validate([
             'type' => 'required|in:import,export',
-            'details' => 'required|array',
-            'details.*.inventory_id' => 'required|exists:inventories,id',
-            'details.*.quantity' => 'required|integer|min:1',
+            'items' => 'required|array|min:1', // Đổi từ details thành items
+            'items.*.inventory_id' => 'required|exists:inventories,id',
+            'items.*.quantity' => 'required|integer|min:1',
             'note' => 'nullable|string|max:255',
         ]);
 
-        // Tạo phiếu nhập/xuất
-        $transaction = Transaction::create([
-            'type' => $request->type,
-            'note' => $request->note,
-        ]);
-
-        foreach ($request->details as $detail) {
-            $inventory = Inventory::with('product')->findOrFail($detail['inventory_id']);
-            $quantity = $detail['quantity'];
-
-            // Tạo chi tiết phiếu
-            $transaction->details()->create([
-                'inventory_id' => $inventory->id,
-                'quantity' => $quantity,
+        DB::beginTransaction();
+        try {
+            // Tạo phiếu nhập/xuất
+            $transaction = Transaction::create([
+                'type' => $request->type,
+                'note' => $request->note,
             ]);
 
-            // === Logic cập nhật tồn kho & sản phẩm ===
-            if ($request->type === 'import') {
-                // Nhập kho → tăng tồn + tăng số lượng sản phẩm
-                $inventory->increment('quantity', $quantity);
-                $inventory->product->increment('quantity', $quantity);
-            } else {
-                // Xuất kho → giảm tồn + giảm số lượng sản phẩm
-                if ($inventory->quantity < $quantity) {
-                    return back()->with('error', "Không đủ tồn kho cho sản phẩm {$inventory->product->name}");
+            foreach ($request->items as $item) { // Đổi từ details thành items
+                $inventory = Inventory::with('product')->findOrFail($item['inventory_id']);
+                $quantity = $item['quantity'];
+
+                // Kiểm tra tồn kho trước khi xuất
+                if ($request->type === 'export' && $inventory->quantity < $quantity) {
+                    throw new \Exception("Không đủ tồn kho cho sản phẩm {$inventory->product->name}. Tồn: {$inventory->quantity}, yêu cầu: {$quantity}");
                 }
 
-                $inventory->decrement('quantity', $quantity);
-                $inventory->product->decrement('quantity', $quantity);
-            }
-        }
+                // Tạo chi tiết phiếu
+                $transaction->details()->create([
+                    'inventory_id' => $inventory->id,
+                    'quantity' => $quantity,
+                ]);
 
-        return redirect()->route('admin.transactions.index')
-            ->with('success', 'Tạo phiếu ' . ($transaction->type === 'import' ? 'nhập' : 'xuất') . ' thành công');
+                // Cập nhật tồn kho
+                if ($request->type === 'import') {
+                    $inventory->increment('quantity', $quantity);
+                    $inventory->product->increment('quantity', $quantity);
+                } else {
+                    $inventory->decrement('quantity', $quantity);
+                    $inventory->product->decrement('quantity', $quantity);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('admin.transactions.index', ['type' => $request->type])
+                ->with('success', 'Tạo phiếu ' . ($transaction->type === 'import' ? 'nhập' : 'xuất') . ' thành công!');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->withInput()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
     public function show($id)
