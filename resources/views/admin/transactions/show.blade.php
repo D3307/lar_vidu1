@@ -58,7 +58,7 @@
                 <tr>
                     <th>Tên sản phẩm</th>
                     <th style="width:150px;">Số lượng</th>
-                    <th style="width:150px;">Tồn kho hiện tại</th>
+                    <th style="width:180px;">Tồn kho hiện tại</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,19 +68,10 @@
                     <td class="fw-bold {{ $transaction->type == 'import' ? 'text-success' : 'text-danger' }}">
                         {{ $transaction->type == 'import' ? '+' : '-' }}{{ $detail->quantity }}
                     </td>
-                    <td class="fw-bold">{{ $detail->inventory->quantity }}</td>
+                    <td class="fw-bold">{{ $detail->inventory->product->quantity }}</td>
                 </tr>
                 @endforeach
             </tbody>
-            <tfoot>
-                <tr style="background:{{ $transaction->type == 'import' ? '#e8f5e8' : '#fff0f0' }};font-weight:bold;">
-                    <td>Tổng cộng</td>
-                    <td style="color:{{ $transaction->type == 'import' ? '#1abc9c' : '#e75480' }};">
-                        {{ $transaction->type == 'import' ? '+' : '-' }}{{ $totalQuantity }}
-                    </td>
-                    <td>-</td>
-                </tr>
-            </tfoot>
         </table>
     </div>
 </div>

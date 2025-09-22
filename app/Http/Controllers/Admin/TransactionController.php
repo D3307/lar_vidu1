@@ -70,6 +70,17 @@ class TransactionController extends Controller
                     $inventory->decrement('quantity', $quantity);
                     $inventory->product->decrement('quantity', $quantity);
                 }
+
+                // ➕ Thêm record vào stock_movements
+                DB::table('stock_movements')->insert([
+                    'transaction_id' => $transaction->id,
+                    'inventory_id'   => $inventory->id,
+                    'type'           => $request->type, // import/export
+                    'quantity'       => $quantity,
+                    'note'           => $request->note,
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
             }
 
             DB::commit();

@@ -6,7 +6,13 @@
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <h3 style="margin:0;font-size:1.1rem;color:#222;">
             <i class="fa fa-plus me-2" style="color:#e75480;"></i>
-            Tạo phiếu nhập/xuất
+            @if(request('type') === 'import')
+                Tạo phiếu nhập
+            @elseif(request('type') === 'export')
+                Tạo phiếu xuất
+            @else
+                Tạo phiếu nhập/xuất
+            @endif
         </h3>
         <a href="{{ route('admin.transactions.index', ['type' => request('type', 'import')]) }}" class="btn-history-back">
             <i class="fa fa-arrow-left me-1"></i> Quay lại
@@ -19,10 +25,10 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="form-label">Loại phiếu</label>
-                <select name="type" class="form-select">
-                    <option value="import" {{ request('type') == 'import' ? 'selected' : '' }}>Nhập kho</option>
-                    <option value="export" {{ request('type') == 'export' ? 'selected' : '' }}>Xuất kho</option>
-                </select>
+                <input type="text" class="form-control" 
+                    value="{{ request('type') === 'import' ? 'Phiếu nhập' : 'Phiếu xuất' }}" 
+                    readonly>
+                <input type="hidden" name="type" value="{{ request('type') }}">
             </div>
             <div class="col-md-6">
                 <label class="form-label">Ghi chú</label>
