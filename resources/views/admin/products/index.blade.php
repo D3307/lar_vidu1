@@ -16,14 +16,14 @@
             <thead>
                 <tr>
                     <th style="width: 20px;">STT</th>
-                    <th style="width: 60px;">Ảnh</th>
+                    <th style="width: 40px;">Ảnh</th>
                     <th style="width: 250px;">Tên sản phẩm</th>
                     <th style="width: 100px;">Danh mục</th>
                     <th style="width: 60px;">Giá</th>
                     <th style="width: 60px;">Số lượng</th>
-                    <th style="width: 80px;">Màu sắc</th>
+                    <th style="width: 90px;">Màu sắc</th>
                     <th style="width: 70px;">Kích thước</th>
-                    <th style="width: 100px;">Hành động</th>
+                    <th style="width: 120px;">Hành động</th>
                 </tr>
             </thead>
             <tbody>
