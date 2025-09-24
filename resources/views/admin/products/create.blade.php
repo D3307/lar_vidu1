@@ -2,6 +2,10 @@
 
 @section('title','Tạo sản phẩm')
 
+@push('styles')
+    @vite(['resources/css/admin/products/create.css', 'resources/js/app.js'])
+@endpush
+
 @section('content')
 
     @if ($errors->any())
@@ -38,6 +42,7 @@
                 <label style="font-weight:600; font-size:16px; color:#333;">Chi tiết sản phẩm</label>
                 <div class="card shadow-sm border-0 rounded-3 mt-2">
                     <div class="card-body p-3">
+                        {{-- Sửa lại phần table trong create.blade.php --}}
                         <table class="table align-middle" id="details-table">
                             <thead class="table-light">
                                 <tr>
@@ -53,7 +58,9 @@
                                     <td><input type="text" name="details[0][size]" class="form-control" placeholder="VD: 41"></td>
                                     <td><input type="number" name="details[0][quantity]" class="form-control" min="0" value="0"></td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-outline-danger remove-detail">✖</button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger remove-detail">
+                                            <i class="fa fa-trash" style="color:#dc3545;"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -75,7 +82,11 @@
                             <td><input type="text" name="details[${index}][color]" class="form-control" placeholder="VD: Đỏ"></td>
                             <td><input type="text" name="details[${index}][size]" class="form-control" placeholder="VD: 41"></td>
                             <td><input type="number" name="details[${index}][quantity]" class="form-control" min="0" value="0"></td>
-                            <td><button type="button" class="btn btn-danger remove-detail">X</button></td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-outline-danger remove-detail">
+                                    <i class="fa fa-trash" style="color:#dc3545;"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                     table.insertAdjacentHTML('beforeend', newRow);
@@ -117,55 +128,4 @@
             <a href="{{ route('admin.products.index') }}" class="btn btn-outline" style="background:#eee;color:#7a2f3b;font-weight:600;">⬅ Hủy</a>
         </div>
     </form>
-
-    <style>
-        .btn.btn-outline {
-            background:#f0d4db;
-            color:#7a2f3b;
-            padding:8px 16px;
-            border:none;
-            border-radius:8px;
-            font-weight:600;
-            cursor:pointer;
-            transition:all .2s;
-        }
-        #details-table th {
-            font-weight:600;
-            color:#555;
-            text-transform:uppercase;
-            font-size:13px;
-        }
-
-        #details-table td input {
-            border-radius:8px;
-            padding:8px 10px;
-            font-size:14px;
-        }
-
-        #details-table .btn-outline-danger {
-            border-radius:50%;
-            padding:4px 8px;
-            font-size:14px;
-            line-height:1;
-            transition: all 0.2s ease;
-        }
-
-        #details-table .btn-outline-danger:hover {
-            background:#dc3545;
-            color:#fff;
-        }
-
-        #add-detail {
-            border-radius:8px;
-            font-weight:600;
-            padding:6px 14px;
-            font-size:14px;
-            transition:all 0.2s;
-        }
-
-        #add-detail:hover {
-            background:#28a745;
-            color:#fff;
-        }
-    </style>
 @endsection

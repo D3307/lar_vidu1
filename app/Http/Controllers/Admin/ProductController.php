@@ -55,27 +55,27 @@ class ProductController extends Controller
             'image'       => 'nullable|image|max:5120',
         ]);
 
-        // Xử lý ảnh
+        // Upload ảnh
         if ($request->hasFile('image')) {
             $originalName = $request->file('image')->getClientOriginalName();
             $fileName = time() . '_' . $originalName;
             $data['image'] = $request->file('image')->storeAs('products', $fileName, 'public');
         }
 
-        $data['category_id'] = (int) $data['category_id'];
-
-        // Tạo sản phẩm
         $product = Product::create($data);
 
-        // Tạo chi tiết sản phẩm (details)
-        if ($request->has('details')) {
-            foreach ($request->details as $detail) {
-                $product->details()->create([
-                    'color'    => $detail['color'] ?? null,
-                    'size'     => $detail['size'] ?? null,
-                    'quantity' => $detail['quantity'] ?? 0,
-                ]);
-            }
+        // Inventory mặc định
+        Inventory::create([
+            'product_id' => $product->id,
+            'quantity'   => $request->quantity ?? 0,
+        ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Sản phẩm đã được tạo.',
+                'data'    => $product->load('category', 'inventory')
+            ]);
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được tạo.');
@@ -101,63 +101,61 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'nullable|numeric',
-            'size' => 'nullable|string|max:100',
             'material' => 'nullable|string|max:150',
-            'color' => 'nullable|string|max:100',
             'category_id' => 'nullable|exists:categories,id',
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:5120',
             'quantity' => 'nullable|integer|min:0',
         ]);
 
-        // Cập nhật ảnh
         if ($request->hasFile('image')) {
             if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
-            $originalName = $request->file('image')->getClientOriginalName();
-            $fileName = time() . '_' . $originalName;
+            $fileName = time().'_'.$request->file('image')->getClientOriginalName();
             $data['image'] = $request->file('image')->storeAs('products', $fileName, 'public');
         }
 
-        if (isset($data['category_id'])) {
-            $data['category_id'] = (int) $data['category_id'];
-        }
-
-        // Cập nhật sản phẩm
         $product->update($data);
 
-        // Cập nhật inventory
         if ($product->inventory) {
-            $product->inventory->update([
-                'quantity' => $data['quantity'] ?? $product->inventory->quantity,
-            ]);
+            $product->inventory->update(['quantity' => $data['quantity'] ?? $product->inventory->quantity]);
         } else {
-            // Nếu chưa có thì tạo mới
             Inventory::create([
                 'product_id' => $product->id,
                 'quantity'   => $data['quantity'] ?? 0,
-                'location'   => null,
+            ]);
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Sản phẩm đã được cập nhật.',
+                'data'    => $product->load('category', 'inventory')
             ]);
         }
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được cập nhật.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product, Request $request)
     {
-        // Xóa ảnh
         if ($product->image && Storage::disk('public')->exists($product->image)) {
             Storage::disk('public')->delete($product->image);
         }
 
-        // Xóa inventory kèm theo
         if ($product->inventory) {
             $product->inventory->delete();
         }
 
-        // Xóa sản phẩm
         $product->delete();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Xóa sản phẩm thành công.'
+            ]);
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'Xóa sản phẩm thành công');
     }

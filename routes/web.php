@@ -27,6 +27,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Customer\WishlistController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\ProductDetailController as AdminProductDetailController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -149,6 +150,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('reviews', AdminReviewController::class);
         Route::resource('coupons', AdminCouponController::class);
         Route::resource('transactions',TransactionController::class);
+        Route::resource('product-details', AdminProductDetailController::class);
         
         //Route báo cáo - thống kê
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -166,4 +168,14 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         //Route quản lý kho
         Route::get('inventories/{id}/history', [InventoryController::class, 'history'])->name('inventories.history');
         Route::get('inventories/export-excel', [InventoryController::class, 'exportExcel'])->name('inventories.exportExcel');
+        
+        // Routes chi tiết sản phẩm
+        Route::post('products/{product}/details', [AdminProductDetailController::class, 'addDetail'])->name('products.addDetail');
+        Route::put('product-details/{detail}', [AdminProductDetailController::class, 'updateDetail'])->name('products.updateDetail');
+        Route::delete('product-details/{detail}', [AdminProductDetailController::class, 'deleteDetail'])->name('products.deleteDetail');
     });
+    
+    // Routes cho chi tiết sản phẩm
+    Route::post('products/{product}/details', [AdminProductDetailController::class, 'store'])->name('product-details.store');
+    Route::put('product-details/{detail}', [AdminProductDetailController::class, 'update'])->name('product-details.update');
+    Route::delete('product-details/{detail}', [AdminProductDetailController::class, 'destroy'])->name('product-details.destroy');

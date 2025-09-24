@@ -29,24 +29,9 @@
                     <label>Giá</label><br>
                     <input type="text" name="price" value="{{ old('price', $product->price) }}" style="width:100%;padding:8px;border-radius:6px">
                 </div>
-                <div style="width:140px">
-                    <label>Số lượng</label><br>
-                    <input type="number" name="quantity" value="{{ old('quantity', $product->quantity ?? 0) }}" min="0" style="width:100%;padding:8px;border-radius:6px">
-                </div>
-                <div style="width:140px">
-                    <label>Size</label><br>
-                    <input type="text" name="size" value="{{ old('size', $product->size) }}" style="width:100%;padding:8px;border-radius:6px" placeholder="VD: 36, S, M">
-                </div>
-            </div>
-
-            <div style="display:flex;gap:12px;margin-top:8px">
                 <div style="flex:1">
                     <label>Chất liệu</label><br>
                     <input type="text" name="material" value="{{ old('material', $product->material) }}" style="width:100%;padding:8px;border-radius:6px" placeholder="Ví dụ: Da tổng hợp">
-                </div>
-                <div style="width:200px">
-                    <label>Màu sắc</label><br>
-                    <input type="text" name="color" value="{{ old('color', $product->color) }}" style="width:100%;padding:8px;border-radius:6px" placeholder="Ví dụ: Đỏ, Đen">
                 </div>
             </div>
 
@@ -69,11 +54,6 @@
                         <option value="{{ $cat->id }}" @if(old('category_id', $product->category_id) == $cat->id) selected @endif>{{ $cat->name }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div style="margin-top:8px">
-                <label>Mô tả</label><br>
-                <textarea name="description" rows="4" style="width:100%;padding:8px;border-radius:6px">{{ old('description', $product->description) }}</textarea>
             </div>
 
             <div style="margin-top:16px;display:flex;gap:10px;">
