@@ -47,15 +47,12 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'nullable|numeric',
-            'size' => 'nullable|string|max:100',
-            'material' => 'nullable|string|max:150',
-            'color' => 'nullable|string|max:100',
+            'name'        => 'required|string|max:255',
+            'price'       => 'nullable|numeric',
+            'material'    => 'nullable|string|max:150',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|max:5120',
-            'quantity' => 'nullable|integer|min:0',
+            'image'       => 'nullable|image|max:5120',
         ]);
 
         // Xử lý ảnh
@@ -70,12 +67,16 @@ class ProductController extends Controller
         // Tạo sản phẩm
         $product = Product::create($data);
 
-        // Tạo inventory kèm theo
-        Inventory::create([
-            'product_id' => $product->id,
-            'quantity'   => $data['quantity'] ?? 0,
-            'location'   => null,
-        ]);
+        // Tạo chi tiết sản phẩm (details)
+        if ($request->has('details')) {
+            foreach ($request->details as $detail) {
+                $product->details()->create([
+                    'color'    => $detail['color'] ?? null,
+                    'size'     => $detail['size'] ?? null,
+                    'quantity' => $detail['quantity'] ?? 0,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'Sản phẩm đã được tạo.');
     }

@@ -2,6 +2,10 @@
 
 @section('title', 'Quản lý sản phẩm')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/admin/products/index.css') }}">
+@endpush
+
 @section('content')
 <div class="admin-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -20,40 +24,31 @@
                     <th style="width: 250px;">Tên sản phẩm</th>
                     <th style="width: 100px;">Danh mục</th>
                     <th style="width: 60px;">Giá</th>
-                    <th style="width: 60px;">Số lượng</th>
-                    <th style="width: 90px;">Màu sắc</th>
-                    <th style="width: 70px;">Kích thước</th>
-                    <th style="width: 120px;">Hành động</th>
+                    <th style="width: 80px;">Số lượng</th>
+                    <th style="width: 200px;">Hành động</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($products as $product)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    {{-- Số thứ tự theo pagination --}}
+                    <td>{{ (($products->currentPage()-1) * $products->perPage()) + $loop->iteration }}</td>
                     <td>
                         @if($product->image)
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                 style="width:50px;height:50px;object-fit:cover;border-radius:6px;margin-right:8px;vertical-align:middle;">
+                                style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
                         @else
-                            <div style="width:50px;height:50px;display:inline-block;background:#f0f0f0;color:#ccc;text-align:center;line-height:50px;border-radius:6px;margin-right:8px;vertical-align:middle;">N/A</div>
+                            <div style="width:50px;height:50px;background:#f0f0f0;color:#999;text-align:center;line-height:50px;border-radius:6px;">N/A</div>
                         @endif
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->category->name ?? '-' }}</td>
-                    <td>{{ number_format($product->price, 0, ',', '.') }} đ</td>
-                    <td>{{ $product->quantity }}</td>
+                    <td>{{ number_format($product->price ?? 0, 0, ',', '.') }} đ</td>
+                    <td>{{ $product->details->sum('quantity') }}</td> {{-- Tổng số lượng từ product_details --}}
                     <td>
-                        @if($product->color)
-                            @foreach(explode(',', $product->color) as $c)
-                                <span class="color-circle" style="background-color: {{ trim($c) }};" 
-                                    title="{{ trim($c) }}"></span>
-                            @endforeach
-                        @else
-                            -
-                        @endif
-                    </td>
-                    <td>{{ $product->size }}</td>
-                    <td>
+                        <button type="button" class="btn-action btn-view" data-bs-toggle="modal" data-bs-target="#detailModal{{ $product->id }}">
+                            Xem chi tiết
+                        </button>
                         <a href="{{ route('admin.products.edit', $product->id) }}" class="btn-action btn-edit">Sửa</a>
                         <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline">
                             @csrf @method('DELETE')
@@ -70,133 +65,77 @@
         </table>
     </div>
 
+    {{-- Pagination --}}
     <div style="margin-top:16px;display:flex;justify-content:flex-end">
         {{ $products->links('vendor.pagination.bootstrap-4') }}
     </div>
 </div>
 
-<style>
-    .admin-card { 
-        background:#fff; 
-        padding:18px; 
-        border-radius:14px; 
-        box-shadow:0 4px 12px rgba(0,0,0,0.05);
-    .btn-add { 
-        background:#f0d4db; 
-        color:#7a2f3b; 
-        padding:8px 14px; 
-        border-radius:8px; 
-        border:1px solid #e8cbd2;
-        text-decoration:none; 
-        font-size:0.95rem; 
-        transition:all .2s ease;
-    }
-    .btn-add:hover { 
-        background:#d64571; 
-        color:#fff;
-    }
-    .table-wrapper { 
-        overflow-x:auto; 
-    }
-    .styled-table { 
-        width:100%; 
-        border-collapse:separate; 
-        border-spacing:0;
-        border:1px solid rgba(0,0,0,0.06); 
-        border-radius:10px; overflow:hidden;
-    }
-    .styled-table th { 
-        background:#f9f3f3; 
-        color:#7a2f3b; font-weight:600; 
-        text-align:left;
-        padding:10px 12px; 
-        font-size:0.95rem;
-    }
-    .styled-table td { 
-        padding:10px 12px; 
-        border-top:1px solid rgba(0,0,0,0.05); 
-        font-size:0.95rem; 
-        color:#333;
-    }
-    .color-circle {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        border: 1px solid #ccc;
-        margin-right: 4px;
-        vertical-align: middle;
-    }
-    .btn-action { 
-        border:none; 
-        background:transparent; 
-        padding:6px 10px; 
-        border-radius:6px;
-        font-size:0.85rem; 
-        cursor:pointer; 
-        text-decoration:none; 
-        margin-right:4px; 
-        transition:background .2s;
-    }
-    .btn-edit { 
-        color:#7a2f3b; 
-        border:1px solid rgba(122,47,59,0.3);
-    }
-    .btn-edit:hover { 
-        background:#f9f3f3;
-    }
-    .btn-delete { 
-        color:#fff; 
-        background:#d9534f; 
-        border:1px solid #c9302c;
-    }
-    .btn-delete:hover { 
-        background:#c9302c;
-    }
-    .pagination {
-        display: flex;
-        gap: 6px;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        align-items: center;
-    }
-    .pagination li { 
-        display: inline-block; 
-    }
-    .pagination li a,
-    .pagination li span {
-        display: inline-block;
-        padding: 6px 10px;
-        min-width: 40px;
-        text-align: center;
-        border-radius: 8px;
-        background: #fff;
-        color: #333;
-        border: 1px solid #eee;
-        font-size: 14px;
-        line-height: 1;
-        box-sizing: border-box;
-        white-space: nowrap;
-    }
-    .pagination li a:hover { 
-        background: rgba(231,84,128,0.06); 
-    }
-    .pagination li.active span {
-        background: #e75480;
-        color: #fff;
-        border-color: #e75480;
-    }
-    .pagination li.disabled span {
-        opacity: 0.6;
-        cursor: default;
-    }
-    .pagination li a .page-icon,
-    .pagination li span .page-icon {
-        width: 14px;
-        height: 14px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-</style>
+{{-- Modals: để ngoài table để không phá cấu trúc HTML --}}
+@foreach($products as $product)
+<div class="modal fade" id="detailModal{{ $product->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content custom-modal">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fa fa-info-circle me-2" style="color:#7a2f3b;"></i>
+                    {{ $product->name }} - Chi tiết sản phẩm
+                </h5>
+                <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="product-description mb-3">
+                    <p><strong style="color:#7a2f3b;">Mô tả:</strong> {{ $product->description ?? 'Không có mô tả' }}</p>
+                </div>
+                @if($product->details->count())
+                    <div class="variants-section">
+                        <h6 style="color:#7a2f3b;margin-bottom:12px;">Chi tiết sản phẩm:</h6>
+                        <div class="table-wrapper">
+                            <table class="modal-table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Màu sắc</th>
+                                        <th>Kích thước</th>
+                                        <th>Số lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($product->details as $index => $detail)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <div style="display:flex;align-items:center;gap:8px;">
+                                                <span class="color-preview" 
+                                                    style="background-color: {{ $detail->color }};" 
+                                                    title="Màu: {{ $detail->color }}"
+                                                    data-bs-toggle="tooltip" 
+                                                    data-bs-placement="top"></span>
+                                                <span class="color-name">{{ $detail->color }}</span>
+                                            </div>
+                                        </td>
+                                        <td><span class="size-badge">{{ $detail->size }}</span></td>
+                                        <td><span class="quantity-badge">{{ $detail->quantity }}</span></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @else
+                    <div class="no-variants">
+                        <i class="fa fa-exclamation-triangle" style="color:#f39c12;margin-right:8px;"></i>
+                        <span class="text-muted">Chưa có chi tiết sản phẩm.</span>
+                    </div>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-modal-close" data-bs-dismiss="modal">
+                    <i class="fa fa-times me-1"></i> Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

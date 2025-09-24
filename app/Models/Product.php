@@ -9,7 +9,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    // cho phép mass assignment cho các trường cần thiết
     protected $fillable = [
         'name',
         'price',
@@ -21,6 +20,12 @@ class Product extends Model
         'material',
         'color',
     ];
+
+    // Quan hệ 1 sản phẩm có nhiều chi tiết sản phẩm
+    public function details()
+    {
+        return $this->hasMany(ProductDetail::class);
+    }
 
     // Quan hệ nhiều sản phẩm thuộc 1 danh mục
     public function category()
