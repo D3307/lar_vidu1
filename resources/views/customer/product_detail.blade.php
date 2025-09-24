@@ -91,13 +91,11 @@
                 <div class="mb-3">
                     <span class="fw-bold">Chất liệu</span>
                     <div class="d-flex gap-2 mt-1">
-                        @foreach($materials as $material)
-                            <div class="px-3 py-1 border rounded-pill material-option"
-                                style="cursor:pointer"
-                                data-material="{{ trim($material) }}">
-                                {{ trim($material) }}
-                            </div>
-                        @endforeach
+                        <div class="px-3 py-1 border rounded-pill material-option"
+                            style="cursor:pointer"
+                            data-material="{{ trim($product->material) }}">
+                            {{ trim($product->material) }}
+                        </div>
                     </div>
                     <input type="hidden" name="material" id="selected-material">
                 </div>
@@ -106,11 +104,11 @@
                     <span class="fw-bold">Số lượng</span>
                     <input type="number" name="quantity" value="1" min="1" class="form-control d-inline-block" style="width:100px;">
                     <span class="ms-2 text-muted" style="font-size:0.97rem;">
-                        (Còn lại: {{ $product->quantity }} sản phẩm)
+                        (Còn lại: {{ $totalQuantity }} sản phẩm)
                     </span>
                 </div>
                 {{-- Nút --}}
-                @if($product->quantity > 0)
+                @if($totalQuantity > 0)
                 <div class="d-flex gap-2 mt-3">
                     <button type="submit" class="btn flex-fill" style="background: #e75480; color: #fff; border-radius: 8px; font-weight:600;">
                         <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ

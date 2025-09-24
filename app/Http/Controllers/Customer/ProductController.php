@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query()->with('reviews');
+        $query = Product::query()->with('reviews', 'details');
 
         // Nếu lọc theo danh mục
         if ($request->has('category_id')) {
@@ -54,12 +54,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::findOrFail($id);
-
-        // Tách dữ liệu từ chuỗi trong DB thành mảng
-        $sizes     = $product->size ? explode(',', $product->size) : [];
-        $colors    = $product->color ? explode(',', $product->color) : [];
-        $materials = $product->material ? explode(',', $product->material) : [];
+        $product = Product::with('details')->findOrFail($id);
 
         // Lưu lịch sử duyệt sản phẩm nếu user đăng nhập
         if (auth()->check()) {
@@ -71,7 +66,15 @@ class ProductController extends Controller
             ]);
         }
 
-        return view('customer.product_detail', compact('product', 'sizes', 'colors', 'materials'));
+        // Biến thể
+        $totalQuantity = $product->details->sum('quantity');
+        $sizes = $product->details->pluck('size')->unique()->toArray();
+        $colors = $product->details->pluck('color')->unique()->toArray();
+        
+        // Lấy danh sách biến thể (chi tiết sản phẩm)
+        $variants = $product->details; // quan hệ hasMany trong model Product
+
+        return view('customer.product_detail', compact('product', 'variants', 'totalQuantity', 'sizes', 'colors'));
     }
 
     // Lọc sản phẩm theo category_id

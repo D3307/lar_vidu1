@@ -96,7 +96,7 @@
                             </div>
 
                             <!-- Thông báo hết hàng -->
-                            @if($product->quantity == 0)
+                            @if($product->details->sum('quantity') == 0)
                                 <p style="margin-top: 8px; color: #888; font-size: 0.9rem; font-weight: 500;">
                                     <i class="fa-solid fa-triangle-exclamation" style="color:#ff6b88; margin-right: 6px;"></i>
                                     Sản phẩm này hiện đã hết hàng
