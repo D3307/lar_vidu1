@@ -6,7 +6,7 @@ $(document).ready(function () {
         }
     });
 
-    // Thêm chi tiết (đã hoạt động)
+    // Thêm chi tiết
     $(document).on('submit', '.addDetailForm', function (e) {
         e.preventDefault();
         let form = $(this);
@@ -111,6 +111,7 @@ $(document).ready(function () {
                 `);
                 
                 alert('Cập nhật thành công!');
+                location.reload();
             },
             error: function(xhr) {
                 console.error('Update error:', xhr);

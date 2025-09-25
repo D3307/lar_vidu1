@@ -150,7 +150,6 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::resource('reviews', AdminReviewController::class);
         Route::resource('coupons', AdminCouponController::class);
         Route::resource('transactions',TransactionController::class);
-        Route::resource('product-details', AdminProductDetailController::class);
         
         //Route báo cáo - thống kê
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -174,8 +173,3 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::put('product-details/{detail}', [AdminProductDetailController::class, 'updateDetail'])->name('products.updateDetail');
         Route::delete('product-details/{detail}', [AdminProductDetailController::class, 'deleteDetail'])->name('products.deleteDetail');
     });
-    
-    // Routes cho chi tiết sản phẩm
-    Route::post('products/{product}/details', [AdminProductDetailController::class, 'store'])->name('product-details.store');
-    Route::put('product-details/{detail}', [AdminProductDetailController::class, 'update'])->name('product-details.update');
-    Route::delete('product-details/{detail}', [AdminProductDetailController::class, 'destroy'])->name('product-details.destroy');
