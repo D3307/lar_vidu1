@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\UserHistory;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductDetail;
 
 class OrderController extends Controller
 {
@@ -25,62 +26,61 @@ class OrderController extends Controller
         return view('customer.orders.show', compact('order'));
     }
 
-    // Hiển thị form checkout (GET)
+    // Hiển thị form checkout
     public function showCheckoutForm(Request $request)
-{
-    $sessionCart = session('cart', []);
-    $selectedKeys = $request->query('selected', []);
-    $buyNow = session('buy_now', null);
+    {
+        $sessionCart = session('cart', []);
+        $selectedKeys = $request->query('selected', []);
+        $buyNow = session('buy_now', null);
 
-    if ($buyNow) {
-        $cart = ['buy_now' => $buyNow];
-        $selected = ['buy_now'];
-    } elseif (!empty($selectedKeys)) {
-        $cart = [];
-        foreach ($selectedKeys as $key) {
-            if (isset($sessionCart[$key])) $cart[$key] = $sessionCart[$key];
-        }
-        $selected = $selectedKeys;
-    } else {
-        $cart = $sessionCart;
-        $selected = array_keys($sessionCart);
-    }
-
-    if (empty($cart)) {
-        return redirect()->route('cart.index')->with('error', 'Vui lòng chọn sản phẩm để thanh toán.');
-    }
-
-    $total = collect($cart)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
-    $user = auth()->user();
-
-    $coupons = Coupon::where('start_date', '<=', now())
-        ->where('end_date', '>=', now())
-        ->get();
-
-    // Xử lý coupon giống checkout cũ
-    $discount = 0;
-    $couponId = $request->input('coupon_id');
-    if ($couponId) {
-        $coupon = Coupon::find($couponId);
-        if ($coupon && $total >= $coupon->min_order_value) {
-            if ($coupon->discount_type === 'percent') {
-                $discount = (int) round($total * ($coupon->discount / 100));
-            } else {
-                $discount = $coupon->discount;
+        if ($buyNow) {
+            $cart = ['buy_now' => $buyNow];
+            $selected = ['buy_now'];
+        } elseif (!empty($selectedKeys)) {
+            $cart = [];
+            foreach ($selectedKeys as $key) {
+                if (isset($sessionCart[$key])) $cart[$key] = $sessionCart[$key];
             }
-            $discount = min($discount, $total); // không để âm
+            $selected = $selectedKeys;
+        } else {
+            $cart = $sessionCart;
+            $selected = array_keys($sessionCart);
         }
+
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('error', 'Vui lòng chọn sản phẩm để thanh toán.');
+        }
+
+        $total = collect($cart)->sum(fn($i) => ($i['price'] ?? 0) * ($i['quantity'] ?? 0));
+        $user = auth()->user();
+
+        $coupons = Coupon::where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->get();
+
+        // Xử lý coupon
+        $discount = 0;
+        $couponId = $request->input('coupon_id');
+        if ($couponId) {
+            $coupon = Coupon::find($couponId);
+            if ($coupon && $total >= $coupon->min_order_value) {
+                if ($coupon->discount_type === 'percent') {
+                    $discount = (int) round($total * ($coupon->discount / 100));
+                } else {
+                    $discount = $coupon->discount;
+                }
+                $discount = min($discount, $total);
+            }
+        }
+
+        $finalTotal = $total - $discount;
+
+        return view('customer.cart.checkout', compact(
+            'cart', 'total', 'user', 'selected', 'coupons', 'discount', 'finalTotal', 'couponId'
+        ));
     }
 
-    $finalTotal = $total - $discount;
-
-    return view('customer.cart.checkout', compact(
-        'cart', 'total', 'user', 'selected', 'coupons', 'discount', 'finalTotal', 'couponId'
-    ));
-}
-
-
-    // POST: tạo order
+    // Xử lý checkout
     public function checkout(Request $request)
     {
         $request->validate([
@@ -96,7 +96,7 @@ class OrderController extends Controller
         $selected = $request->input('selected', []);
         $buyNow = session('buy_now', null);
 
-        // chuẩn hóa $cartItems => luôn là mảng chỉ số [item, item, ...]
+        // Chuẩn hóa cartItems
         if ($buyNow) {
             $cartItems = [$buyNow];
         } elseif (!empty($selected)) {
@@ -112,10 +112,10 @@ class OrderController extends Controller
             if (empty($cartItems)) return redirect()->route('cart.index')->with('error','Giỏ hàng trống!');
         }
 
-        // tính tổng
+        // Tính tổng
         $total = collect($cartItems)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
 
-        // xử lý coupon (chỉ đọc ở đây, sẽ kiểm tra và cập nhật lại trong transaction)
+        // Coupon
         $couponId = $request->input('coupon_id');
         $coupon   = $couponId ? Coupon::find($couponId) : null;
         $discount = 0;
@@ -129,87 +129,63 @@ class OrderController extends Controller
             $discount = min($discount, $total);
         }
 
-
         $finalTotal = $total - $discount;
 
         DB::beginTransaction();
         try {
-            // tạo order
+            // Tạo order
             $order = Order::create([
-                'user_id'        => Auth::id(),
-                'name'           => $request->name,
-                'phone'          => $request->phone,
-                'address'        => $request->address,
-                'total'          => $total,
-                'discount'       => $discount,
-                'final_total'    => $finalTotal,
-                'status'         => 'pending',
+                'user_id' => Auth::id(),
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'total' => $finalTotal,
                 'payment_method' => $request->payment,
-                'payment_status' => 'unpaid',
-                'coupon_id'      => $coupon?->id,
+                'payment_status' => $request->payment === 'cod' ? 'unpaid' : 'pending',
+                'status' => 'pending',
+                'coupon_id' => $coupon->id ?? null,
+                'discount' => $discount,
             ]);
 
-            // duyệt item: kiểm tra stock (lock), tạo OrderItem và trừ stock
-            foreach ($cartItems as $item) {
-                $productId = $item['id'] ?? null;
-                $qty = max(1, (int) ($item['quantity'] ?? 1));
-                if ($productId) {
-                    // khóa hàng để tránh race condition
-                    $product = Product::lockForUpdate()->find($productId);
-                    if (!$product) {
-                        throw new \Exception("Sản phẩm không tồn tại (ID: {$productId}).");
-                    }
-                    if ($product->quantity < $qty) {
-                        throw new \Exception("Sản phẩm \"{$product->name}\" chỉ còn {$product->quantity} trong kho. Vui lòng điều chỉnh số lượng.");
-                    }
+            // Tạo order items
+foreach ($cartItems as $item) {
+    // Luôn ưu tiên lấy theo product_detail_id đã có trong giỏ
+    if (empty($item['product_detail_id'])) {
+        throw new \Exception("Thiếu thông tin chi tiết sản phẩm cho {$item['name']}");
+    }
 
-                    // tạo order item (lưu giá hiện tại của product)
-                    OrderItem::create([
-                        'order_id'   => $order->id,
-                        'product_id' => $product->id,
-                        'quantity'   => $qty,
-                        'price'      => $item['price'] ?? $product->price,
-                        'color'      => $item['color'] ?? null,
-                        'size'       => $item['size'] ?? null,
-                    ]);
+    $detail = ProductDetail::find($item['product_detail_id']);
 
-                    // trừ stock (dùng decrement để đơn giản)
-                    $product->decrement('quantity', $qty);
-                } else {
-                    // Nếu item không có product id (không hợp lệ) — có thể skip hoặc throw
-                    throw new \Exception("Một sản phẩm trong giỏ không hợp lệ.");
-                }
+    if (!$detail) {
+        throw new \Exception("Không tìm thấy chi tiết sản phẩm cho {$item['name']} (Size: {$item['size']}, Color: {$item['color']})");
+    }
 
-                // Lưu lịch sử mua sản phẩm
-                UserHistory::create([
-                    'user_id'    => Auth::id(),
-                    'order_id'   => $order->id,
-                    'product_id' => $productId,
-                    'action_type'=> 'buy_product',
-                    'used_at'    => now(),
-                ]);
-            }
+    // Kiểm tra tồn kho
+    if ($detail->quantity < $item['quantity']) {
+        throw new \Exception("Sản phẩm {$item['name']} (Size: {$item['size']}, Color: {$item['color']}) không đủ số lượng tồn kho.");
+    }
 
-            // cập nhật coupon.used_count & tạo lịch sử dùng coupon
-            if ($coupon) {
-                // Lưu lịch sử dùng coupon
-                UserHistory::create([
-                    'user_id'   => Auth::id(),
-                    'order_id'  => $order->id,
-                    'coupon_id' => $coupon->id,
-                    'discount'  => $discount,
-                    'action_type' => 'use_coupon',
-                    'used_at'   => now(),
-                ]);
-            }
+    // Tạo order item
+    OrderItem::create([
+        'order_id'          => $order->id,
+        'product_id'        => $item['id'],
+        'product_detail_id' => $detail->id,
+        'quantity'          => $item['quantity'],
+        'price'             => $item['price'],
+    ]);
+
+    // Trừ tồn kho
+    $detail->decrement('quantity', $item['quantity']);
+}
+
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
 
-        // clear giỏ hàng (sau commit)
+        // Xóa giỏ hàng
         if ($buyNow) {
             session()->forget('buy_now');
         } elseif (!empty($selected)) {
@@ -221,6 +197,7 @@ class OrderController extends Controller
             session()->forget('cart');
         }
 
+        // Thanh toán
         if ($request->payment === 'cod') {
             return redirect()->route('orders.index')
                 ->with('success', 'Đặt hàng thành công! Vui lòng thanh toán khi nhận hàng.');
@@ -234,12 +211,19 @@ class OrderController extends Controller
         $product = Product::findOrFail($id);
         $quantity = (int) $request->input('quantity', 1);
 
+        $detailId = $request->input('product_detail_id'); // 🔑 đồng bộ với cart
+        $detail   = $detailId ? ProductDetail::find($detailId) : null;
+
         $item = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'price' => $product->price,
-            'quantity' => $quantity,
-            'image' => $product->image ?? '',
+            'id'                => $product->id,
+            'product_detail_id' => $detail?->id,
+            'name'              => $product->name,
+            'price'             => $detail?->price ?? $product->price,
+            'quantity'          => $quantity,
+            'color'             => $detail?->color,
+            'size'              => $detail?->size,
+            'material'          => $product->material,
+            'image'             => $product->image ?? '',
         ];
 
         session(['buy_now' => $item]);
@@ -256,7 +240,7 @@ class OrderController extends Controller
 
         $order->update([
             'payment_method' => 'cod',
-            'payment_status' => 'unpaid', // vẫn để unpaid cho COD
+            'payment_status' => 'unpaid',
             'status' => 'processing',
         ]);
 
@@ -274,8 +258,8 @@ class OrderController extends Controller
         ]);
     }
 
-    //Hủy đơn hàng
-    public function cancel($id) {
+    public function cancel($id)
+    {
         $order = Order::with('items')->findOrFail($id);
 
         if ($order->user_id !== auth()->id()) {
@@ -288,15 +272,15 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         try {
-            // Trả lại stock
             foreach ($order->items as $item) {
-                $product = Product::lockForUpdate()->find($item->product_id);
-                if ($product) {
-                    $product->increment('quantity', $item->quantity);
+                if ($item->product_detail_id) {
+                    $detail = ProductDetail::lockForUpdate()->find($item->product_detail_id);
+                    if ($detail) {
+                        $detail->increment('quantity', $item->quantity);
+                    }
                 }
             }
 
-            // Nếu có coupon, giảm used_count (không để âm)
             if ($order->coupon_id) {
                 $coupon = Coupon::lockForUpdate()->find($order->coupon_id);
                 if ($coupon && $coupon->used_count > 0) {
@@ -315,10 +299,10 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Đơn hàng đã được hủy thành công.');
     }
 
-    //Lịch sử mua hàng
-    public function history() {
-        $histories = \App\Models\UserHistory::where('user_id', auth()->id())
-            ->whereNotNull('order_id') // Chỉ lấy lịch sử có mã đơn hàng
+    public function history()
+    {
+        $histories = UserHistory::where('user_id', auth()->id())
+            ->whereNotNull('order_id')
             ->with(['product', 'order', 'coupon'])
             ->orderByDesc('used_at')
             ->paginate(10);

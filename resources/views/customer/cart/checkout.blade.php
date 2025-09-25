@@ -4,6 +4,19 @@
 
 @section('content')
 <div class="container py-5">
+    {{-- Hiển thị lỗi/flash --}}
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            @foreach($errors->all() as $err)
+                <div>{{ $err }}</div>
+            @endforeach
+        </div>
+    @endif
+
     <h2 class="mb-2 text-center fw-bold" style="font-size:2.2rem; color:#222;">Thanh toán</h2>
 
     <!-- MÃ GIẢM GIÁ -->
@@ -130,7 +143,15 @@
                         <tbody>
                             @foreach($cart as $item)
                                 <tr>
-                                    <td><span class="fw-semibold">{{ $item['name'] }}</span></td>
+                                    <td>
+                                        <span class="fw-semibold">{{ $item['name'] }}</span>
+                                        @if(!empty($item['color']) || !empty($item['size']))
+                                            <div style="font-size:0.9rem; color:#666;">
+                                                @if(!empty($item['color'])) Màu: {{ $item['color'] }} @endif
+                                                @if(!empty($item['size'])) | Size: {{ $item['size'] }} @endif
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="text-end">
                                         {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
                                     </td>
@@ -209,8 +230,6 @@
                             <input class="form-check-input" type="radio" name="payment" id="vnpay" value="vnpay" required>
                             <label class="form-check-label fw-semibold" for="vnpay">
                                 Thanh toán qua VNPay
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/VNPAY_Logo.png" alt="VNPay"
-                                     style="height:18px;vertical-align:middle;">
                             </label>
                         </div>
                     </div>

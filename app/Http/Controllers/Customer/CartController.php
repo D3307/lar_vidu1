@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductDetail;
 
 class CartController extends Controller
 {
@@ -18,41 +19,37 @@ class CartController extends Controller
     // Thêm sản phẩm vào giỏ
     public function add(Request $request, $id)
     {
-        $request->validate([
-            'size' => 'required',
-            'color' => 'required',
-            'material' => 'required',
-            'quantity' => 'required|integer|min:1',
-        ], [
-            'size.required' => 'Vui lòng chọn kích thước',
-            'color.required' => 'Vui lòng chọn màu sắc',
-            'material.required' => 'Vui lòng chọn chất liệu',
-            'quantity.required' => 'Vui lòng nhập số lượng',
-        ]);
-
         $product = Product::findOrFail($id);
 
+        $detail = ProductDetail::where('product_id', $id)
+            ->when($request->size, fn($q) => $q->where('size', $request->size))
+            ->when($request->color, fn($q) => $q->where('color', $request->color))
+            ->first();
+
+        if (!$detail) {
+            return back()->with('error', 'Không tìm thấy chi tiết sản phẩm.');
+        }
+
         $cart = session()->get('cart', []);
-        $key = $id.'_'.$request->input('size').'_'.$request->input('color').'_'.$request->input('material');
+        $key = $detail->id; // dùng product_detail_id làm key
 
         if (isset($cart[$key])) {
-            $cart[$key]['quantity'] += $request->input('quantity', 1);
+            $cart[$key]['quantity'] += $request->quantity;
         } else {
             $cart[$key] = [
-                'id'       => $product->id,
-                'name'     => $product->name,
-                'price'    => $product->price,
-                'image'    => $product->image,
-                'size'     => $request->input('size'),
-                'color'    => $request->input('color'),
-                'material' => $request->input('material'),
-                'quantity' => $request->input('quantity', 1),
+                'id' => $product->id,
+                'product_detail_id' => $detail->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => $request->quantity,
+                'size' => $detail->size,
+                'color' => $detail->color,
+                'image' => $product->image,
             ];
         }
 
         session()->put('cart', $cart);
 
-        // ⬇️ Ở nguyên trang chi tiết sản phẩm + hiện thông báo
         return redirect()->back()->with('success', '🎉 Sản phẩm đã được thêm vào giỏ hàng!');
     }
 

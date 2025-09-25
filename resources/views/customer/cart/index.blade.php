@@ -32,6 +32,7 @@
                             <tr>
                                 <td>
                                     <input type="checkbox" name="selected[]" value="{{ $key }}">
+                                    <input type="hidden" name="detail_ids[{{ $key }}]" value="{{ $item['product_detail_id'] }}">
                                 </td>
                                 <td class="text-start">
                                     <div class="d-flex align-items-center">
