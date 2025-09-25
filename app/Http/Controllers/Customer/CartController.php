@@ -21,30 +21,40 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        // Validate: bắt buộc chọn size, color, quantity
+        $request->validate([
+            'size'     => 'required|string',
+            'color'    => 'required|string',
+            'quantity' => 'required|integer|min:1',
+            'material' => 'nullable|string',
+        ]);
+
+        // Tìm đúng ProductDetail theo size + color
         $detail = ProductDetail::where('product_id', $id)
-            ->when($request->size, fn($q) => $q->where('size', $request->size))
-            ->when($request->color, fn($q) => $q->where('color', $request->color))
+            ->where('size', $request->size)
+            ->where('color', $request->color)
             ->first();
 
         if (!$detail) {
-            return back()->with('error', 'Không tìm thấy chi tiết sản phẩm.');
+            return back()->with('error', 'Vui lòng chọn đúng size và màu sắc.');
         }
 
         $cart = session()->get('cart', []);
-        $key = $detail->id; // dùng product_detail_id làm key
+        $key = $detail->id;
 
         if (isset($cart[$key])) {
             $cart[$key]['quantity'] += $request->quantity;
         } else {
             $cart[$key] = [
-                'id' => $product->id,
+                'id'                => $product->id,
                 'product_detail_id' => $detail->id,
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => $request->quantity,
-                'size' => $detail->size,
-                'color' => $detail->color,
-                'image' => $product->image,
+                'name'              => $product->name,
+                'price'             => $product->price,
+                'quantity'          => $request->quantity,
+                'size'              => $detail->size,
+                'color'             => $detail->color,
+                'material'          => $product->material,
+                'image'             => $product->image,
             ];
         }
 

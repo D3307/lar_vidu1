@@ -87,29 +87,35 @@ class OrderController extends Controller
             'name'     => 'required|string|max:255',
             'phone'    => 'required|string|max:20',
             'address'  => 'required|string|max:255',
-            'payment'  => 'required|string|in:cod,momo',
-            'selected' => 'nullable|array',
-            'coupon_id'=> 'nullable|exists:coupons,id',
+            'payment'  => 'required|string|in:cod,momo,vnpay',
         ]);
 
-        $sessionCart = session('cart', []);
-        $selected = $request->input('selected', []);
-        $buyNow = session('buy_now', null);
+        $cartItems = [];
+        $productDetailIds = $request->input('product_detail_id', []);
+        $quantities       = $request->input('quantity', []);
+        $prices           = $request->input('price', []);
 
-        // Chuẩn hóa cartItems
-        if ($buyNow) {
-            $cartItems = [$buyNow];
-        } elseif (!empty($selected)) {
-            $cartItems = [];
-            foreach ($selected as $key) {
-                if (isset($sessionCart[$key])) {
-                    $cartItems[] = $sessionCart[$key];
-                }
+        foreach ($productDetailIds as $i => $detailId) {
+            $detail = ProductDetail::find($detailId);
+            if (!$detail) {
+                return back()->with('error', "Không tìm thấy chi tiết sản phẩm.");
             }
-            if (empty($cartItems)) return redirect()->back()->with('error','Không có sản phẩm hợp lệ để đặt hàng.');
-        } else {
-            $cartItems = array_values($sessionCart);
-            if (empty($cartItems)) return redirect()->route('cart.index')->with('error','Giỏ hàng trống!');
+
+            $cartItems[] = [
+                'id'                => $detail->product_id,
+                'product_detail_id' => $detail->id,
+                'name'              => $detail->product->name,
+                'price'             => $prices[$i],
+                'quantity'          => $quantities[$i],
+                'color'             => $detail->color,
+                'size'              => $detail->size,
+                'material'          => $detail->material,
+                'image'             => $detail->product->image ?? '',
+            ];
+        }
+
+        if (empty($cartItems)) {
+            return redirect()->route('cart.index')->with('error','Giỏ hàng trống!');
         }
 
         // Tính tổng
@@ -148,36 +154,36 @@ class OrderController extends Controller
             ]);
 
             // Tạo order items
-foreach ($cartItems as $item) {
-    // Luôn ưu tiên lấy theo product_detail_id đã có trong giỏ
-    if (empty($item['product_detail_id'])) {
-        throw new \Exception("Thiếu thông tin chi tiết sản phẩm cho {$item['name']}");
-    }
+            foreach ($cartItems as $item) {
+                // Luôn ưu tiên lấy theo product_detail_id đã có trong giỏ
+                if (empty($item['product_detail_id'])) {
+                    DB::rollBack();
+                    return back()->with('error', "Vui lòng chọn đầy đủ chi tiết sản phẩm cho {$item['name']}.");
+                }
 
-    $detail = ProductDetail::find($item['product_detail_id']);
+                $detail = ProductDetail::find($item['product_detail_id']);
 
-    if (!$detail) {
-        throw new \Exception("Không tìm thấy chi tiết sản phẩm cho {$item['name']} (Size: {$item['size']}, Color: {$item['color']})");
-    }
+                if (!$detail) {
+                    throw new \Exception("Không tìm thấy chi tiết sản phẩm cho {$item['name']} (Size: {$item['size']}, Color: {$item['color']})");
+                }
 
-    // Kiểm tra tồn kho
-    if ($detail->quantity < $item['quantity']) {
-        throw new \Exception("Sản phẩm {$item['name']} (Size: {$item['size']}, Color: {$item['color']}) không đủ số lượng tồn kho.");
-    }
+                // Kiểm tra tồn kho
+                if ($detail->quantity < $item['quantity']) {
+                    throw new \Exception("Sản phẩm {$item['name']} (Size: {$item['size']}, Color: {$item['color']}) không đủ số lượng tồn kho.");
+                }
 
-    // Tạo order item
-    OrderItem::create([
-        'order_id'          => $order->id,
-        'product_id'        => $item['id'],
-        'product_detail_id' => $detail->id,
-        'quantity'          => $item['quantity'],
-        'price'             => $item['price'],
-    ]);
+                // Tạo order item
+                OrderItem::create([
+                    'order_id'          => $order->id,
+                    'product_id'        => $item['id'],
+                    'product_detail_id' => $detail->id,
+                    'quantity'          => $item['quantity'],
+                    'price'             => $item['price'],
+                ]);
 
-    // Trừ tồn kho
-    $detail->decrement('quantity', $item['quantity']);
-}
-
+                // Trừ tồn kho
+                $detail->decrement('quantity', $item['quantity']);
+            }
 
             DB::commit();
         } catch (\Exception $e) {
@@ -211,18 +217,22 @@ foreach ($cartItems as $item) {
         $product = Product::findOrFail($id);
         $quantity = (int) $request->input('quantity', 1);
 
-        $detailId = $request->input('product_detail_id'); // 🔑 đồng bộ với cart
-        $detail   = $detailId ? ProductDetail::find($detailId) : null;
+        // Bắt buộc phải có product_detail_id
+        $request->validate([
+            'product_detail_id' => 'required|exists:product_details,id',
+        ]);
+
+        $detail = ProductDetail::findOrFail($request->product_detail_id);
 
         $item = [
             'id'                => $product->id,
-            'product_detail_id' => $detail?->id,
+            'product_detail_id' => $detail->id,
             'name'              => $product->name,
-            'price'             => $detail?->price ?? $product->price,
+            'price'             => $detail->price, // lấy giá từ chi tiết
             'quantity'          => $quantity,
-            'color'             => $detail?->color,
-            'size'              => $detail?->size,
-            'material'          => $product->material,
+            'color'             => $detail->color,
+            'size'              => $detail->size,
+            'material'          => $detail->material ?? $product->material,
             'image'             => $product->image ?? '',
         ];
 

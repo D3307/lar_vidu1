@@ -145,12 +145,9 @@
                                 <tr>
                                     <td>
                                         <span class="fw-semibold">{{ $item['name'] }}</span>
-                                        @if(!empty($item['color']) || !empty($item['size']))
-                                            <div style="font-size:0.9rem; color:#666;">
-                                                @if(!empty($item['color'])) Màu: {{ $item['color'] }} @endif
-                                                @if(!empty($item['size'])) | Size: {{ $item['size'] }} @endif
-                                            </div>
-                                        @endif
+                                        <input type="hidden" name="product_detail_id[]" value="{{ $item['product_detail_id'] }}">
+                                        <input type="hidden" name="quantity[]" value="{{ $item['quantity'] }}">
+                                        <input type="hidden" name="price[]" value="{{ $item['price'] }}">
                                     </td>
                                     <td class="text-end">
                                         {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
