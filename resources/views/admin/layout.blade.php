@@ -417,7 +417,7 @@
     <!-- Footer -->
     <footer class="admin-footer text-center py-3 mt-auto">
         <div class="container text-end">
-            <small>© {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi nhóm 9 <i class="fa-solid fa-heart heart-icon"></i></small>
+            <small>© {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi D3307 <i class="fa-solid fa-heart heart-icon"></i></small>
         </div>
     </footer>
 

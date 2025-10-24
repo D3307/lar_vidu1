@@ -36,20 +36,40 @@
             // ngược lại dùng $orders (get() hoặc paginated collection).
             $sourceOrders = $allOrders ?? $orders;
             $groupedOrders = $sourceOrders->groupBy(fn($order) => $order->status ?? 'pending');
+            
+            // Tính tổng số đơn hàng
+            $totalOrders = $sourceOrders->count();
         @endphp
 
         <!-- Tabs trạng thái -->
         <ul class="nav nav-tabs mb-4" id="orderTabs" role="tablist">
+            <!-- Tab Tất cả đơn hàng -->
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active"
+                        id="all-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#all"
+                        type="button"
+                        role="tab"
+                        aria-controls="all"
+                        aria-selected="true">
+                    Tất cả đơn hàng
+                    <span class="badge" style="background:#6c757d;">
+                        {{ $totalOrders }}
+                    </span>
+                </button>
+            </li>
+            
             @foreach($statuses as $key => $data)
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link @if($loop->first) active @endif"
+                    <button class="nav-link"
                             id="{{ $key }}-tab"
                             data-bs-toggle="tab"
                             data-bs-target="#{{ $key }}"
                             type="button"
                             role="tab"
                             aria-controls="{{ $key }}"
-                            aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                            aria-selected="false">
                         {{ $data['label'] }}
                         <span class="badge" style="background:{{ $data['color'] }};">
                             {{ count($groupedOrders[$key] ?? []) }}
@@ -61,8 +81,87 @@
 
         <!-- Nội dung các tab -->
         <div class="tab-content" id="orderTabsContent">
+            <!-- Tab Tất cả đơn hàng -->
+            <div class="tab-pane fade show active"
+                id="all"
+                role="tabpanel"
+                aria-labelledby="all-tab">
+                
+                @if($sourceOrders->isEmpty())
+                    <div class="alert alert-light text-center">
+                        Không có đơn hàng nào.
+                    </div>
+                @else
+                    <div class="row g-3">
+                        @foreach($sourceOrders->sortByDesc('created_at') as $order)
+                            @php
+                                $orderStatus = $order->status ?? 'pending';
+                                $statusData = $statuses[$orderStatus] ?? ['label' => 'Chờ xử lý', 'color' => '#f0ad4e'];
+                            @endphp
+                            <div class="col-12">
+                                <a href="{{ route('orders.show', $order->id) }}" class="text-decoration-none">
+                                    <div class="card shadow-sm"
+                                        style="border-left:6px solid {{ $statusData['color'] }}; border-radius:10px;">
+                                        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                                            <div>
+                                                <div style="font-weight:700;color:#333;">#{{ $order->id }}</div>
+                                                <div class="text-muted" style="font-size:13px;">
+                                                    Ngày: {{ $order->created_at->format('d/m/Y H:i') }}
+                                                </div>
+                                                <div class="mt-1" style="font-size:13px;color:#666;">
+                                                    Phương thức: <strong>{{ $order->payment_method ?? 'N/A' }}</strong>
+                                                    &nbsp;·&nbsp;
+                                                    Trạng thái:
+                                                    <span style="font-weight:700; color:{{ $statusData['color'] }}">
+                                                        {{ $statusData['label'] }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-end ms-auto">
+                                                <div style="font-weight:800;font-size:18px;color:#222;">
+                                                    {{ number_format($order->final_total ?? $order->total_amount ?? 0,0,',','.') }} đ
+                                                    @if(!empty($order->discount_amount) && $order->discount_amount > 0)
+                                                        <span style="color:#e75480; font-size:13px; font-weight:500;">
+                                                            (Đã giảm {{ number_format($order->discount_amount,0,',','.') }} đ)
+                                                        </span>
+                                                    @endif
+                                                </div>
+
+                                                <div class="mt-2 d-flex flex-wrap gap-2 justify-content-end">
+                                                    <span class="badge"
+                                                        style="background:{{ $statusData['color'] }}20;
+                                                                color:{{ $statusData['color'] }};
+                                                                font-weight:700;
+                                                                padding:10px 10px;
+                                                                height: 35px;
+                                                                font-size:14px;
+                                                                border-radius:8px;">
+                                                        Xem chi tiết →
+                                                    </span>
+
+                                                    @if(in_array($order->status, ['pending','processing']))
+                                                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng #{{ $order->id }} không?')">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="btn-cancel-order">
+                                                                Hủy đơn
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+            
             @foreach($statuses as $key => $data)
-                <div class="tab-pane fade @if($loop->first) show active @endif"
+                <div class="tab-pane fade"
                     id="{{ $key }}"
                     role="tabpanel"
                     aria-labelledby="{{ $key }}-tab">

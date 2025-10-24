@@ -90,6 +90,9 @@ class OrderController extends Controller
             'payment'  => 'required|string|in:cod,momo,vnpay',
         ]);
 
+        $buyNow = session('buy_now', null);
+        $sessionCart = session('cart', []);
+        $selected = $request->input('selected', []);
         $cartItems = [];
         $productDetailIds = $request->input('product_detail_id', []);
         $quantities       = $request->input('quantity', []);

@@ -729,7 +729,7 @@ $(document).ready(function() {
             </div>
             <hr class="footer-hr my-4">
             <div class="text-end text-muted small">
-                &copy; {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi nhóm 9 <i class="fa-solid fa-heart heart-icon"></i>
+                &copy; {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi D3307 <i class="fa-solid fa-heart heart-icon"></i>
             </div>
         </div>
     </footer>
