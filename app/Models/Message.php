@@ -13,6 +13,7 @@ class Message extends Model
         'user_id',
         'message',
         'is_admin',
+        'image',
     ];
 
     public function user()
