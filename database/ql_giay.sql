@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th9 25, 2025 lúc 09:53 AM
+-- Thời gian đã tạo: Th10 24, 2025 lúc 12:25 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `ql_bangiaycaogot`
+-- Cơ sở dữ liệu: `ql_giay`
 --
 
 -- --------------------------------------------------------
@@ -144,6 +144,24 @@ CREATE TABLE `jobs` (
   `reserved_at` int(10) UNSIGNED DEFAULT NULL,
   `available_at` int(10) UNSIGNED NOT NULL,
   `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `sender` varchar(50) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT 0,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -447,6 +465,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('K6C2JTqEz9lyKPn6nYqhlVxbJgHRUVvJVKRZpvIO', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiZTByZHBGTzR1WTg2NHVobnFiTlBmdFBlek9Dc2NFek1CQUhrbk9sOSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jaGF0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7fQ==', 1761301506),
 ('QTxvHGqjfcsSswI1Q8lrvlqX8AuteMpBy1TX16hf', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoieU5aSTRMQkQ2UVUxNXhFQWpzV3dJMUNhY1N3VnBlMDZrVjRpZWFNdSI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDtzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FjY291bnQiO31zOjQ6ImNhcnQiO2E6MTp7czozNDoiMTJfMzZfIzgwMDAwMF9EYSB04buVbmcgaOG7o3AgKFBVKSI7YTo4OntzOjI6ImlkIjtpOjEyO3M6NDoibmFtZSI7czo2MToiR2nDoHkgQ2FvIEfDs3QgxJDDtG5nIEjhuqNpIFNhdGluIMSQw61uaCBQaGEgTMOqIFNhbmcgVHLhu41uZyI7czo1OiJwcmljZSI7czo5OiI4NTAwMDAuMDAiO3M6NToiaW1hZ2UiO3M6MzM6InByb2R1Y3RzLzE3NTc2NzMxMTRfZ2lheXNhdGluLmpwZyI7czo0OiJzaXplIjtzOjI6IjM2IjtzOjU6ImNvbG9yIjtzOjc6IiM4MDAwMDAiO3M6ODoibWF0ZXJpYWwiO3M6MjA6IkRhIHThu5VuZyBo4bujcCAoUFUpIjtzOjg6InF1YW50aXR5IjtpOjI7fX19', 1758575306),
 ('qWfybRZqilgWle0H2NIMn3Lq1plcEiIGRR2U5l5f', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUm10YVEzQlFMb3ZubUJYaTZLSXJnaXJzQkM2QllPM081a2NuNG9YTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wcm9kdWN0cyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7fQ==', 1758786761);
 

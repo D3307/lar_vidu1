@@ -3,17 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>@yield('title','Admin')</title>
 
-    @stack('styles')
     <style>
         /* cơ bản layout admin */
-        body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#fbf7f6; color:#222; margin:0; }
-        .admin-header { padding:18px 24px; background:linear-gradient(90deg,#f1d6db,#f9f3f2); box-shadow:0 4px 12px rgba(0,0,0,0.04); display:flex; align-items:center; justify-content:space-between; }
+        body { 
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+            background:#fbf7f6; 
+            color:#222; 
+            margin:0;
+        }
+        .admin-header { 
+            padding:18px 24px; 
+            background:linear-gradient(90deg,#f1d6db,#f9f3f2); 
+            box-shadow:0 4px 12px rgba(0,0,0,0.04); 
+            display:flex; 
+            align-items:center; 
+            justify-content:space-between; 
+        }
         .admin-wrap {
             display:flex;
             gap:20px;
@@ -23,14 +33,14 @@
             box-sizing:border-box;
         }
         .notification-menu {
-            position: relative; /* để dropdown bám vào ô này */
+            position: relative;
         }
 
         #notifDropdown {
             display: none;
             position: absolute;
-            right: 0;    /* sát bên phải icon chuông */
-            top: 40px;   /* xuống dưới icon chuông một chút */
+            right: 0;
+            top: 40px;
             width: 300px;
             background: #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -38,11 +48,8 @@
             overflow: hidden;
             z-index: 100;
         }
-
-        /* thu nhỏ sidebar */
-        .admin-sidebar { width:220px; } /* hoặc 260px nếu muốn rộng hơn */
+        .admin-sidebar { width:220px; }
         .admin-main { flex:1; }
-
         /* Dashboard collapsible block */
         .dash-icon {
             flex-shrink: 0;
@@ -58,15 +65,23 @@
             cursor:pointer;
             user-select:none;
         }
-        .dash-toggle:hover { background:rgba(238,198,214,0.06); border-color:rgba(0,0,0,0.03); }
+        .dash-toggle:hover { 
+            background:rgba(238,198,214,0.06); 
+            border-color:rgba(0,0,0,0.03); 
+        }
         .dash-toggle .hamburger { width:26px; height:16px; }
-        .dash-toggle .hamburger span { height:2px; border-radius:2px; background:#7a2f3b; }
+        .dash-toggle .hamburger span { 
+            height:2px; border-radius:2px; 
+            background:#7a2f3b; 
+        }
         .dash-toggle .hamburger span:nth-child(1){ top:1px; }
         .dash-toggle .hamburger span:nth-child(2){ top:7px; }
         .dash-toggle .hamburger span:nth-child(3){ top:13px; }
-
-        .dash-title { font-weight:700; color:#7a2f3b; font-size:0.95rem; } /* nhỏ hơn 1rem */
-
+        .dash-title { 
+            font-weight:700; 
+            color:#7a2f3b; 
+            font-size:0.95rem; 
+        }
         .dash-list {
             margin-top:10px;
             border-radius:10px;
@@ -136,9 +151,77 @@
             color: #555;
         }
         .submenu-list a:hover { background:#f9f3f3; }
+        #backToTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #7a2f3b;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        #backToTopBtn:hover {
+            background-color: #5a1f2b;
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+        }
+
+        /* Hiệu ứng “nhảy nhẹ” khi hover */
+        #backToTopBtn:hover i {
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-6px);
+            }
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+        .admin-footer {
+            background: #ffffff;
+            border-top: 2px solid #e8cbd2;
+            color: #6c4a57;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            padding-right: 30px;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .admin-footer .heart-icon {
+            color: #e75480;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="admin-header">
         <!-- Logo bên trái -->
         <div style="display:flex;align-items:center;gap:12px">
@@ -148,36 +231,61 @@
         <!-- Cụm bên phải: thông báo + user -->
         <div style="display:flex;align-items:center;gap:20px;margin-right:20px;">
             <!-- Thông báo -->
-<div class="notification-menu">
-    <button type="button" id="notifBtn" style="background:transparent;border:none;cursor:pointer;position:relative;">
-        <i class="fa-solid fa-bell" style="color:#7a2f3b;font-size:1.4rem;"></i>
-        @if($lowStockItems->count() > 0)
-            <span style="position:absolute;top:-6px;right:-6px;background:#c03651;color:#fff;
-                        font-size:0.7rem;padding:2px 6px;border-radius:50%;">
-                {{ $lowStockItems->count() }}
-            </span>
-        @endif
-    </button>
+            <div class="notification-menu">
+                <button type="button" id="notifBtn" style="background:transparent;border:none;cursor:pointer;position:relative;">
+                    <i class="fa-solid fa-bell" style="color:#7a2f3b;font-size:1.4rem;"></i>
+                    @if($lowStockItems->count() > 0)
+                        <span style="position:absolute;top:-6px;right:-6px;background:#c03651;color:#fff;
+                                    font-size:0.7rem;padding:2px 6px;border-radius:50%;">
+                            {{ $lowStockItems->count() }}
+                        </span>
+                    @endif
+                </button>
+            <!-- dropdown -->
+            <div id="notifDropdown">
+                <div style="padding:10px;font-weight:600;color:#7a2f3b;border-bottom:1px solid #eee;">
+                    🔔 Thông báo kho
+                    </div>
+                    <div style="max-height:250px;overflow-y:auto;">
+                        @forelse($lowStockItems as $item)
+                            <div style="padding:8px 12px;border-bottom:1px solid #f1f1f1;font-size:0.9rem;">
+                                <strong>{{ $item->product->name }}</strong><br>
+                                <span style="color:#c03651">Còn {{ $item->quantity }} / Min {{ $item->min_quantity }}</span>
+                            </div>
+                        @empty
+                            <div style="padding:12px;text-align:center;color:#666;">
+                                ✅ Không có sản phẩm sắp hết hàng
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
 
-    <!-- dropdown -->
-    <div id="notifDropdown">
-        <div style="padding:10px;font-weight:600;color:#7a2f3b;border-bottom:1px solid #eee;">
-            🔔 Thông báo kho
+            <!-- Icon tin nhắn -->
+            <div class="chat-notif" style="position: relative;">
+                <a href="{{ route('admin.chat') }}" title="Tin nhắn khách hàng"
+                style="text-decoration: none; color: #7a2f3b; font-size: 1.4rem; position: relative; display: inline-flex; align-items: center;">
+                    <i class="fa-solid fa-comments"></i>
+                    @php
+                        $unreadCount = \App\Models\Message::where('is_admin', false)->whereNull('read_at')->count();
+                    @endphp
+                    @if($unreadCount > 0)
+                        <span style="
+                            position: absolute;
+                            top: -6px;
+                            right: -8px;
+                            background: #e74c7e;
+                            color: #fff;
+                            font-size: 0.7rem;
+                            padding: 2px 6px;
+                            border-radius: 50%;
+                            box-shadow: 0 0 4px rgba(0,0,0,0.15);
+                        ">
+                            {{ $unreadCount }}
+                        </span>
+                    @endif
+                </a>
             </div>
-            <div style="max-height:250px;overflow-y:auto;">
-                @forelse($lowStockItems as $item)
-                    <div style="padding:8px 12px;border-bottom:1px solid #f1f1f1;font-size:0.9rem;">
-                        <strong>{{ $item->product->name }}</strong><br>
-                        <span style="color:#c03651">Còn {{ $item->quantity }} / Min {{ $item->min_quantity }}</span>
-                    </div>
-                @empty
-                    <div style="padding:12px;text-align:center;color:#666;">
-                        ✅ Tồn kho ổn định
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
 
             <!-- User menu -->
             <div class="user-menu" style="position:relative;">
@@ -191,6 +299,7 @@
         </div>
     </header>
 
+    <!-- Body chính -->
     <div class="admin-wrap">
         <aside class="admin-sidebar">
             <!-- Collapsible Dashboard -->
@@ -299,6 +408,18 @@
         </main>
     </div>
 
+    <!-- Nút quay lại đầu trang -->
+    <button id="backToTopBtn" title="Lên đầu trang">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="admin-footer text-center py-3 mt-auto">
+        <div class="container text-end">
+            <small>© {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi nhóm 9 <i class="fa-solid fa-heart heart-icon"></i></small>
+        </div>
+    </footer>
+
     <!-- Side Bar -->
     <script>
         (function(){
@@ -351,6 +472,43 @@
             document.addEventListener('click', function(e) {
                 if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
                     dropdown.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Hiện nút khi cuộn xuống 200px
+        window.onscroll = function() {
+            const btn = document.getElementById("backToTopBtn");
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                btn.style.display = "flex";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+
+        // Cuộn mượt lên đầu trang khi click
+        document.getElementById("backToTopBtn").onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const msgBtn = document.querySelector('.message-menu a');
+            const msgDropdown = document.getElementById('messageDropdown');
+
+            if (msgBtn) {
+                msgBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    msgDropdown.style.display = msgDropdown.style.display === 'block' ? 'none' : 'block';
+                });
+            }
+
+            document.addEventListener('click', function(e) {
+                if (!msgBtn.contains(e.target) && !msgDropdown.contains(e.target)) {
+                    msgDropdown.style.display = 'none';
                 }
             });
         });

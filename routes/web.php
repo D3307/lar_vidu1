@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Customer\WishlistController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\ProductDetailController as AdminProductDetailController;
+use App\Http\Controllers\Customer\ChatController as CustomerChatController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
+use App\Http\Controllers\Customer\ChatbotController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -120,12 +123,18 @@ Route::middleware(['auth', 'verified'])->group(function() {
         Route::post('/add/{productId}', [WishlistController::class, 'store'])->name('wishlist.add');
         Route::delete('/remove/{productId}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
     });
+
+    // Chat với Admin
+    Route::get('/chat', [CustomerChatController::class, 'index'])->name('customer.chat');
+    Route::post('/chat/send', [CustomerChatController::class, 'send'])->name('customer.chat.send');
+    Route::get('/chat/fetch', [CustomerChatController::class, 'fetch'])->name('customer.chat.fetch');
 });
 
 // -------------------- Public pages --------------------
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('customer.about');
 Route::get('/contact', [PageController::class, 'contact'])->name('customer.contact');
+Route::post('/chatbot/send', [ChatbotController::class, 'send'])->name('chatbot.send');
 // Sản phẩm
 Route::get('/products', [ProductController::class, 'index'])->name('customer.products');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer.product_detail');
@@ -172,4 +181,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::post('products/{product}/details', [AdminProductDetailController::class, 'addDetail'])->name('products.addDetail');
         Route::put('product-details/{detail}', [AdminProductDetailController::class, 'updateDetail'])->name('products.updateDetail');
         Route::delete('product-details/{detail}', [AdminProductDetailController::class, 'deleteDetail'])->name('products.deleteDetail');
+
+        // Route chat
+        Route::get('/chat', [AdminChatController::class, 'index'])->name('chat');
+        Route::post('/chat/send', [AdminChatController::class, 'send'])->name('chat.send');
+        Route::get('/chat/fetch/{userId}', [AdminChatController::class, 'fetch'])->name('chat.fetch');
+        Route::get('/chat/unread-count', [AdminChatController::class, 'unreadCount'])->name('chat.unread');
     });

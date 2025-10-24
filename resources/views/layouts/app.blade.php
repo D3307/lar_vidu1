@@ -4,12 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>@yield('title', 'Giày Cao Gót')</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
     <style>
@@ -294,39 +299,83 @@
             color: var(--primary);
             margin-bottom: 0.5rem;
         }
+        #backToTopBtn {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background-color: #7a2f3b;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
 
-        /* Footer mới */
+        #backToTopBtn:hover {
+            background-color: #5a1f2b;
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+        }
+
+        #backToTopBtn:hover i {
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+            60% { transform: translateY(-3px); }
+        }
+        /* Footer tinh chỉnh lại */
         .shop-footer {
             background: #fff;
-            border-top: 2px solid #f3e6ea;
+            border-top: 3px solid #f5dbe0; /* nhẹ, hồng nhạt để phân tách với body */
             color: #222;
             font-size: 1rem;
-            letter-spacing: 0.1px;
+            padding-top: 30px;
+            padding-bottom: 20px;
         }
+
+        .shop-footer .container {
+            max-width: 1300px; /* Dàn rộng hơn */
+            margin: 0 auto;
+        }
+
         .footer-title {
             color: #e75480;
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             font-weight: 700;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
+            margin-bottom: 10px;
         }
+
         .footer-desc {
             color: #444;
             font-size: 1.02rem;
-            margin-bottom: 0;
+            line-height: 1.5;
         }
+
         .footer-heading {
             color: #e75480;
             font-weight: 600;
             margin-bottom: 12px;
             font-size: 1.08rem;
         }
+
         .footer-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         .footer-list li {
             margin-bottom: 8px;
             color: #222;
@@ -334,58 +383,86 @@
             display: flex;
             align-items: center;
         }
+
         .footer-list a {
             color: #222;
             text-decoration: none;
             transition: color 0.18s;
         }
+
         .footer-list a:hover {
             color: #e75480;
             text-decoration: underline;
         }
+
         .footer-social {
             display: flex;
             gap: 14px;
         }
+
         .footer-social-link {
             color: #e75480;
             background: #f9f3f3;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.15rem;
-            transition: background 0.18s, color 0.18s;
+            transition: background 0.18s, color 0.18s, transform 0.25s;
             text-decoration: none;
         }
+
         .footer-social-link:hover {
             background: #e75480;
             color: #fff;
+            transform: translateY(-3px);
         }
+
         .footer-hr {
             border-top: 1.5px solid #f3e6ea;
         }
-        @media (max-width: 900px) {
-            .shop-footer .container {
-                padding-left: 12px;
-                padding-right: 12px;
+
+        .shop-footer .text-end {
+            text-align: center !important; /* Căn giữa thay vì lệch phải */
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Trái tim */
+        .shop-footer .heart-icon {
+            color: #e75480;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
             }
-            .footer-title {
-                font-size: 1.1rem;
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
             }
         }
 
-        .footer-divider {
-            border-top: 2.5px solid #f3e6ea;
-            width: 100%;
-            margin-bottom: 0;
+        /* Responsive */
+        @media (max-width: 900px) {
+            .shop-footer .container {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+            .footer-title {
+                font-size: 1.15rem;
+            }
         }
     </style>
     @stack('head')
 </head>
 <body>
+    <!-- Header -->
     <header class="site-header">
         <div class="header-container">
             <a href="{{ route('home') }}" class="brand">Bridal Shop</a>
@@ -459,32 +536,158 @@
         </div>
     </header>
 
-    <!-- Thanh tìm kiếm -->
-    <div class="search-bar" style="position: sticky; padding: 20px; height: 80px;">
-        <div class="container" style="display:flex; justify-content:center;">
-            <form action="{{ route('customer.search') }}" method="GET" 
-                style="display:flex; gap:8px; width:100%; max-width:500px;">
-                <input type="text" id="search" name="search" value="{{ request('search') }}" 
-                    placeholder="Tìm kiếm sản phẩm..." 
-                    style="flex:1; height: 40px; padding:10px 16px; border-radius:8px; border:1px solid #e8cbd2;">
-                <button type="submit" 
-                    style="height: 40px; padding:5px 20px; border-radius:8px; background:var(--accent); color:black; border:none; font-weight:600;">
-                    🔍 Tìm kiếm
-                </button>
-            </form>
-        </div>
-    </div>
+    @php
+        // Danh sách các route mà bạn muốn ẨN thanh tìm kiếm
+        $hiddenRoutes = ['accounts.edit', 'login', 'register', 'customer.cart', 'customer.checkout', 'customer.about', 'customer.contact', 'orders.index', 'orders.show', 'wishlist'];
+    @endphp
 
+    @unless(in_array(Route::currentRouteName(), $hiddenRoutes))
+        <!-- Thanh tìm kiếm -->
+        <div class="search-bar" style="position: sticky; padding: 20px; height: 80px;">
+            <div class="container" style="display:flex; justify-content:center;">
+                <form action="{{ route('customer.search') }}" method="GET" 
+                    style="display:flex; gap:8px; width:100%; max-width:500px;">
+                    <input type="text" id="search" name="search" value="{{ request('search') }}" 
+                        placeholder="Tìm kiếm sản phẩm..." 
+                        style="flex:1; height: 40px; padding:10px 16px; border-radius:8px; border:1px solid #e8cbd2;">
+                    <button type="submit" 
+                        style="height: 40px; padding:5px 20px; border-radius:8px; background:var(--accent); color:black; border:none; font-weight:600;">
+                        🔍 Tìm kiếm
+                    </button>
+                </form>
+            </div>
+        </div>
+    @endunless
+
+    <!-- Nội dung chính -->
     <main>
         
         @yield('content')
     </main>
 
+    <!-- Nút quay lại đầu trang -->
+    <button id="backToTopBtn" title="Lên đầu trang">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+    <script>
+        window.onscroll = function() {
+            const btn = document.getElementById("backToTopBtn");
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                btn.style.display = "flex";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+
+        document.getElementById("backToTopBtn").onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    </script>
+
+        <!-- 🧠 Chatbot AI -->
+    <div id="chatbot-widget" style="position:fixed; bottom:20px; right:20px; z-index:9999;">
+
+    <!-- 🔘 Nút mở/đóng chatbot -->
+    <button id="chatbot-toggle"
+        style="background:#c03651; color:white; border:none; border-radius:50%;
+        width:55px; height:55px; font-size:1.5rem; cursor:pointer;
+        box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+        💬
+    </button>
+
+    <!-- 💬 Hộp chat -->
+    <div id="chatbot-box"
+        style="display:none; width:320px; height:420px; background:white;
+        border:1px solid #ddd; border-radius:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.15);
+        flex-direction:column; overflow:hidden;">
+
+        <!-- Header -->
+        <div style="background:#7a2f3b; color:white; padding:10px;
+            font-weight:600; text-align:center;">
+            🤖 Trợ lý ảo Bridal Shop
+        </div>
+
+        <!-- Nội dung tin nhắn -->
+        <div id="chatbot-messages"
+            style="flex:1; overflow-y:auto; padding:10px; font-size:0.9rem;
+            max-height:320px;"></div>
+
+        <!-- Ô nhập -->
+        <form id="chatbot-form" style="display:flex; border-top:1px solid #eee;">
+            <input type="text" id="chatbot-input" placeholder="Nhập tin nhắn..."
+                style="flex:1; border:none; padding:10px; outline:none;">
+            <button type="submit"
+                style="background:#c03651; color:white; border:none; padding:0 15px;
+                cursor:pointer;">Gửi</button>
+        </form>
+    </div>
+</div>
+
+<!-- CSRF token cho Laravel -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // 🛠 Thiết lập CSRF token cho mọi request AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    // 🔘 Bật/tắt khung chat
+    $('#chatbot-toggle').on('click', function() {
+        $('#chatbot-box').toggle();
+    });
+
+    // 📩 Xử lý gửi tin nhắn
+    $('#chatbot-form').on('submit', function(e) {
+        e.preventDefault();
+        const msg = $('#chatbot-input').val().trim();
+        if (!msg) return;
+
+        // Hiển thị tin nhắn người dùng
+        $('#chatbot-messages').append(`
+            <div style="margin:8px 0;">
+                <strong>Bạn:</strong> ${$('<div>').text(msg).html()}
+            </div>
+        `);
+        $('#chatbot-input').val('');
+
+        // Gửi tin nhắn đến backend
+        $.ajax({
+            url: "{{ route('chatbot.send') }}",
+            method: 'POST',
+            data: { message: msg },
+            success: function(res) {
+                $('#chatbot-messages').append(`
+                    <div style="margin:8px 0; color:#7a2f3b;">
+                        <strong>AI:</strong> ${$('<div>').text(res.reply).html()}
+                    </div>
+                `);
+                $('#chatbot-messages').scrollTop($('#chatbot-messages')[0].scrollHeight);
+            },
+            error: function(xhr) {
+                $('#chatbot-messages').append(`
+                    <div style="margin:8px 0; color:red;">
+                        <strong>Lỗi:</strong> Không thể kết nối đến máy chủ (mã ${xhr.status})
+                    </div>
+                `);
+            }
+        });
+    });
+});
+</script>
+
+    <!-- Footer -->
     <footer class="shop-footer mt-5">
-        <div class="footer-divider" style="color: #632231ff;"></div>
         <div class="container py-4">
             <div class="row gy-4">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h5 class="footer-title mb-3">
                         Bridal Shop
                     </h5>
@@ -497,7 +700,7 @@
                         <a href="#" class="footer-social-link"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h6 class="footer-heading">Liên hệ</h6>
                     <ul class="footer-list">
                         <li><i class="fa fa-map-marker-alt me-2"></i>41A Phú Diễn, Bắc Từ Liêm, Hà Nội</li>
@@ -505,17 +708,28 @@
                         <li><i class="fa fa-envelope me-2"></i>info@giaycaogot.com</li>
                     </ul>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h6 class="footer-heading">Hỗ trợ khách hàng</h6>
                     <ul class="footer-list">
                         <li><a href="{{ route('customer.about') }}">Chính sách đổi trả</a></li>
                         <li><a href="{{ route('customer.contact') }}">Liên hệ</a></li>
+                        <li><a href="{{ route('customer.chat') }}">FAQs</a></li>
                     </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="footer-heading">Địa chỉ cửa hàng</h6>
+                    <div class="footer-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.7765318273246!2d105.7617326108948!3d21.0534854868478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454dc7ef09531%3A0x814cc26d6bf2aa49!2zNDFBIMSQLiBQaMO6IERp4buFbiwgUGjDuiBEaeG7hW4sIELhuq9jIFThu6sgTGnDqm0sIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e1!3m2!1svi!2s!4v1757502007239!5m2!1svi!2s"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                    </div>
                 </div>
             </div>
             <hr class="footer-hr my-4">
-            <div class="text-center text-muted small">
-                &copy; {{ date('Y') }} GIAYCAOGOT. All rights reserved.
+            <div class="text-end text-muted small">
+                &copy; {{ date('Y') }} - Hệ thống quản lý cửa hàng được thiết kế bởi nhóm 9 <i class="fa-solid fa-heart heart-icon"></i>
             </div>
         </div>
     </footer>

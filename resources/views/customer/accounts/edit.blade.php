@@ -124,6 +124,30 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Thanh trượt gợi ý sản phẩm -->
+            <div class="suggestion-container">
+                <h3>Gợi ý dành riêng cho bạn 💖</h3>
+
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        @foreach ($suggestedProducts as $product)
+                            <div class="swiper-slide">
+                                <div class="product-card">
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                                    <h4>{{ $product->name }}</h4>
+                                    <p class="price">{{ number_format($product->price, 0, ',', '.') }}đ</p>
+                                    <a href="{{ route('customer.product_detail', $product->id) }}" class="btn-detail">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Nút điều hướng -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -221,5 +245,136 @@
         border-color: #eee;
         cursor: not-allowed;
     }
+    /* Khối chứa phần gợi ý */
+    .suggestion-container {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        margin-top: 50px;
+    }
+
+    /* Tiêu đề */
+    .suggestion-container h3 {
+        font-weight: 700;
+        color: #d6336c;
+        margin-bottom: 20px;
+    }
+
+    /* Swiper */
+    .swiper {
+        width: 100%;
+        padding-bottom: 20px;
+        position: relative;
+    }
+
+    .swiper-slide {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* --- CARD SẢN PHẨM --- */
+    .product-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        text-align: center;
+        padding: 15px;
+        width: 240px;
+        height: 360px; /* 🔹 Cố định chiều cao đồng đều */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Ảnh */
+    .product-card img {
+        width: 100%;
+        height: 180px; /* 🔹 Giữ tỷ lệ ảnh đều nhau */
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Tên sản phẩm */
+    .product-card h4 {
+        font-size: 0.9rem; /* 🔹 Chữ nhỏ hơn */
+        font-weight: 600;
+        margin: 8px 0 4px;
+        color: #333;
+        line-height: 1.3;
+        flex-grow: 1; /* 🔹 Đảm bảo phần chữ co giãn để các card cao bằng nhau */
+    }
+
+    /* Giá */
+    .product-card .price {
+        color: #ff3366;
+        font-weight: bold;
+        font-size: 0.9rem; /* 🔹 Giảm nhẹ */
+        margin-bottom: 8px;
+    }
+
+    /* Nút chi tiết */
+    .btn-detail {
+        display: inline-block;
+        border: 1px solid #ff3366;
+        color: #ff3366;
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    .btn-detail:hover {
+        background-color: #ff3366;
+        color: #fff;
+    }
+
+    /* Nút điều hướng */
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #ff3366;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        width: 40px;
+        height: 40px;
+        top: 45%;
+        z-index: 10;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 16px;
+    }
+
+    /* Ẩn thanh cuộn ngang */
+    ::-webkit-scrollbar {
+        display: none;
+    }
 </style>
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            0: { slidesPerView: 1 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 }
+        }
+    });
+</script>
 @endsection
