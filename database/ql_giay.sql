@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2025 lúc 12:25 PM
+-- Thời gian đã tạo: Th10 24, 2025 lúc 01:14 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -225,13 +225,7 @@ INSERT INTO `orders` (`id`, `momo_order_id`, `name`, `phone`, `address`, `user_i
 (5, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 120000, 620000, 'pending', 'unpaid', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 'cod', 10),
 (6, NULL, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'shipping', 'paid', '2025-09-14 23:01:28', '2025-09-15 07:04:25', 'momo', 7),
 (8, NULL, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 5000, 940000, 'delivered', 'paid', '2025-09-14 23:24:01', '2025-09-15 05:24:41', 'momo', 4),
-(9, NULL, 'Lan', '098765431', 'Ha Noi', 10, 549000.00, 146700, 402300, 'processing', 'paid', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 'momo', 1),
 (11, NULL, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'delivered', 'paid', '2025-09-15 03:47:20', '2025-09-18 10:00:21', 'momo', 3),
-(12, NULL, 'Lan', '0123456789', 'Ha Noi', 10, 370000.00, 37000, 333000, 'shipping', 'paid', '2025-09-15 03:53:07', '2025-09-15 05:24:12', 'momo', 2),
-(13, NULL, 'Lan', '0987654321', 'Ha Noi', 10, 549000.00, 50000, 499000, 'cancelled', 'paid', '2025-09-15 03:56:48', '2025-09-15 05:24:02', 'momo', 8),
-(14, NULL, 'Lan', '09763733737', 'Ha Noi', 10, 499000.00, 149700, 349300, 'processing', 'paid', '2025-09-15 04:05:43', '2025-09-15 05:21:22', 'momo', 1),
-(15, NULL, 'Lan', '0123456789', 'Ha Noi', 10, 499000.00, 49900, 449100, 'delivered', 'paid', '2025-09-15 04:16:13', '2025-09-15 05:23:56', 'momo', 2),
-(16, NULL, 'Lan', '0987654321', 'Hà Nội', 10, 549000.00, 164700, 384300, 'cancelled', 'paid', '2025-09-15 05:02:23', '2025-09-15 05:23:51', 'momo', 1),
 (17, NULL, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'delivered', 'unpaid', '2025-09-15 05:47:48', '2025-09-18 09:59:50', 'cod', 8),
 (18, NULL, 'Linh', '0987654321', 'Hà Nội', 5, 945000.00, 189000, 756000, 'cancelled', 'paid', '2025-09-15 06:00:58', '2025-09-15 06:59:44', 'momo', 10),
 (19, NULL, 'Linh', '0987654321', 'Hà Nội', 5, 549000.00, 50000, 499000, 'delivered', 'paid', '2025-09-15 06:41:19', '2025-09-18 09:37:12', 'cod', 8),
@@ -296,13 +290,7 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `qua
 (8, 6, 15, '#000000', '35', 1, 450000.00, '2025-09-14 23:01:28', '2025-09-14 23:01:28'),
 (9, 6, 5, '#000000', '35', 1, 599000.00, '2025-09-14 23:01:28', '2025-09-14 23:01:28'),
 (11, 8, 3, '#fffdd0', '35', 1, 945000.00, '2025-09-14 23:24:01', '2025-09-14 23:24:01'),
-(12, 9, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 00:58:44', '2025-09-15 00:58:44'),
 (14, 11, 1, '#ffc0cb', '35', 1, 549000.00, '2025-09-15 03:47:20', '2025-09-15 03:47:20'),
-(15, 12, 13, NULL, NULL, 1, 370000.00, '2025-09-15 03:53:07', '2025-09-15 03:53:07'),
-(16, 13, 8, '#a52a2a', '35', 1, 549000.00, '2025-09-15 03:56:48', '2025-09-15 03:56:48'),
-(17, 14, 6, NULL, NULL, 1, 499000.00, '2025-09-15 04:05:43', '2025-09-15 04:05:43'),
-(18, 15, 6, NULL, NULL, 1, 499000.00, '2025-09-15 04:16:13', '2025-09-15 04:16:13'),
-(19, 16, 11, '#ffc0cb', '37', 1, 549000.00, '2025-09-15 05:02:23', '2025-09-15 05:02:23'),
 (20, 17, 1, NULL, NULL, 1, 549000.00, '2025-09-15 05:47:48', '2025-09-15 05:47:48'),
 (21, 18, 3, NULL, NULL, 1, 945000.00, '2025-09-15 06:00:58', '2025-09-15 06:00:58'),
 (22, 19, 1, NULL, NULL, 1, 549000.00, '2025-09-15 06:41:19', '2025-09-15 06:41:19'),
@@ -465,9 +453,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('K6C2JTqEz9lyKPn6nYqhlVxbJgHRUVvJVKRZpvIO', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiZTByZHBGTzR1WTg2NHVobnFiTlBmdFBlek9Dc2NFek1CQUhrbk9sOSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jaGF0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7fQ==', 1761301506),
-('QTxvHGqjfcsSswI1Q8lrvlqX8AuteMpBy1TX16hf', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoieU5aSTRMQkQ2UVUxNXhFQWpzV3dJMUNhY1N3VnBlMDZrVjRpZWFNdSI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDtzOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FjY291bnQiO31zOjQ6ImNhcnQiO2E6MTp7czozNDoiMTJfMzZfIzgwMDAwMF9EYSB04buVbmcgaOG7o3AgKFBVKSI7YTo4OntzOjI6ImlkIjtpOjEyO3M6NDoibmFtZSI7czo2MToiR2nDoHkgQ2FvIEfDs3QgxJDDtG5nIEjhuqNpIFNhdGluIMSQw61uaCBQaGEgTMOqIFNhbmcgVHLhu41uZyI7czo1OiJwcmljZSI7czo5OiI4NTAwMDAuMDAiO3M6NToiaW1hZ2UiO3M6MzM6InByb2R1Y3RzLzE3NTc2NzMxMTRfZ2lheXNhdGluLmpwZyI7czo0OiJzaXplIjtzOjI6IjM2IjtzOjU6ImNvbG9yIjtzOjc6IiM4MDAwMDAiO3M6ODoibWF0ZXJpYWwiO3M6MjA6IkRhIHThu5VuZyBo4bujcCAoUFUpIjtzOjg6InF1YW50aXR5IjtpOjI7fX19', 1758575306),
-('qWfybRZqilgWle0H2NIMn3Lq1plcEiIGRR2U5l5f', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiUm10YVEzQlFMb3ZubUJYaTZLSXJnaXJzQkM2QllPM081a2NuNG9YTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wcm9kdWN0cyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQ7fQ==', 1758786761);
+('7SQ9vAdBbZRwn8qJLa0ykQdvcnxlBGv0V7M1x39K', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWERuVTZ5NDZEWUtRTjc4N1hmaXZacDZhU2x1eXNPSm5tR1hyYnpiTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9jaGF0Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1761302091),
+('TvvvHqIX8vZBoZt29jg9cgPEENvpW1AODglYK90M', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiazZSbkRRWGlpQnVnTmJJWmRnWTdKbW9mNWVEWmRpZmFveGZCY25kcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jaGF0Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDt9', 1761304427);
 
 -- --------------------------------------------------------
 
@@ -681,10 +668,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `phone`, `address`) VALUES
-(4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', 'jqHXoNs9KXetj2HiyxB6flL2WnWVBuU3luo9vNPVpyhOcSfNU4QeV6S0PyG2', '2025-09-12 00:21:15', '2025-09-20 23:45:19', 'admin', '0944763697', 'Nam Định'),
-(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'gX2K1qT7hemxONRMgtG3x1hT7tMX4bPL3M2eftgl5xcVxOnMiHl64H9IrNx6', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội'),
-(10, 'Lan', 'lantruong346@gmail.com', '2025-09-15 07:55:37', '$2y$12$dyCpz7pTZhRbFFg2a6v2Xe3..blEWE/4UXFvfdZ8hZ4T4m3j5J2Pu', 'Y5reakdmmk9SOrcsVWeD7STDGTVP8c65mO0dmql2ZRh08TqGFY5rSGlQtfhd', '2025-09-15 00:53:06', '2025-09-15 00:53:06', 'customer', '0123456789', 'Hà Giang'),
-(11, 'Duyên', 'duya9654@gmail.com', '2025-09-18 22:53:13', '$2y$12$MxFHF9XcHSJaz2hKyYyVC.UFi34Vf/4cBZsuXPGt4go6Y3jNMEOpi', 'pfWJohBA8dXgxezcVKp0F5Znv2GOMxnNhVkbE0LYuicnZjJY19FvsQvUzPwH', '2025-09-18 15:52:33', '2025-09-20 23:51:46', 'customer', '0924800857', 'Thái Bình');
+(4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', '6bla9mSb4uylrjbvllS8TkcAaMGD4dFvO32rcnhKScDWyz4wl2UrWAQMXMx4', '2025-09-12 00:21:15', '2025-09-20 23:45:19', 'customer', '0944763697', 'Nam Định'),
+(5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'gX2K1qT7hemxONRMgtG3x1hT7tMX4bPL3M2eftgl5xcVxOnMiHl64H9IrNx6', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội');
 
 -- --------------------------------------------------------
 
@@ -714,23 +699,10 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (32, 5, 7, 6, '2025-09-15 06:01:28', '2025-09-14 23:01:28', '2025-09-14 23:01:28', 25.00),
 (35, 5, 3, 7, '2025-09-15 06:07:57', '2025-09-14 23:07:57', '2025-09-14 23:07:57', 20.00),
 (41, 5, 4, 8, '2025-09-15 06:24:01', '2025-09-14 23:24:01', '2025-09-14 23:24:01', 5000.00),
-(44, 10, NULL, 9, '2025-09-15 07:58:44', '2025-09-15 00:58:44', '2025-09-15 00:58:44', NULL),
-(45, 10, 1, 9, '2025-09-15 07:58:44', '2025-09-15 00:58:44', '2025-09-15 00:58:44', 30.00),
 (51, 5, NULL, 10, '2025-09-15 10:37:42', '2025-09-15 03:37:42', '2025-09-15 03:37:42', NULL),
 (52, 5, 5, 10, '2025-09-15 10:37:42', '2025-09-15 03:37:42', '2025-09-15 03:37:42', 15.00),
 (55, 5, NULL, 11, '2025-09-15 10:47:20', '2025-09-15 03:47:20', '2025-09-15 03:47:20', NULL),
 (56, 5, 3, 11, '2025-09-15 10:47:20', '2025-09-15 03:47:20', '2025-09-15 03:47:20', 20.00),
-(58, 10, NULL, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', NULL),
-(59, 10, 2, 12, '2025-09-15 10:53:07', '2025-09-15 03:53:07', '2025-09-15 03:53:07', 10.00),
-(63, 10, NULL, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', NULL),
-(64, 10, 8, 13, '2025-09-15 10:56:48', '2025-09-15 03:56:48', '2025-09-15 03:56:48', 50000.00),
-(65, 10, NULL, NULL, '2025-09-15 11:05:30', '2025-09-15 04:05:30', '2025-09-15 04:05:30', NULL),
-(66, 10, NULL, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', NULL),
-(67, 10, 1, 14, '2025-09-15 11:05:43', '2025-09-15 04:05:43', '2025-09-15 04:05:43', 30.00),
-(69, 10, NULL, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', NULL),
-(70, 10, 2, 15, '2025-09-15 11:16:13', '2025-09-15 04:16:13', '2025-09-15 04:16:13', 10.00),
-(73, 10, NULL, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', NULL),
-(74, 10, 1, 16, '2025-09-15 12:02:23', '2025-09-15 05:02:23', '2025-09-15 05:02:23', 30.00),
 (75, 5, NULL, NULL, '2025-09-15 12:45:34', '2025-09-15 05:45:34', '2025-09-15 05:45:34', NULL),
 (76, 5, NULL, 17, '2025-09-15 12:47:48', '2025-09-15 05:47:48', '2025-09-15 05:47:48', NULL),
 (77, 5, 8, 17, '2025-09-15 12:47:48', '2025-09-15 05:47:48', '2025-09-15 05:47:48', 50000.00),
@@ -920,7 +892,8 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (271, 4, 9, 53, '2025-09-22 19:17:57', '2025-09-22 12:17:57', '2025-09-22 12:17:57', 30.00),
 (272, 4, NULL, NULL, '2025-09-22 21:06:52', '2025-09-22 14:06:52', '2025-09-22 14:06:52', NULL),
 (273, 4, NULL, NULL, '2025-09-22 21:06:59', '2025-09-22 14:06:59', '2025-09-22 14:06:59', NULL),
-(274, 4, NULL, NULL, '2025-09-22 21:07:05', '2025-09-22 14:07:05', '2025-09-22 14:07:05', NULL);
+(274, 4, NULL, NULL, '2025-09-22 21:07:05', '2025-09-22 14:07:05', '2025-09-22 14:07:05', NULL),
+(275, 4, NULL, NULL, '2025-10-24 10:27:12', '2025-10-24 03:27:12', '2025-10-24 03:27:12', NULL);
 
 --
 -- Bẫy `user_histories`
@@ -998,6 +971,13 @@ ALTER TABLE `inventories`
 --
 ALTER TABLE `jobs`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_messages_users` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `migrations`
@@ -1132,6 +1112,12 @@ ALTER TABLE `jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
@@ -1195,7 +1181,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=275;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlists`
@@ -1212,6 +1198,12 @@ ALTER TABLE `wishlists`
 --
 ALTER TABLE `inventories`
   ADD CONSTRAINT `inventories_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_messages_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `orders`
