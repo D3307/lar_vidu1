@@ -538,7 +538,7 @@
 
     @php
         // Danh sách các route mà bạn muốn ẨN thanh tìm kiếm
-        $hiddenRoutes = ['accounts.edit', 'login', 'register', 'customer.cart', 'customer.checkout', 'customer.about', 'customer.contact', 'orders.index', 'orders.show', 'wishlist'];
+        $hiddenRoutes = ['accounts.edit', 'login', 'register', 'customer.cart', 'customer.checkout', 'customer.about', 'customer.contact', 'orders.index', 'orders.show', 'wishlist', 'customer.chat'];
     @endphp
 
     @unless(in_array(Route::currentRouteName(), $hiddenRoutes))

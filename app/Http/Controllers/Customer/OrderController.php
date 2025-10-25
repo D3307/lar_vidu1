@@ -148,7 +148,8 @@ class OrderController extends Controller
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'total' => $finalTotal,
+                'total' => $total,
+                'final_total' => $finalTotal,
                 'payment_method' => $request->payment,
                 'payment_status' => $request->payment === 'cod' ? 'unpaid' : 'pending',
                 'status' => 'pending',
@@ -301,7 +302,7 @@ class OrderController extends Controller
                 }
             }
 
-            $order->update(['status' => 'canceled']);
+            $order->update(['status' => 'cancelled']);
 
             DB::commit();
         } catch (\Exception $e) {

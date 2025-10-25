@@ -100,12 +100,6 @@
                             </a>
                         @endif
 
-                        <button onclick="window.print()" 
-                                class="btn" 
-                                style="background:#e75480;color:#fff;border:none;">
-                            🖨 In đơn hàng
-                        </button>
-
                         <!-- Đánh giá -->
                         @if($order->status === 'delivered' && $order->user_id === auth()->id())
                             @if($order->reviews->isEmpty())
@@ -120,34 +114,4 @@
         </div>
     </div>
 </div>
-
-
-{{-- CSS cho in ấn --}}
-<style>
-@media print {
-    /* Ẩn toàn bộ layout mặc định */
-    header, footer, nav, .navbar, .sidebar, .mt-4, .btn { 
-        display: none !important; 
-    }
-
-    /* Chỉ hiển thị phần đơn hàng */
-    .card.shadow-sm {
-        box-shadow: none !important;
-        border: none !important;
-    }
-
-    body * {
-        visibility: hidden;
-    }
-    .card.shadow-sm, .card.shadow-sm * {
-        visibility: visible;
-    }
-    .card.shadow-sm {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
-}
-</style>
 @endsection
