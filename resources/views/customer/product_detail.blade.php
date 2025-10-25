@@ -61,6 +61,7 @@
             </div>
             {{-- Form thêm vào giỏ hàng --}}
             <form action="{{ route('cart.add', $product->id) }}" method="POST" id="add-to-cart-form">
+                <input type="hidden" name="product_detail_id" id="selected-product-detail" value="">
                 @csrf
                 {{-- Color --}}
                 <div class="mb-3">
@@ -335,52 +336,121 @@
                 this.style.borderColor = '#e75480';
             });
         });
+
+        // Hàm lấy detail id từ server (fetch)
+        async function fetchProductDetailId(productId, color, size, material) {
+            try {
+                const params = new URLSearchParams({ product_id: productId });
+                if (color) params.append('color', color);
+                if (size) params.append('size', size);
+                if (material) params.append('material', material);
+                const res = await fetch('/product-detail/match?' + params.toString(), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                if (!res.ok) return null;
+                const data = await res.json();
+                return data.product_detail_id || null;
+            } catch (e) {
+                console.error('fetchProductDetailId error', e);
+                return null;
+            }
+        }
+
+        // Khi user thay đổi option thì lấy id
+        const updateProductDetail = async () => {
+            const color = document.getElementById('selected-color')?.value || '';
+            const size = document.getElementById('selected-size')?.value || '';
+            const material = document.getElementById('selected-material')?.value || '';
+            const productId = '{{ $product->id }}'; // blade variable
+            const id = await fetchProductDetailId(productId, color, size, material);
+            if (id) {
+                document.getElementById('selected-product-detail').value = id;
+                // optional: enable buy now button if was disabled
+            } else {
+                document.getElementById('selected-product-detail').value = '';
+                // optional: show "Không có biến thể phù hợp"
+            }
+        };
+
+        // Gọi updateProductDetail mỗi khi chọn color/size/material
+        document.querySelectorAll('.color-circle').forEach(el => {
+            el.addEventListener('click', function () {
+                // ... existing code
+                updateProductDetail();
+            });
+        });
+        document.querySelectorAll('.size-option').forEach(el => {
+            el.addEventListener('click', function(){
+                // ... existing code
+                updateProductDetail();
+            });
+        });
+        document.querySelectorAll('.material-option').forEach(el => {
+            el.addEventListener('click', function(){
+                // ... existing code
+                updateProductDetail();
+            });
+        });
+
+        // Trước khi submit form: nếu form có product_detail empty => block và warn
+        const form = document.getElementById('add-to-cart-form');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                const sel = document.getElementById('selected-product-detail').value;
+                if (!sel) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn đầy đủ biến thể (màu/size/material).');
+                }
+            });
+        }
     });
 </script>
 
 <style>
-.color-circle.selected, .color-circle:hover {
-    outline: 2px solid #e75480 !important;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e75480;
-}
-.size-option.active, .size-option:hover,
-.material-option.active, .material-option:hover {
-    border: 2px solid #e75480 !important;
-    color: #e75480;
-    font-weight: 600;
-    background: #fff;
-}
-.btn-outline-danger,
-.btn-outline-danger:focus {
-    border-color: #e75480;
-    color: #e75480;
-    background: #fff;
-}
-.btn-outline-danger:hover {
-    background: #e75480;
-    color: #fff !important;
-    border-color: #e75480;
-}
-.btn, .btn-outline-danger, .btn-outline-dark, .btn-outline-secondary {
-    border-radius: 8px !important;
-    font-weight: 600;
-}
-.nav-tabs .nav-link.active {
-    color: #e75480;
-    border-color: #e75480 #e75480 #fff;
-    background: #fff;
-    font-weight: 600;
-}
-.nav-tabs .nav-link {
-    color: #222;
-    font-weight: 500;
-}
-.review-card {
-    transition: box-shadow 0.2s;
-}
-.review-card:hover {
-    box-shadow: 0 6px 24px rgba(231,84,128,0.08);
-    border-color: #e75480;
-}
+    .color-circle.selected, .color-circle:hover {
+        outline: 2px solid #e75480 !important;
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e75480;
+    }
+    .size-option.active, .size-option:hover,
+    .material-option.active, .material-option:hover {
+        border: 2px solid #e75480 !important;
+        color: #e75480;
+        font-weight: 600;
+        background: #fff;
+    }
+    .btn-outline-danger,
+    .btn-outline-danger:focus {
+        border-color: #e75480;
+        color: #e75480;
+        background: #fff;
+    }
+    .btn-outline-danger:hover {
+        background: #e75480;
+        color: #fff !important;
+        border-color: #e75480;
+    }
+    .btn, .btn-outline-danger, .btn-outline-dark, .btn-outline-secondary {
+        border-radius: 8px !important;
+        font-weight: 600;
+    }
+    .nav-tabs .nav-link.active {
+        color: #e75480;
+        border-color: #e75480 #e75480 #fff;
+        background: #fff;
+        font-weight: 600;
+    }
+    .nav-tabs .nav-link {
+        color: #222;
+        font-weight: 500;
+    }
+    .review-card {
+        transition: box-shadow 0.2s;
+    }
+    .review-card:hover {
+        box-shadow: 0 6px 24px rgba(231,84,128,0.08);
+        border-color: #e75480;
+    }
 </style>
 @endsection

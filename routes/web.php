@@ -141,6 +141,7 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('customer
 Route::post('/products/{id}/review', [\App\Http\Controllers\Customer\ReviewController::class, 'store'])->name('customer.review');
 Route::get('/products/category/{category}', [ProductController::class, 'category'])->name('customer.products.category');
 Route::get('/search', [ProductController::class, 'search'])->name('customer.search');
+Route::get('/product-detail/match', [\App\Http\Controllers\Customer\ProductController::class, 'matchDetail']);
 
 
 

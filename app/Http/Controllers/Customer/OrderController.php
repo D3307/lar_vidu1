@@ -112,7 +112,7 @@ class OrderController extends Controller
                 'quantity'          => $quantities[$i],
                 'color'             => $detail->color,
                 'size'              => $detail->size,
-                'material'          => $detail->material,
+                'material'          => $detail->product->material,
                 'image'             => $detail->product->image ?? '',
             ];
         }
@@ -231,7 +231,7 @@ class OrderController extends Controller
             'id'                => $product->id,
             'product_detail_id' => $detail->id,
             'name'              => $product->name,
-            'price'             => $detail->price, // lấy giá từ chi tiết
+            'price'             => $product->price,
             'quantity'          => $quantity,
             'color'             => $detail->color,
             'size'              => $detail->size,

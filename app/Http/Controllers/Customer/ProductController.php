@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\UserHistory;
+use App\Models\ProductDetail;
 
 class ProductController extends Controller
 {
@@ -72,7 +73,7 @@ class ProductController extends Controller
         $colors = $product->details->pluck('color')->unique()->toArray();
         
         // Lấy danh sách biến thể (chi tiết sản phẩm)
-        $variants = $product->details; // quan hệ hasMany trong model Product
+        $variants = $product->details;
 
         return view('customer.product_detail', compact('product', 'variants', 'totalQuantity', 'sizes', 'colors'));
     }
@@ -99,5 +100,28 @@ class ProductController extends Controller
             ->get();
 
         return view('customer.search', compact('products', 'keyword'));
+    }
+
+    public function matchDetail(Request $request)
+    {
+        $productId = $request->query('product_id');
+        $color = $request->query('color');
+        $size = $request->query('size');
+
+        $q = ProductDetail::where('product_id', $productId);
+
+        if ($color !== null && $color !== '') {
+            $q->where('color', $color);
+        }
+        if ($size !== null && $size !== '') {
+            $q->where('size', $size);
+        }
+
+        $detail = $q->where('quantity', '>', 0)->first();
+
+        if ($detail) {
+            return response()->json(['product_detail_id' => $detail->id]);
+        }
+        return response()->json(['product_detail_id' => null], 200);
     }
 }
