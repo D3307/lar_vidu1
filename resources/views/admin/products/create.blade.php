@@ -111,7 +111,7 @@
 
         <div style="margin-top:8px">
             <label>Ảnh sản phẩm (có thể chọn nhiều)</label><br>
-            <input type="file" name="images[]" accept="image/*" multiple>
+            <input type="file" name="images[]" accept="image/*" multiple webkitdirectory directory>
         </div>
 
         <div style="margin-top:8px">

@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Inventory;
 use Illuminate\Support\Facades\Storage;
+use App\Models\ProductDetail;
 
 class ProductController extends Controller
 {
@@ -63,6 +64,19 @@ class ProductController extends Controller
         }
 
         $product = Product::create($data);
+
+        if ($request->has('details')) {
+            foreach ($request->details as $detail) {
+                if (!empty($detail['color']) || !empty($detail['size'])) {
+                    ProductDetail::create([
+                        'product_id' => $product->id,
+                        'color'      => $detail['color'],
+                        'size'       => $detail['size'],
+                        'quantity'   => $detail['quantity'] ?? 0,
+                    ]);
+                }
+            }
+        }
 
         // Lưu nhiều ảnh phụ nếu có
         if ($request->hasFile('images')) {

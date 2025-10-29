@@ -84,9 +84,10 @@
                 <div class="product-description mb-3">
                     <p><strong style="color:#7a2f3b;">Mô tả:</strong> {{ $product->description ?? 'Không có mô tả' }}</p>
                 </div>
-                @if($product->details->count())
-                    <div class="variants-section">
-                        <h6 style="color:#7a2f3b;margin-bottom:12px;">Chi tiết sản phẩm:</h6>
+                <div class="variants-section">
+                    <h6 style="color:#7a2f3b;margin-bottom:12px;">Chi tiết sản phẩm:</h6>
+
+                    @if($product->details->count())
                         <div class="table-wrapper">
                             <table class="modal-table">
                                 <thead>
@@ -100,65 +101,49 @@
                                 </thead>
                                 <tbody>
                                     @foreach($product->details as $index => $detail)
-                                    <tr id="detail-row-{{ $detail->id }}">
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>
-                                            <div style="display:flex;align-items:center;gap:8px;">
-                                                <span class="color-preview" style="background-color: {{ $detail->color }}"></span>
-                                                <span class="color-name">{{ $detail->color }}</span>
-                                            </div>
-                                            <input type="hidden" name="details[{{ $detail->id }}][color]" value="{{ $detail->color }}">
-                                        </td>
-                                        <td>
-                                            <span class="size-badge">{{ $detail->size }}</span>
-                                            <input type="hidden" name="details[{{ $detail->id }}][size]" value="{{ $detail->size }}">
-                                        </td>
-                                        <td>
-                                            <span class="quantity-badge">{{ $detail->quantity }}</span>
-                                            <input type="hidden" name="details[{{ $detail->id }}][quantity]" value="{{ $detail->quantity }}">
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn-variant btn-variant-edit editDetailBtn"
-                                                    data-id="{{ $detail->id }}"
-                                                    data-color="{{ $detail->color }}"
-                                                    data-size="{{ $detail->size }}"
-                                                    data-quantity="{{ $detail->quantity }}">
-                                                <i class="fa fa-edit"></i> Sửa
-                                            </button>
-                                            <button type="button" class="btn-variant btn-variant-delete deleteDetailBtn" 
-                                                    data-id="{{ $detail->id }}">
-                                                <i class="fa fa-trash"></i> Xóa
-                                            </button>
-                                        </td>
-                                    </tr>
+                                        <tr id="detail-row-{{ $detail->id }}">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <div style="display:flex;align-items:center;gap:8px;">
+                                                    <span class="color-preview" style="background-color: {{ $detail->color }}"></span>
+                                                    <span class="color-name">{{ $detail->color }}</span>
+                                                </div>
+                                            </td>
+                                            <td><span class="size-badge">{{ $detail->size }}</span></td>
+                                            <td><span class="quantity-badge">{{ $detail->quantity }}</span></td>
+                                            <td>
+                                                <button type="button" class="btn-variant btn-variant-edit editDetailBtn" data-id="{{ $detail->id }}" data-color="{{ $detail->color }}" data-size="{{ $detail->size }}" data-quantity="{{ $detail->quantity }}">
+                                                    <i class="fa fa-edit"></i> Sửa
+                                                </button>
+                                                <button type="button" class="btn-variant btn-variant-delete deleteDetailBtn" data-id="{{ $detail->id }}">
+                                                    <i class="fa fa-trash"></i> Xóa
+                                                </button>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="5">
-                                            <form class="addDetailForm" data-product-id="{{ $product->id }}">
-                                                @csrf
-                                                <div style="display:flex; gap:10px; align-items:center;">
-                                                    <input type="text" name="color" placeholder="Màu sắc" required>
-                                                    <input type="text" name="size" placeholder="Kích thước" required>
-                                                    <input type="number" name="quantity" placeholder="Số lượng" required min="0">
-                                                    <button type="submit" class="btn-variant btn-variant-add">
-                                                        <i class="fa fa-plus"></i> Thêm
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
-                    </div>
-                @else
-                    <div class="no-variants">
-                        <i class="fa fa-exclamation-triangle" style="color:#f39c12;margin-right:8px;"></i>
-                        <span class="text-muted">Chưa có chi tiết sản phẩm.</span>
-                    </div>
-                @endif
+                    @else
+                        <div class="no-variants mb-3">
+                            <i class="fa fa-exclamation-triangle" style="color:#f39c12;margin-right:8px;"></i>
+                            <span class="text-muted">Chưa có chi tiết sản phẩm.</span>
+                        </div>
+                    @endif
+
+                    {{-- Form thêm luôn hiển thị --}}
+                    <form class="addDetailForm mt-3" data-product-id="{{ $product->id }}">
+                        @csrf
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="text" name="color" placeholder="Màu sắc" required>
+                            <input type="text" name="size" placeholder="Kích thước" required>
+                            <input type="number" name="quantity" placeholder="Số lượng" required min="0">
+                            <button type="submit" class="btn-variant btn-variant-add">
+                                <i class="fa fa-plus"></i> Thêm
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-modal-close" data-bs-dismiss="modal">
@@ -221,8 +206,14 @@
     .modal-table input, .modal-table select { width: 100%; padding: 8px 12px; border: 1px solid rgba(122, 47, 59, 0.3); border-radius: 6px; font-size: 0.9rem; color: #333; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
     .modal-table input:focus, .modal-table select:focus { border-color: #7a2f3b; box-shadow: 0 0 0 2px rgba(122, 47, 59, 0.15); outline: none; }
     .btn-variant { border: none; border-radius: 6px; padding: 6px 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
-    .btn-variant-add { background: rgba(122, 47, 59, 0.1); color: #7a2f3b; }
-    .btn-variant-add:hover { background: #7a2f3b; color: #fff; }
+    .addDetailForm {width: 100%;display: flex;align-items: center;gap: 10px;padding: 12px 14px;border-top: 1px solid rgba(122, 47, 59, 0.1);background: #fff;border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;}
+    .addDetailForm input[type="text"],
+    .addDetailForm input[type="number"],
+    .addDetailForm select {flex: 1;padding: 8px 12px;border: 1px solid rgba(122, 47, 59, 0.3);border-radius: 6px;font-size: 0.9rem;color: #333;background: #fff;transition: border-color 0.2s, box-shadow 0.2s;}
+    .addDetailForm input:focus {border-color: #7a2f3b;box-shadow: 0 0 0 2px rgba(122, 47, 59, 0.15);outline: none;}
+    .addDetailForm .btn-variant-add {background: rgba(122, 47, 59, 0.1);color: #7a2f3b;border: 1px solid rgba(122, 47, 59, 0.3);border-radius: 6px;padding: 8px 14px;font-size: 0.9rem;font-weight: 500;display: inline-flex;align-items: center;gap: 6px;cursor: pointer;transition: all 0.2s;white-space: nowrap;}
+    .addDetailForm .btn-variant-add:hover {background: #7a2f3b;color: #fff;border-color: #7a2f3b;}
+    @media (max-width: 768px) {.addDetailForm {flex-direction: column;align-items: stretch;}}
     .btn-variant-edit { background: #f0d4db; color: #7a2f3b; }
     .btn-variant-edit:hover { background: #7a2f3b; color: #fff; }
     .btn-variant-delete { background: #fff0f3; color: #a83244; border: 1px solid rgba(168, 50, 68, 0.3); }
