@@ -535,8 +535,5 @@ function scrollThumbnails(direction) {
         border-radius: 10px;
         object-fit: contain;
     }
-    ::-webkit-scrollbar {
-        display: none;
-    }
 </style>
 @endsection

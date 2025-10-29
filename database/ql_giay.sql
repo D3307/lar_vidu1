@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 29, 2025 lúc 06:48 AM
+-- Thời gian đã tạo: Th10 29, 2025 lúc 08:05 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -54,7 +54,8 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
 (6, 'Giày Búp Bê', NULL, '2025-10-28 22:46:37', '2025-10-28 22:46:37'),
 (7, 'Giày Thể Thao', NULL, '2025-10-28 22:46:48', '2025-10-28 22:47:27'),
-(8, 'Giày Lười', NULL, '2025-10-28 22:46:58', '2025-10-28 22:47:34');
+(8, 'Giày Lười', NULL, '2025-10-28 22:46:58', '2025-10-28 22:47:34'),
+(9, 'Giày Boot', NULL, '2025-10-28 22:57:34', '2025-10-28 22:57:34');
 
 -- --------------------------------------------------------
 
@@ -106,6 +107,18 @@ CREATE TABLE `inventories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `inventories`
+--
+
+INSERT INTO `inventories` (`id`, `product_id`, `quantity`, `min_quantity`, `location`, `created_at`, `updated_at`) VALUES
+(16, 16, 0, 0, NULL, NULL, NULL),
+(17, 16, 0, 0, NULL, '2025-10-28 23:08:44', '2025-10-28 23:08:44'),
+(20, 18, 0, 0, NULL, NULL, NULL),
+(21, 18, 0, 0, NULL, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(22, 19, 0, 0, NULL, NULL, NULL),
+(23, 19, 0, 0, NULL, '2025-10-28 23:53:59', '2025-10-28 23:53:59');
 
 -- --------------------------------------------------------
 
@@ -263,6 +276,15 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Đang đổ dữ liệu cho bảng `products`
+--
+
+INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `material`, `description`, `price`, `created_at`, `updated_at`) VALUES
+(16, 6, 'Giày Búp Bê Đông Hải Da Bóng Thân Đính Nơ', NULL, 'Da tổng hợp (PU)', 'Giày Búp Bê Đông Hải mũi nhọn được chế tác từ chất liệu da bóng tạo hiệu ứng ánh sáng sang trọng và dễ vệ sinh. Thiết kế phối màu tinh tế, điểm nhấn nơ mảnh đính trên thân giày che khéo đường nối, tăng sự duyên dáng. Đế thấp êm ái giúp di chuyển thoải mái, phù hợp đi làm, dự tiệc nhẹ hoặc dạo phố thanh lịch.\r\n\r\n- Mã sản phẩm: G81T9\r\n\r\n- Màu: Đen bóng, kem bóng\r\n\r\n- Size: 35 - 40\r\n\r\n- Chất liệu: Da Tổng Hợp (PU)\r\n\r\n- Đế: Cao su\r\n\r\n- Cao: 2cm', 690000.00, '2025-10-28 23:08:44', '2025-10-28 23:08:44'),
+(18, 6, 'Giày Búp Bê Đông Hải Dáng Mary Jane Truyền Thống', NULL, 'Da vi sợi (Microfiber)', 'Giày búp bê Đông Hải với thiết kế tối giản với đường nét mềm mại, mũi tròn và quai cài thanh mảnh tạo nên vẻ thanh lịch đầy nữ tính. Phom dáng ôm gọn bàn chân kết hợp cùng đế bánh khoảng 5 cm, giúp tôn dáng nhẹ nhàng, tạo hiệu ứng chân thon dài mà vẫn giữ được sự ổn định, thoải mái khi di chuyển.\r\n\r\n\r\nChi tiết khóa ánh bạc mang điểm nhấn tinh tế, tổng thể phù hợp cả khi đi làm lẫn dạo phố. \r\n\r\n- Mã sản phẩm: G5722\r\n\r\n- Màu: Đen, Kem\r\n\r\n- Size: 35 - 40\r\n\r\n- Chất liệu: Da vi sợi (Microfiber)\r\n\r\n- Đế: Cao su\r\n\r\n- Cao: 5cm', 890000.00, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(19, 6, 'Giày Búp Bê Zucia Khóa Vuông', NULL, 'Da tổng hợp (PU)', 'Giày búp bê Zucia được kết hợp hoàn hảo giữa tính thời trang và sự tiện dụng, giúp quý cô thoải mái trong từng bước chân mà còn tôn lên vẻ nữ tính, duyên dáng dù đi làm, đi chơi hay tham dự một sự kiện, đôi giày này luôn nổi bật và tự tin trong mọi khoảnh khắc.\r\n- Mã sản phẩm: GHLJ2\r\n- Màu: Đen, Nâu, Hồng\r\n- Size: 35 - 39\r\n- Chất liệu: Da Tổng Hợp (PU)\r\n- Đế: Cao su\r\n- Cao: 2cm', 590000.00, '2025-10-28 23:53:59', '2025-10-28 23:53:59');
+
+--
 -- Bẫy `products`
 --
 DELIMITER $$
@@ -295,6 +317,28 @@ CREATE TABLE `product_details` (
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `product_details`
+--
+
+INSERT INTO `product_details` (`id`, `product_id`, `color`, `size`, `quantity`, `created_at`, `updated_at`) VALUES
+(18, 16, '#000000', '35', 2342, '2025-10-28 23:41:58', '2025-10-28 23:41:58'),
+(19, 16, '#DCC1B0', '36', 45, '2025-10-28 23:42:28', '2025-10-28 23:42:28'),
+(20, 16, '#000000', '37', 45, '2025-10-28 23:42:41', '2025-10-28 23:42:41'),
+(21, 16, '#DCC1B0', '38', 753, '2025-10-28 23:42:59', '2025-10-28 23:42:59'),
+(22, 16, '#000000', '39', 75, '2025-10-28 23:43:07', '2025-10-28 23:43:07'),
+(23, 16, '#DCC1B0', '40', 1, '2025-10-28 23:43:16', '2025-10-28 23:43:16'),
+(24, 18, '#000000', '35', 0, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(25, 18, '#EFE1D8', '36', 0, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(26, 18, '#000000', '37', 1000, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(27, 18, '#EFE1D8', '38', 15680, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(28, 18, '#000000', '39', 2984, '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(29, 19, '#B79D98', '35', 23, '2025-10-28 23:59:49', '2025-10-28 23:59:49'),
+(30, 19, '#000000', '36', 2354, '2025-10-29 00:00:01', '2025-10-29 00:00:01'),
+(31, 19, '#C5A890', '37', 678, '2025-10-29 00:00:21', '2025-10-29 00:00:21'),
+(32, 19, '#000000', '38', 5, '2025-10-29 00:00:41', '2025-10-29 00:00:41'),
+(33, 19, '#C5A890', '39', 500, '2025-10-29 00:00:54', '2025-10-29 00:00:54');
+
 -- --------------------------------------------------------
 
 --
@@ -308,6 +352,54 @@ CREATE TABLE `product_images` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `product_id`, `image_path`, `created_at`, `updated_at`) VALUES
+(13, 16, 'products/1761718124_a1.jpg', '2025-10-28 23:08:44', '2025-10-28 23:08:44'),
+(14, 16, 'products/1761718338_a1.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(15, 16, 'products/1761718338_a2.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(16, 16, 'products/1761718338_a3.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(17, 16, 'products/1761718338_a4.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(18, 16, 'products/1761718338_a5.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(19, 16, 'products/1761718338_b1.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(20, 16, 'products/1761718338_b2.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(21, 16, 'products/1761718338_b3.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(22, 16, 'products/1761718338_b4.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(23, 16, 'products/1761718338_b5.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(24, 16, 'products/1761718338_c1.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(25, 16, 'products/1761718338_c2.jpg', '2025-10-28 23:12:18', '2025-10-28 23:12:18'),
+(26, 18, 'products/1761720706_a1.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(27, 18, 'products/1761720706_a2.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(28, 18, 'products/1761720706_a3.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(29, 18, 'products/1761720706_a4.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(30, 18, 'products/1761720706_a5.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(31, 18, 'products/1761720706_b1.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(32, 18, 'products/1761720706_b2.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(33, 18, 'products/1761720706_b3.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(34, 18, 'products/1761720706_b4.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(35, 18, 'products/1761720706_b5.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(36, 18, 'products/1761720706_c1.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(37, 18, 'products/1761720706_c2.jpg', '2025-10-28 23:51:46', '2025-10-28 23:51:46'),
+(38, 19, 'products/1761721273_a1.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(39, 19, 'products/1761721273_a2.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(40, 19, 'products/1761721273_a3.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(41, 19, 'products/1761721273_a4.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(42, 19, 'products/1761721273_a5.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(43, 19, 'products/1761721273_b1.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(44, 19, 'products/1761721273_b2.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(45, 19, 'products/1761721273_b3.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(46, 19, 'products/1761721273_b4.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(47, 19, 'products/1761721273_b5.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(48, 19, 'products/1761721273_c1.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(49, 19, 'products/1761721273_c2.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(50, 19, 'products/1761721273_d1.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(51, 19, 'products/1761721273_d2.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(52, 19, 'products/1761721273_d3.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(53, 19, 'products/1761721273_d4.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13'),
+(54, 19, 'products/1761721273_d5.jpg', '2025-10-29 00:01:13', '2025-10-29 00:01:13');
 
 -- --------------------------------------------------------
 
@@ -346,8 +438,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('LPjWKihJ5rwyGLbYNXgp8TCPuIdC5vAIRR5QbzwQ', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUWNZSm9YcU10RWVmTndCcUkxVURrc2djNUlKQmVjcUptcEY4N1h5aSI7czozOiJ1cmwiO2E6MDp7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9jYXRlZ29yaWVzIjt9fQ==', 1761716886),
-('mTWGbJpDGM9JCBB95iMCBPw5nDY4ixseYhDd1nRV', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoia3c5ckRXVFg3b1BSTlNTRTJQNEZZeTZibkt0enFraTZJeG9YU3FPNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0cyI7fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6NDoiY2FydCI7YToxOntpOjE0O2E6OTp7czoyOiJpZCI7aToxNDtzOjE3OiJwcm9kdWN0X2RldGFpbF9pZCI7aToxNDtzOjQ6Im5hbWUiO3M6NDU6Ikdpw6B5IENhbyBHw7N0IFp1Y2lhbmkgxJDhur8gTmjhu41uIERhIFBo4buRaSI7czo1OiJwcmljZSI7czoxMDoiMjQ1MDAwMC4wMCI7czo4OiJxdWFudGl0eSI7czoxOiIxIjtzOjQ6InNpemUiO3M6MjoiMzUiO3M6NToiY29sb3IiO3M6NzoiIzAwMDAwMCI7czo4OiJtYXRlcmlhbCI7czoxMjoiRGEgY2FvIGPhuqVwIjtzOjU6ImltYWdlIjtzOjUzOiJwcm9kdWN0cy8xNzU3Njc0NDQ4X2dpYXljYW9nb3RadWNpYW5pZGVuaG9uZGFwaG9pLmpwZyI7fX19', 1761716692);
+('LPjWKihJ5rwyGLbYNXgp8TCPuIdC5vAIRR5QbzwQ', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUWNZSm9YcU10RWVmTndCcUkxVURrc2djNUlKQmVjcUptcEY4N1h5aSI7czozOiJ1cmwiO2E6MDp7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9wcm9kdWN0cyI7fX0=', 1761721273),
+('mTWGbJpDGM9JCBB95iMCBPw5nDY4ixseYhDd1nRV', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoia3c5ckRXVFg3b1BSTlNTRTJQNEZZeTZibkt0enFraTZJeG9YU3FPNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0cyI7fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6NDoiY2FydCI7YToyOntpOjE0O2E6OTp7czoyOiJpZCI7aToxNDtzOjE3OiJwcm9kdWN0X2RldGFpbF9pZCI7aToxNDtzOjQ6Im5hbWUiO3M6NDU6Ikdpw6B5IENhbyBHw7N0IFp1Y2lhbmkgxJDhur8gTmjhu41uIERhIFBo4buRaSI7czo1OiJwcmljZSI7czoxMDoiMjQ1MDAwMC4wMCI7czo4OiJxdWFudGl0eSI7czoxOiIxIjtzOjQ6InNpemUiO3M6MjoiMzUiO3M6NToiY29sb3IiO3M6NzoiIzAwMDAwMCI7czo4OiJtYXRlcmlhbCI7czoxMjoiRGEgY2FvIGPhuqVwIjtzOjU6ImltYWdlIjtzOjUzOiJwcm9kdWN0cy8xNzU3Njc0NDQ4X2dpYXljYW9nb3RadWNpYW5pZGVuaG9uZGFwaG9pLmpwZyI7fWk6Mjk7YTo5OntzOjI6ImlkIjtpOjE5O3M6MTc6InByb2R1Y3RfZGV0YWlsX2lkIjtpOjI5O3M6NDoibmFtZSI7czozMzoiR2nDoHkgQsO6cCBCw6ogWnVjaWEgS2jDs2EgVnXDtG5nIjtzOjU6InByaWNlIjtzOjk6IjU5MDAwMC4wMCI7czo4OiJxdWFudGl0eSI7czoxOiIxIjtzOjQ6InNpemUiO3M6MjoiMzUiO3M6NToiY29sb3IiO3M6NzoiI0I3OUQ5OCI7czo4OiJtYXRlcmlhbCI7czoyMDoiRGEgdOG7lW5nIGjhu6NwIChQVSkiO3M6NToiaW1hZ2UiO047fX19', 1761721480);
 
 -- --------------------------------------------------------
 
@@ -439,6 +531,18 @@ CREATE TABLE `user_histories` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `discount` decimal(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_histories`
+--
+
+INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at`, `created_at`, `updated_at`, `discount`) VALUES
+(338, 4, NULL, NULL, '2025-10-29 07:01:29', '2025-10-29 00:01:29', '2025-10-29 00:01:29', NULL),
+(339, 4, NULL, NULL, '2025-10-29 07:01:33', '2025-10-29 00:01:33', '2025-10-29 00:01:33', NULL),
+(340, 4, NULL, NULL, '2025-10-29 07:01:35', '2025-10-29 00:01:35', '2025-10-29 00:01:35', NULL),
+(341, 4, NULL, NULL, '2025-10-29 07:01:38', '2025-10-29 00:01:38', '2025-10-29 00:01:38', NULL),
+(342, 4, NULL, NULL, '2025-10-29 07:02:02', '2025-10-29 00:02:02', '2025-10-29 00:02:02', NULL),
+(343, 4, NULL, NULL, '2025-10-29 07:02:22', '2025-10-29 00:02:22', '2025-10-29 00:02:22', NULL);
 
 --
 -- Bẫy `user_histories`
@@ -635,7 +739,7 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `coupons`
@@ -647,7 +751,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT cho bảng `inventories`
 --
 ALTER TABLE `inventories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT cho bảng `jobs`
@@ -683,19 +787,19 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `product_details`
 --
 ALTER TABLE `product_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
@@ -731,7 +835,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=344;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlists`
