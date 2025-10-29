@@ -86,13 +86,30 @@
                             </td>
 
                             <!-- Trạng thái -->
+                            @php
+                                $wishColor = $wishlist->color ?? null;
+                                $wishSize  = $wishlist->size ?? null;
+                                $wishMaterial = $wishlist->material ?? null;
+
+                                $detail = null;
+                                $detailQuantity = 0;
+
+                                if ($wishColor && $wishSize) {
+                                    $detail = \App\Models\ProductDetail::where('product_id', $product->id)
+                                                ->where('color', $wishColor)
+                                                ->where('size', $wishSize)
+                                                ->first();
+                                    $detailQuantity = $detail?->quantity ?? 0;
+                                }
+                            @endphp
                             <td>
-                                @if($product->quantity > 0)
-                                    <span class="text-success">Còn hàng</span>
+                                @if($detail && $detailQuantity > 0)
+                                    <span class="text-success">Còn hàng ({{ $detailQuantity }})</span>
                                 @else
                                     <span class="text-danger">Hết hàng</span>
                                 @endif
                             </td>
+
 
                             <!-- Nút Add to cart: submit POST kèm các thuộc tính (nếu đã lưu) -->
                             <td>
