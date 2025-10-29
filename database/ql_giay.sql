@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2025 lúc 01:14 PM
+-- Thời gian đã tạo: Th10 29, 2025 lúc 06:48 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -52,11 +52,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Stiletto Heels', 'Giày gót nhọn', '2025-09-12 00:39:36', '2025-09-12 00:39:36'),
-(2, 'Block Heels', 'Giày gót vuông', '2025-09-12 00:41:09', '2025-09-12 00:41:09'),
-(3, 'Wedge Heels', 'Giày gót đế xuồng', '2025-09-12 00:44:10', '2025-09-12 00:44:10'),
-(4, 'Cone Heels', 'Giày gót nón', '2025-09-12 00:44:41', '2025-09-12 03:45:57'),
-(5, 'Kitten Heels', 'Giày gót Kitten', '2025-09-12 00:47:01', '2025-09-12 00:47:01');
+(6, 'Giày Búp Bê', NULL, '2025-10-28 22:46:37', '2025-10-28 22:46:37'),
+(7, 'Giày Thể Thao', NULL, '2025-10-28 22:46:48', '2025-10-28 22:47:27'),
+(8, 'Giày Lười', NULL, '2025-10-28 22:46:58', '2025-10-28 22:47:34');
 
 -- --------------------------------------------------------
 
@@ -164,6 +162,14 @@ CREATE TABLE `messages` (
   `user_id` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `messages`
+--
+
+INSERT INTO `messages` (`id`, `sender`, `message`, `image`, `is_admin`, `read_at`, `created_at`, `updated_at`, `user_id`) VALUES
+(17, NULL, 'chào shop', NULL, 0, '2025-10-24 04:15:20', '2025-10-24 04:14:58', '2025-10-24 04:15:20', 4),
+(18, NULL, 'sản phẩm này đang hot bên mình bạn có thể xem qua', 'chat_images/mf2O8fbsCmB9j69f0njaohtgcnSZtqxCG8cfLcdY.jpg', 1, NULL, '2025-10-24 04:15:44', '2025-10-24 04:15:44', 4);
+
 -- --------------------------------------------------------
 
 --
@@ -222,7 +228,7 @@ INSERT INTO `orders` (`id`, `momo_order_id`, `name`, `phone`, `address`, `user_i
 (2, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 480000, 'pending', 'unpaid', '2025-09-12 05:46:27', '2025-09-12 05:46:27', 'cod', 10),
 (3, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 3690000.00, 120000, 3570000, 'delivered', 'paid', '2025-09-12 05:49:23', '2025-09-14 19:29:09', 'cod', 10),
 (4, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 4275000.00, 120000, 4155000, 'shipping', 'unpaid', '2025-09-12 05:55:25', '2025-09-14 22:44:54', 'cod', 10),
-(5, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 120000, 620000, 'pending', 'unpaid', '2025-09-12 05:57:53', '2025-09-12 05:57:53', 'cod', 10),
+(5, NULL, 'Thảo', '0944763697', 'Hà Nội', 4, 740000.00, 120000, 620000, 'cancelled', 'unpaid', '2025-09-12 05:57:53', '2025-10-25 05:54:18', 'cod', 10),
 (6, NULL, 'Linh', '0123456789', 'Nam Định', 5, 1049000.00, 262250, 786750, 'shipping', 'paid', '2025-09-14 23:01:28', '2025-09-15 07:04:25', 'momo', 7),
 (8, NULL, 'Linh', '0987654321', 'Ha Noi', 5, 945000.00, 5000, 940000, 'delivered', 'paid', '2025-09-14 23:24:01', '2025-09-15 05:24:41', 'momo', 4),
 (11, NULL, 'Linh', '0987654321', 'Ha Noi', 5, 549000.00, 109800, 439200, 'delivered', 'paid', '2025-09-15 03:47:20', '2025-09-18 10:00:21', 'momo', 3),
@@ -233,7 +239,10 @@ INSERT INTO `orders` (`id`, `momo_order_id`, `name`, `phone`, `address`, `user_i
 (48, 'ORDER_48_1758439642', 'Thảo', '0944763697', 'Ha Noi', 4, 370000.00, 111000, 259000, 'delivered', 'paid', '2025-09-21 00:00:34', '2025-09-22 12:49:40', 'momo', 1),
 (49, 'ORDER_49_1758441056', 'Thảo', '0944763697', 'Ha Noi', 4, 850000.00, 255000, 595000, 'delivered', 'paid', '2025-09-21 00:45:26', '2025-09-22 12:49:34', 'momo', 9),
 (52, 'ORDER_52_1758444950', 'Thảo', '0944763697', 'Ha Noi', 4, 549000.00, 164700, 384300, 'delivered', 'paid', '2025-09-21 01:21:45', '2025-09-22 12:49:28', 'momo', 1),
-(53, 'ORDER_53_1758569301', 'Thảo', '0944763697', 'Ha Noi', 4, 620000.00, 186000, 434000, 'delivered', 'paid', '2025-09-22 12:17:57', '2025-09-22 12:49:23', 'momo', 9);
+(53, 'ORDER_53_1758569301', 'Thảo', '0944763697', 'Ha Noi', 4, 620000.00, 186000, 434000, 'delivered', 'paid', '2025-09-22 12:17:57', '2025-09-22 12:49:23', 'momo', 9),
+(61, NULL, 'Thảo', '0944763697', 'Ha Noi', 4, 2450000.00, 367500, 2082500, 'cancelled', 'unpaid', '2025-10-25 05:32:55', '2025-10-25 05:36:31', 'cod', 5),
+(64, 'ORDER_64_1761397057', 'Thảo', '0944763697', 'Ha Noi', 4, 370000.00, 55500, 314500, 'pending', 'unpaid', '2025-10-25 05:57:36', '2025-10-25 05:57:37', 'momo', 5),
+(65, NULL, 'Thảo', '0944763697', 'Ha Noi', 4, 370000.00, 55500, 314500, 'cancelled', 'unpaid', '2025-10-25 05:59:39', '2025-10-28 21:40:00', 'cod', 5);
 
 --
 -- Bẫy `orders`
@@ -298,7 +307,10 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `qua
 (50, 48, 13, NULL, NULL, 1, 370000.00, '2025-09-21 00:00:34', '2025-09-21 00:00:34'),
 (51, 49, 12, NULL, NULL, 1, 850000.00, '2025-09-21 00:45:26', '2025-09-21 00:45:26'),
 (54, 52, 11, NULL, NULL, 1, 549000.00, '2025-09-21 01:21:45', '2025-09-21 01:21:45'),
-(55, 53, 9, '#fffdd0', '36', 1, 620000.00, '2025-09-22 12:17:57', '2025-09-22 12:17:57');
+(55, 53, 9, '#fffdd0', '36', 1, 620000.00, '2025-09-22 12:17:57', '2025-09-22 12:17:57'),
+(62, 61, 14, NULL, NULL, 1, 2450000.00, '2025-10-25 05:32:55', '2025-10-25 05:32:55'),
+(65, 64, 13, NULL, NULL, 1, 370000.00, '2025-10-25 05:57:36', '2025-10-25 05:57:36'),
+(66, 65, 13, NULL, NULL, 1, 370000.00, '2025-10-25 05:59:39', '2025-10-25 05:59:39');
 
 -- --------------------------------------------------------
 
@@ -335,21 +347,21 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `image`, `material`, `description`, `price`, `created_at`, `updated_at`) VALUES
-(1, 5, 'Giày Cao Gót Slingback Phối Liệu Bóng', 'products/1757669169_1755787092_giayphoixich.jpeg', 'Si bóng', 'Giày Cao Gót Slingback Phối Liệu Bóng thanh lịch, nữ tính\r\n\r\nThiết kế mũi nhọn, quai cách eo mang lại nét uyển chuyển trên từng bước chân\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 549000.00, '2025-09-12 02:26:09', '2025-09-21 00:59:52'),
-(2, 1, 'Giày bít mũi nhọn gót stiletto', 'products/1757670291_giaybitmuinhon.jpg', 'Da nhân tạo', 'Mã sản phẩm: 1010BMN0738\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 9 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 855000.00, '2025-09-12 02:43:22', '2025-09-15 03:36:36'),
-(3, 1, 'Giày bít mũi block heel phối khóa trang trí', 'products/1757670432_giaybitmuiphoikhoa.jpg', 'Da nhân tạo', 'Mã sản phẩm: 1010BMN0735\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót dạng khối\r\nĐộ cao gót: 6.5 cm\r\nLoại mũi: Bít mũi vuông\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 945000.00, '2025-09-12 02:47:12', '2025-09-12 02:47:12'),
-(4, 1, 'Giày slingback mũi nhọn phối khóa đôi', 'products/1757670596_giayslingbackmuinhonphoikhoadoi.jpg', 'Da nhân tạo phủ bóng', 'Mã sản phẩm: 1010BMN0731\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 8.5 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo phủ bóng\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Mary Jane', 740000.00, '2025-09-12 02:49:56', '2025-09-22 13:02:48'),
-(5, 2, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671059_giaysandalgotvuongquaingang.jpeg', 'Si bóng', 'Giày Sandal Gót Vuông Quai Ngang Phối Khóa Trang Trí sành điệu\r\n\r\nQuai hậu phối khóa kim loại, gót trụ cao mang lại nét hiện đại, thời trang\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh\r\n\r\nĐế bằng cao 9cm thanh lịch, dễ dàng di chuyển\r\n\r\nCó 3 màu cơ bản cho bạn dễ dàng lựa chọn và phối đồ', 599000.00, '2025-09-12 02:57:39', '2025-09-12 02:57:39'),
-(6, 2, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671441_giaysandalgotvuongquaingangphoikhoa.jpeg', 'Da cao cấp tổng hợp', 'Giày sandal gót vuông quai ngang phối khoá trang trí tinh tế, thanh lịch\r\n\r\nGót vuông cao 5cm tạo cảm giác chắc chắn\r\n\r\nThiết kế thông minh với miếng đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nPhù hợp đi làm, đi tiệc, dạo phố', 499000.00, '2025-09-12 03:04:01', '2025-09-22 13:05:00'),
-(7, 1, 'Giày Cao Gót Cao Gót Mũi Nhọn', 'products/1757671702_giaycaogotmuinhon.jpg', 'Si bóng', 'Giày Cao Gót Cao Gót Mũi Nhọn thanh lịch, nữ tính\r\n\r\nGiày thiết kế mũi nhọn, quai cổ chân cách điệu mang lại nét đẹp uyển chuyển khi diện\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 499000.00, '2025-09-12 03:08:22', '2025-09-12 03:08:22'),
-(8, 5, 'Giày Cao Gót Quai Mary Jane', 'products/1757932529_giaycaogotquaimaryjane.jpeg', 'Si mờ trơn', 'Giày Cao Gót Quai Mary Jane thanh lịch\r\n\r\nMũi nhọn, quai nganh thanh mảnh, và gót bọc kim loại cực kì nữ tính\r\n\r\nThiết kế thông minh với đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nGiày có 3 màu dễ phối đồ. Phù hợp để đi làm, dạo phố, đi tiệc', 549000.00, '2025-09-12 03:12:20', '2025-09-15 03:35:31'),
-(9, 4, 'Giày Cao Gót Đông Hải Bít Mũi Nhấn Quai Ankle Strap', 'products/1757672242_giayanklestrap.jpg', 'Da tổng hợp (PU)', 'Giày cao gót Đông Hải không chỉ là phụ kiện, mà là tuyên ngôn thời trang. Mẫu giày được thiết kế dành riêng cho những quý cô hiện đại, yêu thích sự thanh lịch nhưng vẫn muốn giữ nét trẻ trung, cuốn hút. Phần quai tinh tế ôm sát bàn chân, tạo nên vẻ đẹp duyên dáng. Độ cao 5cm không chỉ giúp tôn dáng mà còn mang lại sự thoải mái khi di chuyển cả ngày. Kiểu dáng hiện đại kết hợp cùng chất liệu cao cấp giúp đôi giày này trở thành điểm nhấn hoàn hảo cho bất kỳ trang phục nào!', 620000.00, '2025-09-12 03:17:22', '2025-09-22 12:17:57'),
-(10, 4, 'Giày Cao Gót Zucia Mary Jane Đính Đá', 'products/1757674759_giaymaryjane.jpg', 'Da tổng hợp (PU)', 'Giày cao gót mang phong cách cổ điển nhưng đầy cuốn hút, mẫu giày Mary Jane gót vuông sẽ là điểm nhấn hoàn hảo cho quý cô yêu thích nét thanh lịch pha chút kiêu sa và sang trọng. Chất liệu da bóng trở nên thu hút khi diện dưới ánh đèn, chi tiết khóa đá lấp lánh ở quai tạo điểm nhấn nữ tính. Giày nữ có gót vuông cao 5cm giúp dáng đi vững vàng, duyên dáng cả ngày dài. Dù kết hợp cùng váy tiểu thư, đầm dạ tiệc hay đơn giản là quần tây, quần jean thì đôi giày này chắc chắn sẽ nâng tầm phong cách, giúp người diện trở nên ấn tượng.', 890000.00, '2025-09-12 03:25:40', '2025-09-21 00:59:01'),
-(11, 3, 'Giày Sandal Đế Xuồng Quai Chéo', 'products/1757672862_giaydexuong.jpg', 'Si mờ trơn', 'Giày Sandal Đế Xuồng Quai Chéo thời trang, nữ tính\r\n\r\nThiết kế đế xuồng chắc chắn, quai đan chéo và quan cổ chân mang lại sự nổi bật và chắc chắn khi diện\r\n\r\nĐế bằng cao 9cm dễ dàng phối với nhiều bộ trang phục khác nhau\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh', 549000.00, '2025-09-12 03:27:43', '2025-09-22 14:04:05'),
-(12, 1, 'Giày Cao Gót Đông Hải Satin Đính Pha Lê Sang Trọng', 'products/1757673114_giaysatin.jpg', 'Da tổng hợp (PU)', 'Giày cao gót Đông Hải vải satin với thiết kế sang trọng sẽ là lựa chọn lý tưởng dành cho quý cô hiện đại hướng đến phong cách thời thượng. Đặc biệt, họa tiết đính đá pha lê tựa như một bông hoa gợi lên vẻ đẹp rạng rỡ, tăng phần tự tin khi diện. Đế nhọn cao 7cm tôn dáng, mang lại cảm giác thanh mảnh trong mỗi bước chân.', 850000.00, '2025-09-12 03:31:54', '2025-09-21 00:45:26'),
-(13, 2, 'Giày Sandal Gót Vuông Quai Xé Dán', 'products/1757673608_giaysandalgotvuong.jpg', 'Si mờ trơn', 'Chất liệu da tổng hợp bền, đẹp\r\n\r\nQuai ngang thiết kế đơn giản, nữ tính\r\n\r\nQuai hậu dán, tiện dụng', 370000.00, '2025-09-12 03:40:08', '2025-09-21 00:00:34'),
-(14, 1, 'Giày Cao Gót Zuciani Đế Nhọn Da Phối', 'products/1757674448_giaycaogotZucianidenhondaphoi.jpg', 'Da cao cấp', 'Giày cao gót Zuciani là mẫu giày được hầu hết nhiều quý cô yêu thích lựa chọn bởi vừa dễ mang dễ phối vừa tôn dáng nhưng vẫn giữa được nét duyên dáng, uyển chuyển khi mang.', 2450000.00, '2025-09-12 03:54:08', '2025-09-18 14:11:52'),
-(15, 4, 'Giày cao gót viền cổ cao gót nón', 'products/1757674606_giaycaogotviencocaogotnon.jpg', 'Da tổng hợp', 'Thiết kế dáng pump cổ điển được thổi hơi thở hiện đại hơn với gót nhọn hình chóp lạ mắt\r\n\r\nChất liệu da tổng hợp bóng mờ sang trọng, dễ vệ sinh\r\n\r\nDưới đé có rãnh chống trượt cho bước đi tự tin, thoải mái', 450000.00, '2025-09-12 03:56:46', '2025-09-22 14:04:05');
+(1, NULL, 'Giày Cao Gót Slingback Phối Liệu Bóng', 'products/1757669169_1755787092_giayphoixich.jpeg', 'Si bóng', 'Giày Cao Gót Slingback Phối Liệu Bóng thanh lịch, nữ tính\r\n\r\nThiết kế mũi nhọn, quai cách eo mang lại nét uyển chuyển trên từng bước chân\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 549000.00, '2025-09-12 02:26:09', '2025-09-21 00:59:52'),
+(2, NULL, 'Giày bít mũi nhọn gót stiletto', 'products/1757670291_giaybitmuinhon.jpg', 'Da nhân tạo', 'Mã sản phẩm: 1010BMN0738\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 9 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 855000.00, '2025-09-12 02:43:22', '2025-09-15 03:36:36'),
+(3, NULL, 'Giày bít mũi block heel phối khóa trang trí', 'products/1757670432_giaybitmuiphoikhoa.jpg', 'Da nhân tạo', 'Mã sản phẩm: 1010BMN0735\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót dạng khối\r\nĐộ cao gót: 6.5 cm\r\nLoại mũi: Bít mũi vuông\r\nChất liệu: Da nhân tạo\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Pumps', 945000.00, '2025-09-12 02:47:12', '2025-09-12 02:47:12'),
+(4, NULL, 'Giày slingback mũi nhọn phối khóa đôi', 'products/1757670596_giayslingbackmuinhonphoikhoadoi.jpg', 'Da nhân tạo phủ bóng', 'Mã sản phẩm: 1010BMN0731\r\nLoại sản phẩm: Giày Bít\r\nKiểu gót: Gót nhọn\r\nĐộ cao gót: 8.5 cm\r\nLoại mũi: Bít mũi nhọn\r\nChất liệu: Da nhân tạo phủ bóng\r\nPhù hợp sử dụng: Đi làm, đi tiệc, đi chơi\r\nKiểu giày: Mary Jane', 740000.00, '2025-09-12 02:49:56', '2025-09-22 13:02:48'),
+(5, NULL, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671059_giaysandalgotvuongquaingang.jpeg', 'Si bóng', 'Giày Sandal Gót Vuông Quai Ngang Phối Khóa Trang Trí sành điệu\r\n\r\nQuai hậu phối khóa kim loại, gót trụ cao mang lại nét hiện đại, thời trang\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh\r\n\r\nĐế bằng cao 9cm thanh lịch, dễ dàng di chuyển\r\n\r\nCó 3 màu cơ bản cho bạn dễ dàng lựa chọn và phối đồ', 599000.00, '2025-09-12 02:57:39', '2025-09-12 02:57:39'),
+(6, NULL, 'Giày sandal gót vuông quai ngang phối khóa trang trí', 'products/1757671441_giaysandalgotvuongquaingangphoikhoa.jpeg', 'Da cao cấp tổng hợp', 'Giày sandal gót vuông quai ngang phối khoá trang trí tinh tế, thanh lịch\r\n\r\nGót vuông cao 5cm tạo cảm giác chắc chắn\r\n\r\nThiết kế thông minh với miếng đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nPhù hợp đi làm, đi tiệc, dạo phố', 499000.00, '2025-09-12 03:04:01', '2025-09-22 13:05:00'),
+(7, NULL, 'Giày Cao Gót Cao Gót Mũi Nhọn', 'products/1757671702_giaycaogotmuinhon.jpg', 'Si bóng', 'Giày Cao Gót Cao Gót Mũi Nhọn thanh lịch, nữ tính\r\n\r\nGiày thiết kế mũi nhọn, quai cổ chân cách điệu mang lại nét đẹp uyển chuyển khi diện\r\n\r\nGót cao 5cm kèm miếng đệm chống trơn trượt cho bạn dễ dàng di chuyển\r\n\r\nChất liệu da cao cấp tổng hợp. Giày phù hợp đi mọi dịp, như đi làm, dạo phố', 499000.00, '2025-09-12 03:08:22', '2025-09-12 03:08:22'),
+(8, NULL, 'Giày Cao Gót Quai Mary Jane', 'products/1757932529_giaycaogotquaimaryjane.jpeg', 'Si mờ trơn', 'Giày Cao Gót Quai Mary Jane thanh lịch\r\n\r\nMũi nhọn, quai nganh thanh mảnh, và gót bọc kim loại cực kì nữ tính\r\n\r\nThiết kế thông minh với đệm chống trơn trượt giúp đảm bảo an toàn cho bạn và tạo sự thoải mái trong lúc di chuyển\r\n\r\nChất liệu da tổng hợp cao cấp, dễ bảo quản, bền đẹp\r\n\r\nGiày có 3 màu dễ phối đồ. Phù hợp để đi làm, dạo phố, đi tiệc', 549000.00, '2025-09-12 03:12:20', '2025-09-15 03:35:31'),
+(9, NULL, 'Giày Cao Gót Đông Hải Bít Mũi Nhấn Quai Ankle Strap', 'products/1757672242_giayanklestrap.jpg', 'Da tổng hợp (PU)', 'Giày cao gót Đông Hải không chỉ là phụ kiện, mà là tuyên ngôn thời trang. Mẫu giày được thiết kế dành riêng cho những quý cô hiện đại, yêu thích sự thanh lịch nhưng vẫn muốn giữ nét trẻ trung, cuốn hút. Phần quai tinh tế ôm sát bàn chân, tạo nên vẻ đẹp duyên dáng. Độ cao 5cm không chỉ giúp tôn dáng mà còn mang lại sự thoải mái khi di chuyển cả ngày. Kiểu dáng hiện đại kết hợp cùng chất liệu cao cấp giúp đôi giày này trở thành điểm nhấn hoàn hảo cho bất kỳ trang phục nào!', 620000.00, '2025-09-12 03:17:22', '2025-09-22 12:17:57'),
+(10, NULL, 'Giày Cao Gót Zucia Mary Jane Đính Đá', 'products/1757674759_giaymaryjane.jpg', 'Da tổng hợp (PU)', 'Giày cao gót mang phong cách cổ điển nhưng đầy cuốn hút, mẫu giày Mary Jane gót vuông sẽ là điểm nhấn hoàn hảo cho quý cô yêu thích nét thanh lịch pha chút kiêu sa và sang trọng. Chất liệu da bóng trở nên thu hút khi diện dưới ánh đèn, chi tiết khóa đá lấp lánh ở quai tạo điểm nhấn nữ tính. Giày nữ có gót vuông cao 5cm giúp dáng đi vững vàng, duyên dáng cả ngày dài. Dù kết hợp cùng váy tiểu thư, đầm dạ tiệc hay đơn giản là quần tây, quần jean thì đôi giày này chắc chắn sẽ nâng tầm phong cách, giúp người diện trở nên ấn tượng.', 890000.00, '2025-09-12 03:25:40', '2025-09-21 00:59:01'),
+(11, NULL, 'Giày Sandal Đế Xuồng Quai Chéo', 'products/1757672862_giaydexuong.jpg', 'Si mờ trơn', 'Giày Sandal Đế Xuồng Quai Chéo thời trang, nữ tính\r\n\r\nThiết kế đế xuồng chắc chắn, quai đan chéo và quan cổ chân mang lại sự nổi bật và chắc chắn khi diện\r\n\r\nĐế bằng cao 9cm dễ dàng phối với nhiều bộ trang phục khác nhau\r\n\r\nChất liệu da tổng hợp bền đẹp, dễ vệ sinh', 549000.00, '2025-09-12 03:27:43', '2025-09-22 14:04:05'),
+(12, NULL, 'Giày Cao Gót Đông Hải Satin Đính Pha Lê Sang Trọng', 'products/1757673114_giaysatin.jpg', 'Da tổng hợp (PU)', 'Giày cao gót Đông Hải vải satin với thiết kế sang trọng sẽ là lựa chọn lý tưởng dành cho quý cô hiện đại hướng đến phong cách thời thượng. Đặc biệt, họa tiết đính đá pha lê tựa như một bông hoa gợi lên vẻ đẹp rạng rỡ, tăng phần tự tin khi diện. Đế nhọn cao 7cm tôn dáng, mang lại cảm giác thanh mảnh trong mỗi bước chân.', 850000.00, '2025-09-12 03:31:54', '2025-09-21 00:45:26'),
+(13, NULL, 'Giày Sandal Gót Vuông Quai Xé Dán', 'products/1757673608_giaysandalgotvuong.jpg', 'Si mờ trơn', 'Chất liệu da tổng hợp bền, đẹp\r\n\r\nQuai ngang thiết kế đơn giản, nữ tính\r\n\r\nQuai hậu dán, tiện dụng', 370000.00, '2025-09-12 03:40:08', '2025-09-21 00:00:34'),
+(14, NULL, 'Giày Cao Gót Zuciani Đế Nhọn Da Phối', 'products/1757674448_giaycaogotZucianidenhondaphoi.jpg', 'Da cao cấp', 'Giày cao gót Zuciani là mẫu giày được hầu hết nhiều quý cô yêu thích lựa chọn bởi vừa dễ mang dễ phối vừa tôn dáng nhưng vẫn giữa được nét duyên dáng, uyển chuyển khi mang.', 2450000.00, '2025-09-12 03:54:08', '2025-09-18 14:11:52'),
+(15, NULL, 'Giày cao gót viền cổ cao gót nón', 'products/1757674606_giaycaogotviencocaogotnon.jpg', 'Da tổng hợp', 'Thiết kế dáng pump cổ điển được thổi hơi thở hiện đại hơn với gót nhọn hình chóp lạ mắt\r\n\r\nChất liệu da tổng hợp bóng mờ sang trọng, dễ vệ sinh\r\n\r\nDưới đé có rãnh chống trượt cho bước đi tự tin, thoải mái', 450000.00, '2025-09-12 03:56:46', '2025-09-22 14:04:05');
 
 --
 -- Bẫy `products`
@@ -401,9 +413,42 @@ INSERT INTO `product_details` (`id`, `product_id`, `color`, `size`, `quantity`, 
 (10, 10, '#000000,#fcdad5,#B79d98', '35,36,37,38,39', 2525, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
 (11, 11, '#000000,#ffc0cb,#fffdd0', '37,38,39', 1, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
 (12, 12, '#800000,#000000,#fffdd0', '35,36,37,38', 4562, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
-(13, 13, '#e6ddce,#f3ece2,#000000', '35,38', 1854, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
-(14, 14, '#20232a,#704a3d', '35,36,37,38,39', 0, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
-(15, 15, '#B79d98,#000000,#fffdd0', '35,36,37,38,39', 0, '2025-09-25 07:51:57', '2025-09-25 07:51:57');
+(13, 13, '#e6ddce,#f3ece2,#000000', '35,38', 1850, '2025-09-25 07:51:57', '2025-10-25 05:59:39'),
+(14, 14, '#000000', '35', 93, '2025-09-25 07:51:57', '2025-10-25 05:56:40'),
+(15, 15, '#B79d98,#000000,#fffdd0', '35,36,37,38,39', 0, '2025-09-25 07:51:57', '2025-09-25 07:51:57'),
+(16, 14, '#704a3d', '36', 100, '2025-10-24 07:10:37', '2025-10-25 05:35:35');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_images`
+--
+
+CREATE TABLE `product_images` (
+  `id` int(11) NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_images`
+--
+
+INSERT INTO `product_images` (`id`, `product_id`, `image_path`, `created_at`, `updated_at`) VALUES
+(1, 14, 'products/1761715742_a1.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(2, 14, 'products/1761715742_a2.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(3, 14, 'products/1761715742_a3.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(4, 14, 'products/1761715742_a4.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(5, 14, 'products/1761715742_a5.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(6, 14, 'products/1761715742_b1.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(7, 14, 'products/1761715742_b2.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(8, 14, 'products/1761715742_b3.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(9, 14, 'products/1761715742_b4.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(10, 14, 'products/1761715742_b5.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(11, 14, 'products/1761715742_c1.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02'),
+(12, 14, 'products/1761715742_c2.jpg', '2025-10-28 22:29:02', '2025-10-28 22:29:02');
 
 -- --------------------------------------------------------
 
@@ -453,8 +498,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('7SQ9vAdBbZRwn8qJLa0ykQdvcnxlBGv0V7M1x39K', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWERuVTZ5NDZEWUtRTjc4N1hmaXZacDZhU2x1eXNPSm5tR1hyYnpiTyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9jaGF0Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1761302091),
-('TvvvHqIX8vZBoZt29jg9cgPEENvpW1AODglYK90M', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiazZSbkRRWGlpQnVnTmJJWmRnWTdKbW9mNWVEWmRpZmFveGZCY25kcCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jaGF0Ijt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDt9', 1761304427);
+('LPjWKihJ5rwyGLbYNXgp8TCPuIdC5vAIRR5QbzwQ', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiUWNZSm9YcU10RWVmTndCcUkxVURrc2djNUlKQmVjcUptcEY4N1h5aSI7czozOiJ1cmwiO2E6MDp7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9hZG1pbi9jYXRlZ29yaWVzIjt9fQ==', 1761716886),
+('mTWGbJpDGM9JCBB95iMCBPw5nDY4ixseYhDd1nRV', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoia3c5ckRXVFg3b1BSTlNTRTJQNEZZeTZibkt0enFraTZJeG9YU3FPNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wcm9kdWN0cyI7fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6NDoiY2FydCI7YToxOntpOjE0O2E6OTp7czoyOiJpZCI7aToxNDtzOjE3OiJwcm9kdWN0X2RldGFpbF9pZCI7aToxNDtzOjQ6Im5hbWUiO3M6NDU6Ikdpw6B5IENhbyBHw7N0IFp1Y2lhbmkgxJDhur8gTmjhu41uIERhIFBo4buRaSI7czo1OiJwcmljZSI7czoxMDoiMjQ1MDAwMC4wMCI7czo4OiJxdWFudGl0eSI7czoxOiIxIjtzOjQ6InNpemUiO3M6MjoiMzUiO3M6NToiY29sb3IiO3M6NzoiIzAwMDAwMCI7czo4OiJtYXRlcmlhbCI7czoxMjoiRGEgY2FvIGPhuqVwIjtzOjU6ImltYWdlIjtzOjUzOiJwcm9kdWN0cy8xNzU3Njc0NDQ4X2dpYXljYW9nb3RadWNpYW5pZGVuaG9uZGFwaG9pLmpwZyI7fX19', 1761716692);
 
 -- --------------------------------------------------------
 
@@ -668,7 +713,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`, `phone`, `address`) VALUES
-(4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', '6bla9mSb4uylrjbvllS8TkcAaMGD4dFvO32rcnhKScDWyz4wl2UrWAQMXMx4', '2025-09-12 00:21:15', '2025-09-20 23:45:19', 'customer', '0944763697', 'Nam Định'),
+(4, 'Thảo', 'phamphuongthaond1911@gmail.com', '2025-09-12 07:21:58', '$2y$12$8Uo7yl964cazTJyWCImpzOvazanHogTY8GMmaTngCo7ixyxUAziTy', 'MByhkpzeKXCedPloawaNynRNwNRSv1cIIuBpTrDFPJ614oBsWZ4YRcnjK0Mi', '2025-09-12 00:21:15', '2025-09-20 23:45:19', 'customer', '0944763697', 'Nam Định'),
 (5, 'Linh', '22111060566@hunre.edu.vn', '2025-09-12 07:26:57', '$2y$12$wf9Ucr32P293o/AHUmJc.OANE3Tw0I3v5GZsfrn57J1Kx5UsPUpre', 'gX2K1qT7hemxONRMgtG3x1hT7tMX4bPL3M2eftgl5xcVxOnMiHl64H9IrNx6', '2025-09-12 00:26:31', '2025-09-12 00:26:31', 'admin', '0987654321', 'Hà Nội');
 
 -- --------------------------------------------------------
@@ -893,7 +938,69 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (272, 4, NULL, NULL, '2025-09-22 21:06:52', '2025-09-22 14:06:52', '2025-09-22 14:06:52', NULL),
 (273, 4, NULL, NULL, '2025-09-22 21:06:59', '2025-09-22 14:06:59', '2025-09-22 14:06:59', NULL),
 (274, 4, NULL, NULL, '2025-09-22 21:07:05', '2025-09-22 14:07:05', '2025-09-22 14:07:05', NULL),
-(275, 4, NULL, NULL, '2025-10-24 10:27:12', '2025-10-24 03:27:12', '2025-10-24 03:27:12', NULL);
+(275, 4, NULL, NULL, '2025-10-24 10:27:12', '2025-10-24 03:27:12', '2025-10-24 03:27:12', NULL),
+(276, 4, NULL, NULL, '2025-10-24 13:46:01', '2025-10-24 06:46:01', '2025-10-24 06:46:01', NULL),
+(277, 4, NULL, NULL, '2025-10-24 14:11:09', '2025-10-24 07:11:09', '2025-10-24 07:11:09', NULL),
+(278, 4, NULL, NULL, '2025-10-24 14:11:53', '2025-10-24 07:11:53', '2025-10-24 07:11:53', NULL),
+(279, 4, NULL, NULL, '2025-10-24 14:12:11', '2025-10-24 07:12:11', '2025-10-24 07:12:11', NULL),
+(280, 4, NULL, NULL, '2025-10-24 14:26:23', '2025-10-24 07:26:23', '2025-10-24 07:26:23', NULL),
+(281, 4, NULL, NULL, '2025-10-24 14:26:49', '2025-10-24 07:26:49', '2025-10-24 07:26:49', NULL),
+(282, 4, NULL, NULL, '2025-10-24 14:32:19', '2025-10-24 07:32:19', '2025-10-24 07:32:19', NULL),
+(283, 4, NULL, NULL, '2025-10-24 14:32:23', '2025-10-24 07:32:23', '2025-10-24 07:32:23', NULL),
+(284, 4, NULL, NULL, '2025-10-24 14:32:31', '2025-10-24 07:32:31', '2025-10-24 07:32:31', NULL),
+(285, 4, NULL, NULL, '2025-10-24 14:32:48', '2025-10-24 07:32:48', '2025-10-24 07:32:48', NULL),
+(286, 4, NULL, NULL, '2025-10-24 14:32:52', '2025-10-24 07:32:52', '2025-10-24 07:32:52', NULL),
+(287, 4, NULL, NULL, '2025-10-25 11:22:32', '2025-10-25 04:22:32', '2025-10-25 04:22:32', NULL),
+(288, 4, NULL, NULL, '2025-10-25 11:22:36', '2025-10-25 04:22:36', '2025-10-25 04:22:36', NULL),
+(289, 4, NULL, NULL, '2025-10-25 11:22:45', '2025-10-25 04:22:45', '2025-10-25 04:22:45', NULL),
+(290, 4, NULL, NULL, '2025-10-25 11:22:50', '2025-10-25 04:22:50', '2025-10-25 04:22:50', NULL),
+(291, 4, NULL, NULL, '2025-10-25 11:23:07', '2025-10-25 04:23:07', '2025-10-25 04:23:07', NULL),
+(292, 4, NULL, NULL, '2025-10-25 11:23:11', '2025-10-25 04:23:11', '2025-10-25 04:23:11', NULL),
+(293, 4, NULL, NULL, '2025-10-25 11:23:16', '2025-10-25 04:23:16', '2025-10-25 04:23:16', NULL),
+(294, 4, NULL, NULL, '2025-10-25 11:23:19', '2025-10-25 04:23:19', '2025-10-25 04:23:19', NULL),
+(295, 4, NULL, NULL, '2025-10-25 11:34:34', '2025-10-25 04:34:34', '2025-10-25 04:34:34', NULL),
+(296, 4, NULL, NULL, '2025-10-25 11:35:00', '2025-10-25 04:35:00', '2025-10-25 04:35:00', NULL),
+(297, 4, NULL, NULL, '2025-10-25 11:36:24', '2025-10-25 04:36:24', '2025-10-25 04:36:24', NULL),
+(298, 4, NULL, NULL, '2025-10-25 11:36:30', '2025-10-25 04:36:30', '2025-10-25 04:36:30', NULL),
+(299, 4, NULL, NULL, '2025-10-25 11:36:41', '2025-10-25 04:36:41', '2025-10-25 04:36:41', NULL),
+(300, 4, NULL, NULL, '2025-10-25 11:39:50', '2025-10-25 04:39:50', '2025-10-25 04:39:50', NULL),
+(301, 4, NULL, NULL, '2025-10-25 11:39:56', '2025-10-25 04:39:56', '2025-10-25 04:39:56', NULL),
+(302, 4, NULL, NULL, '2025-10-25 11:41:33', '2025-10-25 04:41:33', '2025-10-25 04:41:33', NULL),
+(303, 4, NULL, NULL, '2025-10-25 11:42:52', '2025-10-25 04:42:52', '2025-10-25 04:42:52', NULL),
+(304, 4, NULL, NULL, '2025-10-25 11:47:33', '2025-10-25 04:47:33', '2025-10-25 04:47:33', NULL),
+(305, 4, NULL, NULL, '2025-10-25 11:47:41', '2025-10-25 04:47:41', '2025-10-25 04:47:41', NULL),
+(306, 4, NULL, NULL, '2025-10-25 11:48:09', '2025-10-25 04:48:09', '2025-10-25 04:48:09', NULL),
+(307, 4, NULL, NULL, '2025-10-25 11:49:45', '2025-10-25 04:49:45', '2025-10-25 04:49:45', NULL),
+(308, 4, NULL, NULL, '2025-10-25 11:52:47', '2025-10-25 04:52:47', '2025-10-25 04:52:47', NULL),
+(309, 4, NULL, NULL, '2025-10-25 11:52:57', '2025-10-25 04:52:57', '2025-10-25 04:52:57', NULL),
+(310, 4, NULL, NULL, '2025-10-25 11:53:46', '2025-10-25 04:53:46', '2025-10-25 04:53:46', NULL),
+(311, 4, NULL, NULL, '2025-10-25 11:54:35', '2025-10-25 04:54:35', '2025-10-25 04:54:35', NULL),
+(312, 4, NULL, NULL, '2025-10-25 11:55:25', '2025-10-25 04:55:25', '2025-10-25 04:55:25', NULL),
+(313, 4, NULL, NULL, '2025-10-25 12:01:13', '2025-10-25 05:01:13', '2025-10-25 05:01:13', NULL),
+(314, 4, NULL, NULL, '2025-10-25 12:01:18', '2025-10-25 05:01:18', '2025-10-25 05:01:18', NULL),
+(315, 4, NULL, NULL, '2025-10-25 12:05:09', '2025-10-25 05:05:09', '2025-10-25 05:05:09', NULL),
+(316, 4, NULL, NULL, '2025-10-25 12:18:23', '2025-10-25 05:18:23', '2025-10-25 05:18:23', NULL),
+(317, 4, NULL, NULL, '2025-10-25 12:31:03', '2025-10-25 05:31:03', '2025-10-25 05:31:03', NULL),
+(318, 4, NULL, NULL, '2025-10-25 12:55:56', '2025-10-25 05:55:56', '2025-10-25 05:55:56', NULL),
+(319, 4, NULL, NULL, '2025-10-25 12:56:27', '2025-10-25 05:56:27', '2025-10-25 05:56:27', NULL),
+(320, 4, NULL, NULL, '2025-10-25 12:57:22', '2025-10-25 05:57:22', '2025-10-25 05:57:22', NULL),
+(321, 4, NULL, NULL, '2025-10-25 12:59:15', '2025-10-25 05:59:15', '2025-10-25 05:59:15', NULL),
+(322, 4, NULL, NULL, '2025-10-25 12:59:20', '2025-10-25 05:59:20', '2025-10-25 05:59:20', NULL),
+(323, 4, NULL, NULL, '2025-10-25 13:00:14', '2025-10-25 06:00:14', '2025-10-25 06:00:14', NULL),
+(324, 4, NULL, NULL, '2025-10-25 13:00:19', '2025-10-25 06:00:19', '2025-10-25 06:00:19', NULL),
+(325, 4, NULL, NULL, '2025-10-29 04:32:04', '2025-10-28 21:32:04', '2025-10-28 21:32:04', NULL),
+(326, 4, NULL, NULL, '2025-10-29 04:32:10', '2025-10-28 21:32:10', '2025-10-28 21:32:10', NULL),
+(327, 4, NULL, NULL, '2025-10-29 04:40:17', '2025-10-28 21:40:17', '2025-10-28 21:40:17', NULL),
+(328, 4, NULL, NULL, '2025-10-29 04:53:34', '2025-10-28 21:53:34', '2025-10-28 21:53:34', NULL),
+(329, 4, NULL, NULL, '2025-10-29 05:19:51', '2025-10-28 22:19:51', '2025-10-28 22:19:51', NULL),
+(330, 4, NULL, NULL, '2025-10-29 05:29:20', '2025-10-28 22:29:20', '2025-10-28 22:29:20', NULL),
+(331, 4, NULL, NULL, '2025-10-29 05:31:09', '2025-10-28 22:31:09', '2025-10-28 22:31:09', NULL),
+(332, 4, NULL, NULL, '2025-10-29 05:32:20', '2025-10-28 22:32:20', '2025-10-28 22:32:20', NULL),
+(333, 4, NULL, NULL, '2025-10-29 05:37:38', '2025-10-28 22:37:38', '2025-10-28 22:37:38', NULL),
+(334, 4, NULL, NULL, '2025-10-29 05:40:35', '2025-10-28 22:40:35', '2025-10-28 22:40:35', NULL),
+(335, 4, NULL, NULL, '2025-10-29 05:41:29', '2025-10-28 22:41:29', '2025-10-28 22:41:29', NULL),
+(336, 4, NULL, NULL, '2025-10-29 05:42:13', '2025-10-28 22:42:13', '2025-10-28 22:42:13', NULL),
+(337, 4, NULL, NULL, '2025-10-29 05:43:39', '2025-10-28 22:43:39', '2025-10-28 22:43:39', NULL);
 
 --
 -- Bẫy `user_histories`
@@ -934,7 +1041,7 @@ CREATE TABLE `wishlists` (
 
 INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `created_at`, `updated_at`, `color`, `size`, `material`) VALUES
 (9, 5, 2, '2025-09-18 11:09:47', '2025-09-18 11:09:47', '#000000', '35', 'Da nhân tạo'),
-(10, 4, 12, '2025-09-22 14:07:05', '2025-09-22 14:07:05', '#800000', '36', 'Da tổng hợp (PU)');
+(12, 4, 14, '2025-10-25 06:00:18', '2025-10-25 06:00:18', '#000000', '35', 'Da cao cấp');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -1022,6 +1129,13 @@ ALTER TABLE `product_details`
   ADD KEY `fk_product` (`product_id`);
 
 --
+-- Chỉ mục cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Chỉ mục cho bảng `reviews`
 --
 ALTER TABLE `reviews`
@@ -1091,7 +1205,7 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `coupons`
@@ -1115,7 +1229,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
@@ -1127,13 +1241,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -1145,7 +1259,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `product_details`
 --
 ALTER TABLE `product_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
@@ -1181,13 +1301,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -1229,6 +1349,12 @@ ALTER TABLE `products`
 --
 ALTER TABLE `product_details`
   ADD CONSTRAINT `fk_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  ADD CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `reviews`
