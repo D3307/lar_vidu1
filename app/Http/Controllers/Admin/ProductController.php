@@ -64,6 +64,18 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
+        // Lưu nhiều ảnh phụ nếu có
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $fileName = time() . '_' . $img->getClientOriginalName();
+                $path = $img->storeAs('products', $fileName, 'public');
+                \App\Models\ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => $path
+                ]);
+            }
+        }
+
         // Inventory mặc định
         Inventory::create([
             'product_id' => $product->id,
@@ -117,6 +129,18 @@ class ProductController extends Controller
         }
 
         $product->update($data);
+
+        // Nếu upload thêm ảnh phụ
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                $fileName = time() . '_' . $img->getClientOriginalName();
+                $path = $img->storeAs('products', $fileName, 'public');
+                \App\Models\ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => $path
+                ]);
+            }
+        }
 
         if ($product->inventory) {
             $product->inventory->update(['quantity' => $data['quantity'] ?? $product->inventory->quantity]);

@@ -42,8 +42,15 @@
                 @else
                     <p class="muted">Chưa có ảnh</p>
                 @endif
-                <label>Thay ảnh</label><br>
-                <input type="file" name="image" accept="image/*">
+                <label>Thay ảnh (nhiều ảnh hoặc folder)</label><br>
+                <input type="file" name="images[]" accept="image/*" multiple webkitdirectory directory>
+                @if($product->images && $product->images->count() > 0)
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                        @foreach($product->images as $img)
+                            <img src="{{ asset('storage/'.$img->image_path) }}" alt="Ảnh phụ" style="height:70px;border-radius:6px;">
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             <div style="margin-top:8px">

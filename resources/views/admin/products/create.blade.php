@@ -110,8 +110,8 @@
         </div>
 
         <div style="margin-top:8px">
-            <label>Ảnh sản phẩm</label><br>
-            <input type="file" name="image" accept="image/*">
+            <label>Ảnh sản phẩm (có thể chọn nhiều)</label><br>
+            <input type="file" name="images[]" accept="image/*" multiple>
         </div>
 
         <div style="margin-top:8px">

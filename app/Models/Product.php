@@ -51,4 +51,10 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    // Quan hệ một sản phẩm có nhiều ảnh
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

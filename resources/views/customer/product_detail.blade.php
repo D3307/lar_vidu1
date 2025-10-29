@@ -29,13 +29,31 @@
 
     <div class="row g-4">
         {{-- Cột ảnh sản phẩm + thumbnail --}}
-        <div class="col-md-6 d-flex">
-            {{-- Ảnh lớn --}}
-            <div class="flex-grow-1 text-center">
-                <img id="main-product-img" src="{{ asset('storage/'.$product->image) }}" 
-                     alt="{{ $product->name }}" 
-                     class="img-fluid rounded shadow"
-                     style="max-height: 400px; object-fit: contain;">
+        <div class="col-md-6 d-flex justify-content-center align-items-start">
+            {{-- Cột ảnh phụ bên trái --}}
+            <div class="d-flex flex-column align-items-center me-3" style="position: relative;">
+                <div class="scroll-arrow" onclick="scrollThumbnails(-1)">&#9650;</div>
+
+                <div class="thumbnail-vertical" id="thumbnailContainer">
+                    @foreach($product->images as $img)
+                        <div class="thumb-box-vertical mb-2">
+                            <img src="{{ asset('storage/'.$img->image_path) }}"
+                                alt="Ảnh phụ"
+                                class="thumbnail-img-vertical"
+                                onclick="document.getElementById('main-product-img').src=this.src;">
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="scroll-arrow" onclick="scrollThumbnails(1)">&#9660;</div>
+            </div>
+
+            {{-- Ảnh chính bên phải --}}
+            <div class="main-image-container flex-grow-1 text-center">
+                <img id="main-product-img"
+                    src="{{ asset('storage/' . ($product->images->first()->image_path ?? ($product->image ?? 'no-image.png'))) }}"
+                    alt="{{ $product->name }}"
+                    class="img-fluid shadow">
             </div>
         </div>
 
@@ -408,6 +426,17 @@
     });
 </script>
 
+<script>
+function scrollThumbnails(direction) {
+    const container = document.getElementById('thumbnailContainer');
+    const scrollAmount = 100; // px mỗi lần cuộn
+    container.scrollBy({
+        top: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+</script>
+
 <style>
     .color-circle.selected, .color-circle:hover {
         outline: 2px solid #e75480 !important;
@@ -451,6 +480,63 @@
     .review-card:hover {
         box-shadow: 0 6px 24px rgba(231,84,128,0.08);
         border-color: #e75480;
+    }
+    .thumbnail-vertical {
+        max-height: 450px;
+        overflow-y: auto;
+        padding: 5px;
+        position: relative;
+    }
+    .thumb-box-vertical {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+        border: 2px solid transparent;
+        transition: 0.25s ease;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .thumb-box-vertical:hover {
+        border-color: #e75480;
+        transform: scale(1.05);
+    }
+    .thumbnail-img-vertical {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .scroll-arrow {
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        color: #e75480;
+        font-size: 18px;
+        padding: 4px 0;
+        transition: 0.2s ease;
+    }
+    .scroll-arrow:hover {
+        transform: scale(1.2);
+    }
+    .main-image-container {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        background: transparent;
+    }
+    .main-image-container img {
+        max-height: 450px;
+        width: auto;
+        height: auto;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+    ::-webkit-scrollbar {
+        display: none;
     }
 </style>
 @endsection
