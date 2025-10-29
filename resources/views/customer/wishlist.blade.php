@@ -69,7 +69,21 @@
                                 @if($wishColor || $wishSize || $wishMaterial)
                                     <div style="font-size: 0.95rem; color:#555;">
                                         @if($wishColor)
-                                            <div><strong>Màu:</strong> {{ $wishColor }}</div>
+                                            <div style="display:flex; align-items:center; gap:6px;">
+                                                <strong>Màu:</strong> 
+                                                <span 
+                                                    style="display:inline-block;
+                                                        width:18px;
+                                                        height:18px;
+                                                        border:1px solid #ccc;
+                                                        border-radius:4px;
+                                                        background-color:{{ $wishColor }};
+                                                        vertical-align:middle;">
+                                                </span>
+                                                <span style="font-size:0.9rem; color:#555;">
+                                                    {{ $wishColor }}
+                                                </span>
+                                            </div>
                                         @endif
                                         @if($wishSize)
                                             <div><strong>Size:</strong> {{ $wishSize }}</div>
@@ -113,7 +127,7 @@
 
                             <!-- Nút Add to cart: submit POST kèm các thuộc tính (nếu đã lưu) -->
                             <td>
-                                @if($product->quantity > 0)
+                                @if(($detail && $detailQuantity > 0) || $product->quantity > 0)
                                     @if($wishColor && $wishSize && $wishMaterial)
                                         <form action="{{ route('cart.add', $product->id) }}" method="POST" style="display:inline;">
                                             @csrf
