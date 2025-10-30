@@ -38,11 +38,19 @@
                             <!-- Ảnh và tên -->
                             <td>
                                 <div class="d-flex align-items-center gap-3">
-                                    <a href="{{ route('customer.products', $product->id) }}">
-                                        <img src="{{ $product->image ? asset('storage/' . $product->image) : '/images/no-image.png' }}" 
-                                            alt="{{ $product->name }}" 
-                                            style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
-                                    </a>
+                                    @if ($product->images->isNotEmpty())
+                                        <a href="{{ route('customer.products', $product->id) }}">
+                                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
+                                                alt="{{ $product->name }}" 
+                                                style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
+                                        </a>
+                                    @else
+                                        <a href="{{ route('customer.products', $product->id) }}">
+                                            <img src="/images/no-image.png" 
+                                                alt="{{ $product->name }}" 
+                                                style="width:70px; height:70px; object-fit:cover; border-radius:8px;">
+                                        </a>
+                                    @endif
                                     <div>
                                         <a href="{{ route('customer.products', $product->id) }}" 
                                         class="fw-bold text-dark" 

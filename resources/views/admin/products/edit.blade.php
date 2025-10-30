@@ -63,6 +63,11 @@
                 </select>
             </div>
 
+            <div style="margin-top:8px">
+                <label>Mô tả sản phẩm</label><br>
+                <textarea name="description" rows="5" style="width:100%;padding:8px;border-radius:6px;resize:vertical;">{{ old('description', $product->description) }}</textarea>
+            </div>
+
             <div style="margin-top:16px;display:flex;gap:10px;">
                 <button type="submit" class="btn btn-outline" style="background:#f0d4db;color:#7a2f3b;font-weight:600;">💾 Lưu</button>
                 <a href="{{ route('admin.products.index') }}" class="btn btn-outline" style="background:#eee;color:#7a2f3b;font-weight:600;">⬅ Quay lại</a>

@@ -148,7 +148,7 @@
         </div>
     </div>
 
-    {{-- Tabs --}}
+    <!-- Tabs -->
     <div class="mt-5">
         <ul class="nav nav-tabs" id="productTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -252,75 +252,104 @@
                         </div>
                     </div>
                     <h5 class="fw-bold mb-3">Bảng quy đổi size giày</h5>
-    <table class="table table-bordered text-center">
-        <thead class="table-dark">
-        <tr>
-            <th>SIZE</th>
-            <th>Chiều dài (cm)</th>
-            <th>Vòng khớp ngón (Ngồi, cm)</th>
-            <th>Vòng khớp ngón (Đứng, cm)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
-        <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
-        <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
-        <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
-        <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
-        <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
-        <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
-        </tbody>
-    </table>
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>SIZE</th>
+                            <th>Chiều dài (cm)</th>
+                            <th>Vòng khớp ngón (Ngồi, cm)</th>
+                            <th>Vòng khớp ngón (Đứng, cm)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
+                        <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
+                        <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
+                        <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
+                        <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
+                        <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
+                        <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
+                        </tbody>
+                    </table>
 
-    <p class="mt-3"><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
-    <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
+                    <p class="mt-3"><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
+                    <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 
     <!-- Modal Hướng dẫn chọn size -->
     <div class="modal fade" id="sizeGuideModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Hướng dẫn chọn size giày</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-            <p><b>Bước 1:</b> Đặt bàn chân lên giấy trắng, dùng bút vẽ bo hết bàn chân.</p>
-            <img src="{{ asset('storage/sizeguide/size_step_01.jpg') }}" class="img-fluid mb-3" alt="Đo chiều dài">
-
-            <p><b>Bước 2:</b> Dùng thước hoặc dây đo vòng khớp ngón chân rộng nhất.</p>
-            <img src="{{ asset('storage/sizeguide/size_step_02.png') }}" class="img-fluid mb-3" alt="Đo vòng khớp ngón">
-
-            <div class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead class="table-dark">
-                <tr>
-                    <th>SIZE</th>
-                    <th>Chiều dài (cm)</th>
-                    <th>Vòng khớp ngón (Ngồi, cm)</th>
-                    <th>Vòng khớp ngón (Đứng, cm)</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
-                <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
-                <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
-                <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
-                <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
-                <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
-                <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
-                </tbody>
-            </table>
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hướng dẫn chọn size giày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <p><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
-            <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
-        </div>
+            <div class="modal-body">
+                <p><b>Bước 1:</b> Đặt bàn chân lên giấy trắng, dùng bút vẽ bo hết bàn chân.</p>
+                <img src="{{ asset('storage/sizeguide/size_step_01.jpg') }}" class="img-fluid mb-3" alt="Đo chiều dài">
+
+                <p><b>Bước 2:</b> Dùng thước hoặc dây đo vòng khớp ngón chân rộng nhất.</p>
+                <img src="{{ asset('storage/sizeguide/size_step_02.png') }}" class="img-fluid mb-3" alt="Đo vòng khớp ngón">
+
+                <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>SIZE</th>
+                        <th>Chiều dài (cm)</th>
+                        <th>Vòng khớp ngón (Ngồi, cm)</th>
+                        <th>Vòng khớp ngón (Đứng, cm)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr><td>34</td><td>21.2</td><td>20.45</td><td>20.65</td></tr>
+                    <tr><td>35</td><td>21.9</td><td>20.95</td><td>21.15</td></tr>
+                    <tr><td>36</td><td>22.5</td><td>21.4</td><td>21.6</td></tr>
+                    <tr><td>37</td><td>23.2</td><td>21.9</td><td>22.1</td></tr>
+                    <tr><td>38</td><td>23.9</td><td>22.4</td><td>22.6</td></tr>
+                    <tr><td>39</td><td>24.5</td><td>22.85</td><td>23.05</td></tr>
+                    <tr><td>40</td><td>25.2</td><td>23.35</td><td>23.55</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p><b>Nếu có sự khác biệt về chiều dài của hai bàn chân, quý khách nên chọn cỡ giày ứng với chiều dài bàn chân lớn hơn.</b></p>
+                <p><b>Bảng quy đổi kích thước không áp dụng làm tròn số, quý khách vui lòng chọn kích thước gần nhất với chiều dài bàn chân.</b></p>
+            </div>
+            </div>
         </div>
     </div>
+
+    <!-- Có thể bạn sẽ thích -->
+    @if(isset($relatedProducts) && $relatedProducts->count() > 0)
+    <div class="mt-5">
+        <h4 class="fw-bold mb-4" style="color:#222;">
+            <i class="fa fa-heart me-2" style="color:#e75480;"></i>Có thể bạn sẽ thích
+        </h4>
+        <div class="row g-4">
+            @foreach($relatedProducts as $related)
+            <div class="col-md-3 col-sm-6">
+                <div class="card shadow-sm border-0 h-100" 
+                     style="transition:0.3s; border-radius:12px; overflow:hidden;">
+                    <a href="{{ route('customer.product_detail', $related->id) }}" class="text-decoration-none text-dark">
+                        <img src="{{ asset('storage/' . ($related->images->first()->image_path ?? 'no-image.png')) }}" 
+                             class="card-img-top" 
+                             alt="{{ $related->name }}" 
+                             style="height:260px; object-fit:cover;">
+                        <div class="card-body text-center">
+                            <h6 class="fw-bold mb-2" style="color:#222;">{{ $related->name }}</h6>
+                            <p class="mb-1 fw-bold" style="color:#e75480;">{{ number_format($related->price, 0, ',', '.') }} đ</p>
+                            <small class="text-muted">{{ $related->category->name ?? '---' }}</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
+    @endif
 </div>
 
 {{-- Script chọn option --}}
@@ -429,7 +458,7 @@
 <script>
 function scrollThumbnails(direction) {
     const container = document.getElementById('thumbnailContainer');
-    const scrollAmount = 100; // px mỗi lần cuộn
+    const scrollAmount = 100;
     container.scrollBy({
         top: direction * scrollAmount,
         behavior: 'smooth'
@@ -438,55 +467,18 @@ function scrollThumbnails(direction) {
 </script>
 
 <style>
-    .color-circle.selected, .color-circle:hover {
-        outline: 2px solid #e75480 !important;
-        box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e75480;
-    }
+    .color-circle.selected, .color-circle:hover {outline: 2px solid #e75480 !important;box-shadow: 0 0 0 2px #fff, 0 0 0 4px #e75480;}
     .size-option.active, .size-option:hover,
-    .material-option.active, .material-option:hover {
-        border: 2px solid #e75480 !important;
-        color: #e75480;
-        font-weight: 600;
-        background: #fff;
-    }
+    .material-option.active, .material-option:hover {border: 2px solid #e75480 !important;color: #e75480;font-weight: 600;background: #fff;}
     .btn-outline-danger,
-    .btn-outline-danger:focus {
-        border-color: #e75480;
-        color: #e75480;
-        background: #fff;
-    }
-    .btn-outline-danger:hover {
-        background: #e75480;
-        color: #fff !important;
-        border-color: #e75480;
-    }
-    .btn, .btn-outline-danger, .btn-outline-dark, .btn-outline-secondary {
-        border-radius: 8px !important;
-        font-weight: 600;
-    }
-    .nav-tabs .nav-link.active {
-        color: #e75480;
-        border-color: #e75480 #e75480 #fff;
-        background: #fff;
-        font-weight: 600;
-    }
-    .nav-tabs .nav-link {
-        color: #222;
-        font-weight: 500;
-    }
-    .review-card {
-        transition: box-shadow 0.2s;
-    }
-    .review-card:hover {
-        box-shadow: 0 6px 24px rgba(231,84,128,0.08);
-        border-color: #e75480;
-    }
-    .thumbnail-vertical {
-        max-height: 450px;
-        overflow-y: auto;
-        padding: 5px;
-        position: relative;
-    }
+    .btn-outline-danger:focus {border-color: #e75480;color: #e75480;background: #fff;}
+    .btn-outline-danger:hover {background: #e75480;color: #fff !important;border-color: #e75480;}
+    .btn, .btn-outline-danger, .btn-outline-dark, .btn-outline-secondary {border-radius: 8px !important;font-weight: 600;}
+    .nav-tabs .nav-link.active {color: #e75480;border-color: #e75480 #e75480 #fff;background: #fff;font-weight: 600;}
+    .nav-tabs .nav-link {color: #222;font-weight: 500;}
+    .review-card {transition: box-shadow 0.2s;}
+    .review-card:hover {box-shadow: 0 6px 24px rgba(231,84,128,0.08);border-color: #e75480;}
+    .thumbnail-vertical {max-height: 450px;overflow-y: auto;padding: 5px;position: relative;}
     .thumb-box-vertical {
         width: 80px;
         height: 80px;
@@ -498,42 +490,13 @@ function scrollThumbnails(direction) {
         cursor: pointer;
         flex-shrink: 0;
     }
-    .thumb-box-vertical:hover {
-        border-color: #e75480;
-        transform: scale(1.05);
-    }
-    .thumbnail-img-vertical {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .scroll-arrow {
-        width: 100%;
-        text-align: center;
-        cursor: pointer;
-        color: #e75480;
-        font-size: 18px;
-        padding: 4px 0;
-        transition: 0.2s ease;
-    }
-    .scroll-arrow:hover {
-        transform: scale(1.2);
-    }
-    .main-image-container {
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0;
-        background: transparent;
-    }
-    .main-image-container img {
-        max-height: 450px;
-        width: auto;
-        height: auto;
-        border-radius: 10px;
-        object-fit: contain;
-    }
+    .thumb-box-vertical:hover {border-color: #e75480;transform: scale(1.05);}
+    .thumbnail-img-vertical {width: 100%;height: 100%;object-fit: cover;}
+    .scroll-arrow {width: 100%;text-align: center;cursor: pointer;color: #e75480;font-size: 18px;padding: 4px 0;transition: 0.2s ease;}
+    .scroll-arrow:hover {transform: scale(1.2);}
+    .main-image-container {border-radius: 12px;box-shadow: 0 4px 12px rgba(0,0,0,0.08);display: flex;justify-content: center;align-items: center;padding: 0;background: transparent;}
+    .main-image-container img {max-height: 450px;width: auto;height: auto;border-radius: 10px;object-fit: contain;}
+    .card:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(231,84,128,0.15); }
+    .card-img-top { border-radius: 12px 12px 0 0; }
 </style>
 @endsection

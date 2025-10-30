@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request; // thêm dòng này
+use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlists = Wishlist::with('product')
+        $wishlists = Wishlist::with('product', 'product.images')
             ->where('user_id', Auth::id())
             ->get();
         return view('customer.wishlist', compact('wishlists'));

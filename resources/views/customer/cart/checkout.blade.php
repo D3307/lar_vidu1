@@ -185,12 +185,6 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping" id="free" value="free">
-                                        <label class="form-check-label" for="free">
-                                            Miễn phí vận chuyển
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
                                         <input class="form-check-input" type="radio" name="shipping" id="pickup" value="pickup">
                                         <label class="form-check-label" for="pickup">
                                             Nhận tại cửa hàng
@@ -222,21 +216,6 @@
                                      style="height:18px;vertical-align:middle;">
                             </label>
                         </div>
-
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="payment" id="vnpay" value="vnpay" required>
-                            <label class="form-check-label fw-semibold" for="vnpay">
-                                Thanh toán qua VNPay
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="agree" required>
-                        <label class="form-check-label" for="agree">
-                            Tôi đồng ý với
-                            <a href="#" style="color:#e75480;">Điều khoản & Điều kiện</a> của website
-                        </label>
                     </div>
 
                     <button type="submit"

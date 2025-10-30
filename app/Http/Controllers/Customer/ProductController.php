@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\UserHistory;
 use App\Models\ProductDetail;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query()->with('reviews', 'details');
+        $query = Product::query()->with('reviews', 'details', 'images');
 
         // Nếu lọc theo danh mục
         if ($request->has('category_id')) {
@@ -75,7 +76,12 @@ class ProductController extends Controller
         // Lấy danh sách biến thể (chi tiết sản phẩm)
         $variants = $product->details;
 
-        return view('customer.product_detail', compact('product', 'variants', 'totalQuantity', 'sizes', 'colors'));
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->take(4) // số lượng sản phẩm hiển thị
+            ->get();
+
+        return view('customer.product_detail', compact('product', 'variants', 'totalQuantity', 'sizes', 'colors', 'relatedProducts'));
     }
 
     // Lọc sản phẩm theo category_id

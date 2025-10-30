@@ -64,7 +64,15 @@
                 @foreach($products as $product)
                     <div class="product-card" style="background: white; border-radius: 8px; overflow: hidden;">
                         <a href="{{ route('customer.product_detail', $product->id) }}">
-                            <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" style="width: 100%; height: 320px; object-fit: cover;">
+                            @if ($product->images->isNotEmpty())
+                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
+                                    alt="{{ $product->name }}" 
+                                    style="width: 100%; height: 320px; object-fit: cover;">
+                            @else
+                                <div style="width: 100%; height: 320px; background: #f7f7f7; display: flex; align-items: center; justify-content: center; color: #888;">
+                                    Không có ảnh
+                                </div>
+                            @endif
                         </a>
                         <div style="padding: 12px;">
                             <h3 style="margin: 0 0 8px 0; font-size: 1rem; font-weight: 500;">
@@ -112,112 +120,6 @@
 
         <div style="margin-top: 30px;">
             {{ $products->links('vendor.pagination.bootstrap-4') }}
-
-            <style>
-                .pagination li {
-                    display: inline-block;
-                    margin: 0 4px;
-                }
-
-                .pagination li a,
-                .pagination li span {
-                    display: inline-block;
-                    padding: 8px 14px;
-                    border-radius: 8px;
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    text-decoration: none;
-                    border: 1px solid #ffd1dc;
-                    color: #ff6b88;
-                    background: #fff;
-                    transition: all 0.2s ease;
-                }
-
-                .pagination li a:hover {
-                    background: #ffebf0;
-                    color: #ff3b67;
-                    border-color: #ffb2c1;
-                }
-
-                .pagination li.active span {
-                    background: #ff6b88;
-                    border-color: #ff6b88;
-                    color: #fff;
-                }
-
-                .pagination li.disabled span {
-                    color: #ccc;
-                    background: #f9f9f9;
-                    border-color: #eee;
-                    cursor: not-allowed;
-                }
-                /* Khung chung */
-                .filter-sort-bar {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    gap: 15px;
-                    padding: 15px 20px;
-                    background: #fff;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-                    flex-wrap: wrap;
-                }
-
-                /* Form lọc */
-                .filter-form {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                }
-
-                .filter-form input {
-                    width: 120px;
-                    padding: 8px 10px;
-                    border: 1px solid #ffd1dc;
-                    border-radius: 6px;
-                    font-size: 0.95rem;
-                    transition: 0.2s;
-                }
-
-                .filter-form input:focus {
-                    outline: none;
-                    border-color: #ff6b88;
-                    box-shadow: 0 0 0 2px rgba(255,107,136,0.15);
-                }
-
-                .filter-form button {
-                    background: #ff6b88;
-                    color: #fff;
-                    border: none;
-                    padding: 8px 14px;
-                    border-radius: 6px;
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                    transition: 0.2s;
-                }
-
-                .filter-form button:hover {
-                    background: #ff3b67;
-                }
-
-                /* Form sắp xếp */
-                .sort-form select {
-                    padding: 8px 12px;
-                    border-radius: 6px;
-                    border: 1px solid #ffd1dc;
-                    font-size: 0.95rem;
-                    cursor: pointer;
-                    transition: 0.2s;
-                }
-
-                .sort-form select:focus {
-                    outline: none;
-                    border-color: #ff6b88;
-                    box-shadow: 0 0 0 2px rgba(255,107,136,0.15);
-                }
-            </style>
         </div>
     </div>
 </div>
@@ -267,4 +169,21 @@
     // Hiển thị mặc định
     applyFilterAndSort();
 </script>
+
+<style>
+    .pagination li {display: inline-block;margin: 0 4px;}
+    .pagination li a,
+    .pagination li span {display: inline-block;padding: 8px 14px;border-radius: 8px;font-size: 0.95rem;font-weight: 600;text-decoration: none;border: 1px solid #ffd1dc;color: #ff6b88;background: #fff;transition: all 0.2s ease;}
+    .pagination li a:hover {background: #ffebf0;color: #ff3b67;border-color: #ffb2c1;}
+    .pagination li.active span {background: #ff6b88;border-color: #ff6b88;color: #fff;}
+    .pagination li.disabled span {color: #ccc;background: #f9f9f9;border-color: #eee;cursor: not-allowed;}
+    .filter-sort-bar {display: flex;justify-content: space-between;align-items: center;gap: 15px;padding: 15px 20px;background: #fff;border-radius: 10px;box-shadow: 0 4px 12px rgba(0,0,0,0.08);flex-wrap: wrap;}
+    .filter-form {display: flex;gap: 10px;align-items: center;}
+    .filter-form input {width: 120px;padding: 8px 10px;border: 1px solid #ffd1dc;border-radius: 6px;font-size: 0.95rem;transition: 0.2s;}
+    .filter-form input:focus {outline: none;border-color: #ff6b88;box-shadow: 0 0 0 2px rgba(255,107,136,0.15);}
+    .filter-form button {background: #ff6b88;color: #fff;border: none;padding: 8px 14px;border-radius: 6px;font-weight: 600;font-size: 0.9rem;cursor: pointer;transition: 0.2s;}
+    .filter-form button:hover {background: #ff3b67;}
+    .sort-form select {padding: 8px 12px;border-radius: 6px;border: 1px solid #ffd1dc;font-size: 0.95rem;cursor: pointer;transition: 0.2s;}
+    .sort-form select:focus {outline: none;border-color: #ff6b88;box-shadow: 0 0 0 2px rgba(255,107,136,0.15);}
+</style>
 @endsection
