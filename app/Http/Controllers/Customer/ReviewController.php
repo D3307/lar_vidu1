@@ -58,7 +58,7 @@ class ReviewController extends Controller
                 foreach ($request->file("reviews.$productId.media") as $file) {
                     if ($file->isValid()) {
                         // Lưu file vào thư mục storage/app/public/reviews
-                        $path = $file->store('public/reviews');
+                        $path = $file->store('reviews', 'public');
 
                         // Lưu đường dẫn file vào cột media (JSON)
                         $existingMedia = $review->media ? json_decode($review->media, true) : [];

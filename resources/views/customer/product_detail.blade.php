@@ -225,6 +225,40 @@
                                 <div class="mt-2" style="font-size:1.08rem; color:#222; line-height:1.7;">
                                     {{ $review->comment }}
                                 </div>
+                                {{-- Media (ảnh hoặc video) --}}
+                                @if(!empty($review->media))
+                                    @php
+                                        // Giải mã JSON, nếu thất bại thì ép về mảng rỗng
+                                        $mediaFiles = is_array($review->media) ? $review->media : json_decode($review->media, true);
+                                    @endphp
+
+                                    @if(is_array($mediaFiles) && count($mediaFiles) > 0)
+                                        <div class="mt-3 d-flex flex-wrap gap-3">
+                                            @foreach($mediaFiles as $file)
+                                                @php
+                                                    if (!is_string($file)) continue; // bỏ qua phần tử không hợp lệ
+                                                    $ext = pathinfo($file, PATHINFO_EXTENSION);
+                                                @endphp
+
+                                                {{-- Ảnh --}}
+                                                @if(in_array(strtolower($ext), ['jpg','jpeg','png','gif','webp']))
+                                                    <img src="{{ asset($file) }}" 
+                                                        alt="Review Image" 
+                                                        class="rounded shadow-sm" 
+                                                        style="width: 180px; height: 180px; object-fit: cover;">
+                                                {{-- Video --}}
+                                                @elseif(in_array(strtolower($ext), ['mp4','mov','avi','webm']))
+                                                    <video controls 
+                                                        class="rounded shadow-sm" 
+                                                        style="width: 300px; height: auto;">
+                                                        <source src="{{ asset($file) }}" type="video/{{ $ext }}">
+                                                        Trình duyệt của bạn không hỗ trợ video.
+                                                    </video>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -476,20 +510,8 @@ function scrollThumbnails(direction) {
     .btn, .btn-outline-danger, .btn-outline-dark, .btn-outline-secondary {border-radius: 8px !important;font-weight: 600;}
     .nav-tabs .nav-link.active {color: #e75480;border-color: #e75480 #e75480 #fff;background: #fff;font-weight: 600;}
     .nav-tabs .nav-link {color: #222;font-weight: 500;}
-    .review-card {transition: box-shadow 0.2s;}
-    .review-card:hover {box-shadow: 0 6px 24px rgba(231,84,128,0.08);border-color: #e75480;}
     .thumbnail-vertical {max-height: 450px;overflow-y: auto;padding: 5px;position: relative;}
-    .thumb-box-vertical {
-        width: 80px;
-        height: 80px;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
-        border: 2px solid transparent;
-        transition: 0.25s ease;
-        cursor: pointer;
-        flex-shrink: 0;
-    }
+    .thumb-box-vertical {width: 80px;height: 80px;border-radius: 10px;overflow: hidden;background: #fff;border: 2px solid transparent;transition: 0.25s ease;cursor: pointer;flex-shrink: 0;}
     .thumb-box-vertical:hover {border-color: #e75480;transform: scale(1.05);}
     .thumbnail-img-vertical {width: 100%;height: 100%;object-fit: cover;}
     .scroll-arrow {width: 100%;text-align: center;cursor: pointer;color: #e75480;font-size: 18px;padding: 4px 0;transition: 0.2s ease;}
@@ -498,5 +520,15 @@ function scrollThumbnails(direction) {
     .main-image-container img {max-height: 450px;width: auto;height: auto;border-radius: 10px;object-fit: contain;}
     .card:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(231,84,128,0.15); }
     .card-img-top { border-radius: 12px 12px 0 0; }
+    .review-card {background: #fff;border: 1.5px solid #f5d0da;border-radius: 12px;transition: all 0.3s ease;box-shadow: 0 2px 8px rgba(231,84,128,0.05);}
+    .review-card:hover {border-color: #e75480;box-shadow: 0 6px 22px rgba(231,84,128,0.12);transform: translateY(-3px);}
+    .review-card .rounded-circle {background: #e75480 !important;color: #ffffff !important;font-weight: 700;border: 2px solid #e75480;box-shadow: 0 2px 6px rgba(231,84,128,0.08);}
+    .review-card .fw-bold {color: #222;font-weight: 600;}
+    .review-card .text-muted {color: #999 !important;}
+    .review-card img {border-radius: 10px;border: 1.5px solid #f5d0da;}
+    .review-card img:hover {border-color: #e75480;}
+    .review-card video {border: 1.5px solid #f5d0da;border-radius: 10px;transition: all 0.25s ease;background: #fff6f8;}
+    .review-card video:hover {border-color: #e75480;box-shadow: 0 0 8px rgba(231,84,128,0.25);}
+    .alert-info {background: #fff6f8;border: 1.5px solid #f5d0da;color: #e75480;font-weight: 500;}
 </style>
 @endsection

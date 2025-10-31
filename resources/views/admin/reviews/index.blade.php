@@ -37,22 +37,25 @@
                     </td>
                     <td>{{ Str::limit($review->comment, 60) }}</td>
                     <td>
-                        @if(!empty($review->media) && is_array($review->media))
+                        @php
+                            $mediaFiles = is_array($review->media) ? $review->media : json_decode($review->media, true);
+                        @endphp
+
+                        @if(!empty($mediaFiles))
                             <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                                @foreach($review->media as $file)
+                                @foreach($mediaFiles as $file)
                                     @php
                                         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                                         $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
                                         $isVideo = in_array($ext, ['mp4','mov','avi','webm']);
-                                        $url = asset('storage/reviews/' . $file);
                                     @endphp
 
                                     @if($isImage)
-                                        <img src="{{ $url }}" alt="review image"
+                                        <img src="{{ asset(ltrim($file, '/')) }}" alt="review image"
                                             style="width:45px;height:45px;object-fit:cover;border-radius:6px;border:1px solid #ddd;">
                                     @elseif($isVideo)
                                         <video style="width:45px;height:45px;border-radius:6px;border:1px solid #ddd;" muted>
-                                            <source src="{{ $url }}" type="video/{{ $ext }}">
+                                            <source src="{{ asset(ltrim($file, '/')) }}" type="video/{{ $ext }}">
                                         </video>
                                     @endif
                                 @endforeach

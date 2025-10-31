@@ -56,7 +56,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('details')->findOrFail($id);
+        $product = Product::with('details', 'reviews.user')->findOrFail($id);
 
         // Lưu lịch sử duyệt sản phẩm nếu user đăng nhập
         if (auth()->check()) {
@@ -75,6 +75,16 @@ class ProductController extends Controller
         
         // Lấy danh sách biến thể (chi tiết sản phẩm)
         $variants = $product->details;
+
+        // ✅ Giải mã JSON media (ảnh/video)
+        foreach ($product->reviews as $review) {
+            if (!empty($review->media)) {
+                $decoded = json_decode($review->media, true);
+                $review->media = is_array($decoded) ? $decoded : [];
+            } else {
+                $review->media = [];
+            }
+        }
 
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
