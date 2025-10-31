@@ -17,6 +17,10 @@ class Review extends Model
         'comment',
     ];
 
+    protected $casts = [
+        'media' => 'array',
+    ];
+
     // Quan hệ với User
     public function user()
     {

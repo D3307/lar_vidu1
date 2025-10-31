@@ -105,10 +105,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/customer/success', [PaymentController::class, 'success'])->name('customer.success');
 
     //Đánh giá
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/orders/{order}/review', [CustomerReviewController::class, 'create'])->name('reviews.create');
-        Route::post('/orders/{order}/review', [CustomerReviewController::class, 'store'])->name('reviews.store');
-    });
+    Route::get('/orders/{order}/review', [CustomerReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/orders/{order}/review', [CustomerReviewController::class, 'store'])->name('reviews.store');
 
     // Pages
     Route::get('/about', [PageController::class, 'about'])->name('customer.about');

@@ -32,6 +32,34 @@
     </div>
 
     <div class="form-group">
+        <label>Ảnh / Video đính kèm</label>
+        @if(!empty($review->media) && is_array($review->media))
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                @foreach($review->media as $file)
+                    @php
+                        $extension = pathinfo($file, PATHINFO_EXTENSION);
+                        $isImage = in_array(strtolower($extension), ['jpg','jpeg','png','gif','webp']);
+                        $isVideo = in_array(strtolower($extension), ['mp4','mov','avi','webm']);
+                    @endphp
+
+                    @if($isImage)
+                        <img src="{{ asset('storage/reviews/' . $file) }}" 
+                            alt="Review image"
+                            style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid #ddd;">
+                    @elseif($isVideo)
+                        <video controls style="width:180px;height:120px;border-radius:8px;border:1px solid #ddd;">
+                            <source src="{{ asset('storage/reviews/' . $file) }}" type="video/{{ $extension }}">
+                            Trình duyệt của bạn không hỗ trợ video.
+                        </video>
+                    @endif
+                @endforeach
+            </div>
+        @else
+            <p style="color:#888;">(Không có ảnh hoặc video đính kèm)</p>
+        @endif
+    </div>
+
+    <div class="form-group">
         <label>Ngày tạo</label>
         <input type="text" value="{{ $review->created_at->format('d/m/Y H:i') }}" disabled>
     </div>

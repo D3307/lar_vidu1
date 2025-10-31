@@ -18,6 +18,7 @@
                     <th style="width:60px">Đơn hàng</th>
                     <th style="width:90px">Rating</th>
                     <th style="width:200px">Bình luận</th>
+                    <th style="width:90px">Ảnh/Video đính kèm</th>
                     <th style="width:120px">Ngày</th>
                     <th style="width:120px">Hành động</th>
                 </tr>
@@ -35,6 +36,31 @@
                         @endfor
                     </td>
                     <td>{{ Str::limit($review->comment, 60) }}</td>
+                    <td>
+                        @if(!empty($review->media) && is_array($review->media))
+                            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                                @foreach($review->media as $file)
+                                    @php
+                                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                        $isImage = in_array($ext, ['jpg','jpeg','png','gif','webp']);
+                                        $isVideo = in_array($ext, ['mp4','mov','avi','webm']);
+                                        $url = asset('storage/reviews/' . $file);
+                                    @endphp
+
+                                    @if($isImage)
+                                        <img src="{{ $url }}" alt="review image"
+                                            style="width:45px;height:45px;object-fit:cover;border-radius:6px;border:1px solid #ddd;">
+                                    @elseif($isVideo)
+                                        <video style="width:45px;height:45px;border-radius:6px;border:1px solid #ddd;" muted>
+                                            <source src="{{ $url }}" type="video/{{ $ext }}">
+                                        </video>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @else
+                            <span style="color:#888;">Không</span>
+                        @endif
+                    </td>
                     <td>{{ $review->created_at->format('d/m/Y H:i') }}</td>
                     <td>
                         <a href="{{ route('admin.reviews.edit', $review->id) }}" class="btn-action btn-edit">Sửa</a>
