@@ -65,7 +65,19 @@
                                                         <div class="text-muted" style="font-size:12px;">Kích thước: {{ $item->size }}</div>
                                                     @endif
                                                     @if(isset($item->color) && $item->color)
-                                                        <div class="text-muted" style="font-size:12px;">Màu: {{ $item->color }}</div>
+                                                        <div class="text-muted" style="font-size:12px; display:flex; align-items:center; gap:6px;">
+                                                            <span>Màu:</span>
+                                                            <span 
+                                                                style="
+                                                                    display:inline-block;
+                                                                    width:16px;
+                                                                    height:16px;
+                                                                    border-radius:50%;
+                                                                    border:1px solid #ccc;
+                                                                    background-color: {{ $item->color }};
+                                                                ">
+                                                            </span>
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </div>

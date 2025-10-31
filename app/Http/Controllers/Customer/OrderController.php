@@ -12,6 +12,8 @@ use App\Models\Coupon;
 use App\Models\UserHistory;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductDetail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderPlacedMail;
 
 class OrderController extends Controller
 {
@@ -181,6 +183,9 @@ class OrderController extends Controller
                     'order_id'          => $order->id,
                     'product_id'        => $item['id'],
                     'product_detail_id' => $detail->id,
+                    'color'             => $detail->color,
+                    'size'              => $detail->size,
+                    'material'          => $detail->product->material ?? null,
                     'quantity'          => $item['quantity'],
                     'price'             => $item['price'],
                 ]);
@@ -190,6 +195,15 @@ class OrderController extends Controller
             }
 
             DB::commit();
+
+            DB::commit();
+
+            // Gửi email xác nhận đơn hàng
+            try {
+                Mail::to(Auth::user()->email)->send(new OrderPlacedMail($order));
+            } catch (\Exception $e) {
+                \Log::error('Không thể gửi email đơn hàng: ' . $e->getMessage());
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());

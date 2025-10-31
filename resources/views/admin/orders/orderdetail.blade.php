@@ -76,6 +76,15 @@
             color:#c03651;
         }
         .btn-outline:hover { background:#f9f0f1; }
+        .color-dot {
+            display:inline-block;
+            width:16px;
+            height:16px;
+            border-radius:50%;
+            margin-right:6px;
+            border:1px solid #ccc;
+            vertical-align:middle;
+        }
     </style>
 
     {{-- Khối thông tin khách hàng --}}
@@ -121,7 +130,14 @@
                     @foreach($order->items as $item)
                         <tr>
                             <td>{{ $item->product->name ?? 'Sản phẩm đã xóa' }}</td>
-                            <td>{{ $item->color ?? '-' }}</td>
+                            <td>
+                                @if($item->color)
+                                    <span class="color-dot" style="background: {{ strtolower($item->color) }}"></span>
+                                    {{ $item->color }}
+                                @else
+                                    -
+                                @endif
+                            </td>
                             <td>{{ $item->size ?? '-' }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ number_format($item->price, 0, ',', '.') }} đ</td>
