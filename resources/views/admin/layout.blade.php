@@ -7,182 +7,61 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>@yield('title','Admin')</title>
 
     <style>
-        /* cơ bản layout admin */
-        body { 
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
-            background:#fbf7f6; 
-            color:#222; 
-            margin:0;
-        }
-        .admin-header { 
-            padding:18px 24px; 
-            background:linear-gradient(90deg,#f1d6db,#f9f3f2); 
-            box-shadow:0 4px 12px rgba(0,0,0,0.04); 
-            display:flex; 
-            align-items:center; 
-            justify-content:space-between; 
-        }
-        .admin-wrap {
-            display:flex;
-            gap:20px;
-            padding:16px 18px;      
-            max-width:1400px;        
-            margin:0 auto; 
-            box-sizing:border-box;
-        }
-        .notification-menu {
-            position: relative;
-        }
-
-        #notifDropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 40px;
-            width: 300px;
-            background: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            z-index: 100;
-        }
+        body {font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#fbf7f6; color:#222; margin:0;}
+        .admin-header {padding:18px 24px; background:linear-gradient(90deg,#f1d6db,#f9f3f2); box-shadow:0 4px 12px rgba(0,0,0,0.04); display:flex; align-items:center; justify-content:space-between; }
+        .admin-wrap {display:flex;gap:20px;padding:16px 18px;max-width:1400px;margin:0 auto; box-sizing:border-box;}
+        .notification-menu {position: relative;}
+        #notifDropdown {display: none;position: absolute;right: 0;top: 40px;width: 300px;background: #fff;box-shadow: 0 4px 12px rgba(0,0,0,0.1);border-radius: 8px;overflow: hidden;z-index: 100;}
+        .chat-notif { position: relative; display: inline-block; }
+        .chat-icon { font-size: 20px; color: #5a1f1f; cursor: pointer; position: relative; }
+        .chat-badge { position: absolute; top: -6px; right: -8px; background: #e75480; color: #fff; border-radius: 50%; padding: 2px 6px; font-size: 12px; }
+        .chat-dropdown { display: none; position: absolute; top: 30px; right: 0; background: #fff; border: 1px solid #f1d1d1; border-radius: 10px; width: 220px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .chat-dropdown h6 { margin: 10px; font-size: 14px; color: #a04444; font-weight: 600; }
+        .chat-dropdown ul { list-style: none; margin: 0; padding: 0; max-height: 200px; overflow-y: auto; }
+        .chat-dropdown li { padding: 8px 12px; border-bottom: 1px solid #f6d9d9; cursor: pointer; transition: background 0.2s; }
+        .chat-dropdown li:hover { background: #ffe4ec; }
+        .chat-popup { display: none; position: fixed; bottom: 20px; right: 20px; width: 360px; max-height: 520px; background: #fff; border-radius: 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); z-index: 2000; overflow: hidden; display: flex; flex-direction: column; }
+        .chat-popup-header { background: linear-gradient(90deg, #ffb6c1, #ffc1cc); padding: 10px 14px; color: #5a1f1f; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        #chat-popup-close { background: none; border: none; font-size: 20px; color: #5a1f1f; cursor: pointer; }
+        .chat-popup-body { flex: 1; padding: 10px 12px; overflow-y: auto; background: #f9f9fb; }
+        .chat-input { padding: 10px; border-top: 1px solid #eee; background: #fff; }
+        .chat-input input[type="text"] { flex: 1; border: 1px solid #ccc; border-radius: 20px; padding: 8px 12px; outline: none; }
+        #attachBtn { background: #fff; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #a04444; transition: background 0.2s; }
+        #attachBtn:hover { background: #ffe6ec; }
+        #sendMessageBtn { background: #e75480; border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        #sendMessageBtn:hover { background: #d64d73; }
         .admin-sidebar { width:220px; }
         .admin-main { flex:1; }
-        /* Dashboard collapsible block */
-        .dash-icon {
-            flex-shrink: 0;
-        }
-        .dash-toggle {
-            display:flex;
-            align-items:center;
-            gap:10px;
-            padding:8px 10px;           
-            border-radius:8px;
-            background:transparent;
-            border:1px solid transparent;
-            cursor:pointer;
-            user-select:none;
-        }
-        .dash-toggle:hover { 
-            background:rgba(238,198,214,0.06); 
-            border-color:rgba(0,0,0,0.03); 
-        }
+        .dash-icon {flex-shrink: 0;}
+        .dash-toggle {display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:transparent;border:1px solid transparent;cursor:pointer;user-select:none;}
+        .dash-toggle:hover {background:rgba(238,198,214,0.06); border-color:rgba(0,0,0,0.03);}
         .dash-toggle .hamburger { width:26px; height:16px; }
-        .dash-toggle .hamburger span { 
-            height:2px; border-radius:2px; 
-            background:#7a2f3b; 
-        }
+        .dash-toggle .hamburger span { height:2px; border-radius:2px;background:#7a2f3b; }
         .dash-toggle .hamburger span:nth-child(1){ top:1px; }
         .dash-toggle .hamburger span:nth-child(2){ top:7px; }
         .dash-toggle .hamburger span:nth-child(3){ top:13px; }
-        .dash-title { 
-            font-weight:700; 
-            color:#7a2f3b; 
-            font-size:0.95rem; 
-        }
-        .dash-list {
-            margin-top:10px;
-            border-radius:10px;
-            padding:6px;
-            max-height:0;
-            opacity:0;
-            transition:max-height .28s ease, opacity .28s ease;
-            background:#fff;
-            box-shadow:0 8px 20px rgba(0,0,0,0.04);
-            border:1px solid rgba(122,47,59,0.05);
-        }
+        .dash-title { font-weight:700; color:#7a2f3b; font-size:0.95rem; }
+        .dash-list {margin-top:10px;border-radius:10px;padding:6px;max-height:0;opacity:0;transition:max-height .28s ease, opacity .28s ease;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,0.04);border:1px solid rgba(122,47,59,0.05);}
         .dash-list.open { max-height:600px; opacity:1;}
-
-        .dash-list a {
-            display:block;
-            padding:8px 10px;
-            margin:6px 4px;
-            border-radius:8px;
-            color:#4b3a3f;
-            text-decoration:none;
-            font-size:0.95rem;
-        }
+        .dash-list a {display:block;padding:8px 10px;margin:6px 4px;border-radius:8px;color:#4b3a3f;text-decoration:none;font-size:0.95rem;}
         .dash-list a:last-child{ border-bottom:none; }
         .dash-list a:hover { background:#f9f3f3; }
-
-        /* Active/selected */
         .nav-item-active { background: rgba(238,198,214,0.12); color:#7a2f3b; font-weight:700; }
-        /* đồng nhất style submenu-toggle với các link khác */
-        .submenu-toggle {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            margin: 6px 4px;
-            border-radius: 8px;
-            color: #4b3a3f;
-            text-decoration: none;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
-
-        /* icon (emoji hoặc fa) đều nằm trong ô rộng 20px để thẳng hàng */
+        .submenu-toggle {display: flex;align-items: center;gap: 10px;padding: 8px 10px;margin: 6px 4px;border-radius: 8px;color: #4b3a3f;text-decoration: none;font-size: 0.95rem;cursor: pointer;}
         .submenu-toggle i,
-        .submenu-toggle .emoji {
-            flex-shrink: 0;
-            width: 20px;
-            text-align: center;
-            display: inline-block;
-        }
-
-        /* hover giống các link khác */
-        .submenu-toggle:hover {
-            background: #f9f3f3;
-        }
-
-        /* submenu-list bên trong nhỏ hơn chút */
-        .submenu-list {
-            display: none;
-            padding-left: 34px; /* lùi vào để phân cấp */
-        }
+        .submenu-toggle .emoji {flex-shrink: 0;width: 20px;text-align: center;display: inline-block;}
+        .submenu-toggle:hover {background: #f9f3f3;}
+        .submenu-list {display: none;padding-left: 34px;}
         .submenu.open .submenu-list { display: block; }
-        .submenu-list a {
-            display: block;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: #555;
-        }
+        .submenu-list a {display: block;padding: 6px 10px;border-radius: 6px;font-size: 0.9rem;color: #555;}
         .submenu-list a:hover { background:#f9f3f3; }
-        #backToTopBtn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #7a2f3b;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-
-        #backToTopBtn:hover {
-            background-color: #5a1f2b;
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-        }
-
-        /* Hiệu ứng “nhảy nhẹ” khi hover */
-        #backToTopBtn:hover i {
-            animation: bounce 0.6s ease;
-        }
-
+        #backToTopBtn {position: fixed;bottom: 30px;right: 30px;background-color: #7a2f3b;color: #fff;border: none;border-radius: 50%;width: 40px;height: 40px;font-size: 20px;cursor: pointer;display: none;align-items: center;justify-content: center;box-shadow: 0 4px 12px rgba(0,0,0,0.2);transition: all 0.3s ease;z-index: 999;}
+        #backToTopBtn:hover {background-color: #5a1f2b;transform: translateY(-6px) scale(1.05);box-shadow: 0 8px 18px rgba(0,0,0,0.3);}
+        #backToTopBtn:hover i {animation: bounce 0.6s ease;}
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
@@ -194,21 +73,8 @@
                 transform: translateY(-3px);
             }
         }
-        .admin-footer {
-            background: #ffffff;
-            border-top: 2px solid #e8cbd2;
-            color: #6c4a57;
-            font-size: 14px;
-            letter-spacing: 0.3px;
-            padding-right: 30px;
-            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .admin-footer .heart-icon {
-            color: #e75480;
-            animation: pulse 1.5s infinite;
-        }
-
+        .admin-footer {background: #ffffff;border-top: 2px solid #e8cbd2;color: #6c4a57;font-size: 14px;letter-spacing: 0.3px;padding-right: 30px;box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);}
+        .admin-footer .heart-icon {color: #e75480;animation: pulse 1.5s infinite;}
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
@@ -262,30 +128,65 @@
                 </div>
             </div>
 
-            <!-- Icon tin nhắn -->
+            <!-- Icon tin nhắn + dropdown người dùng -->
             <div class="chat-notif" style="position: relative;">
-                <a href="{{ route('admin.chat') }}" title="Tin nhắn khách hàng"
-                style="text-decoration: none; color: #7a2f3b; font-size: 1.4rem; position: relative; display: inline-flex; align-items: center;">
+                <div id="chat-icon" class="chat-icon">
                     <i class="fa-solid fa-comments"></i>
                     @php
                         $unreadCount = \App\Models\Message::where('is_admin', false)->whereNull('read_at')->count();
                     @endphp
                     @if($unreadCount > 0)
-                        <span style="
-                            position: absolute;
-                            top: -6px;
-                            right: -8px;
-                            background: #e74c7e;
-                            color: #fff;
-                            font-size: 0.7rem;
-                            padding: 2px 6px;
-                            border-radius: 50%;
-                            box-shadow: 0 0 4px rgba(0,0,0,0.15);
-                        ">
-                            {{ $unreadCount }}
-                        </span>
+                        <span class="chat-badge">{{ $unreadCount }}</span>
                     @endif
-                </a>
+                </div>
+
+                <!-- Dropdown danh sách người dùng -->
+                <div id="chat-dropdown" class="chat-dropdown">
+                    <h6>Khách hàng nhắn tin</h6>
+                    <ul id="chat-user-list">
+                        @php
+                            $users = \App\Models\Message::where('is_admin', false)
+                                ->select('user_id')
+                                ->distinct()
+                                ->get();
+                        @endphp
+                        @forelse($users as $u)
+                            @php
+                                $lastMsg = \App\Models\Message::where('user_id', $u->user_id)
+                                    ->orderByDesc('created_at')
+                                    ->first();
+                                $user = \App\Models\User::find($u->user_id);
+                            @endphp
+                            <li class="chat-user" data-id="{{ $u->user_id }}">
+                                <strong>{{ $user?->name ?? 'Người dùng #' . $u->user_id }}</strong><br>
+                                <small>{{ $lastMsg?->message ?? '[Ảnh]' }}</small>
+                            </li>
+                        @empty
+                            <li>Chưa có tin nhắn</li>
+                        @endforelse
+                    </ul>
+                </div>
+
+                <!-- Popup khung chat -->
+                <div id="chat-popup" class="chat-popup">
+                    <div class="chat-popup-header">
+                        <span id="chat-popup-title">Chat với khách</span>
+                        <button id="chat-popup-close">&times;</button>
+                    </div>
+                    <div id="chat-popup-body" class="chat-popup-body"></div>
+                    <div class="chat-input d-flex align-items-center gap-2 mt-3">
+                        <input type="file" id="chatImage" accept="image/*" style="display:none;">
+                        <button type="button" id="attachBtn" class="btn btn-light border">
+                            <i class="fa fa-paperclip"></i>
+                        </button>
+
+                        <input type="text" id="chatMessage" class="form-control" placeholder="Nhập tin nhắn...">
+
+                        <button type="button" id="sendMessageBtn" class="btn btn-danger" style="background:#e75480;border:none;">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- User menu -->
@@ -382,7 +283,6 @@
                     <button type="submit" style="padding:8px 16px; border-radius:8px; background:#c03651; color:#fff; border:none;">
                         🔍 Tìm kiếm
                     </button>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     $(document).ready(function(){
                         $('#search').on('keyup', function(){
@@ -478,6 +378,7 @@
         });
     </script>
 
+    <!-- Back to Top Button -->
     <script>
         // Hiện nút khi cuộn xuống 200px
         window.onscroll = function() {
@@ -495,24 +396,104 @@
         };
     </script>
 
+    <!-- Chat Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const msgBtn = document.querySelector('.message-menu a');
-            const msgDropdown = document.getElementById('messageDropdown');
+    document.addEventListener("DOMContentLoaded", () => {
+        const chatIcon = document.getElementById("chat-icon");
+        const chatDropdown = document.getElementById("chat-dropdown");
+        const chatPopup = document.getElementById("chat-popup");
+        const chatClose = document.getElementById("chat-popup-close");
+        const chatBody = document.getElementById("chat-popup-body");
+        const chatSend = document.getElementById("sendMessageBtn");
+        const chatInput = document.getElementById("chatMessage");
+        const chatTitle = document.getElementById("chat-popup-title");
+        const chatFileInput = document.getElementById("chatImage");
+        const chatAttachBtn = document.getElementById("attachBtn");
 
-            if (msgBtn) {
-                msgBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    msgDropdown.style.display = msgDropdown.style.display === 'block' ? 'none' : 'block';
-                });
-            }
+        let activeUserId = null;
 
-            document.addEventListener('click', function(e) {
-                if (!msgBtn.contains(e.target) && !msgDropdown.contains(e.target)) {
-                    msgDropdown.style.display = 'none';
-                }
+        // Toggle dropdown
+        chatIcon.addEventListener("click", () => {
+            chatDropdown.style.display = chatDropdown.style.display === "block" ? "none" : "block";
+        });
+
+        // Mở popup khi chọn user
+        document.querySelectorAll(".chat-user").forEach(user => {
+            user.addEventListener("click", () => {
+                activeUserId = user.dataset.id;
+                chatDropdown.style.display = "none";
+                chatPopup.style.display = "flex";
+                chatTitle.innerText = `Chat với khách #${activeUserId}`;
+                loadMessages(activeUserId);
             });
         });
+
+        // Đóng popup
+        chatClose.addEventListener("click", () => {
+            chatPopup.style.display = "none";
+            activeUserId = null;
+        });
+
+        // Gắn sự kiện mở file
+        document.getElementById('attachBtn').onclick = () => {
+            document.getElementById('chatImage').click();
+        };
+
+        // Gửi tin nhắn (văn bản + ảnh)
+        document.getElementById('sendMessageBtn').onclick = async () => {
+            const message = document.getElementById('chatMessage').value.trim();
+            const fileInput = document.getElementById('chatImage');
+            const file = fileInput.files[0];
+            const userId = document.getElementById('chat-popup').getAttribute('data-user-id');
+
+            if (!message && !file) return;
+
+            const formData = new FormData();
+            formData.append('message', message);
+            formData.append('is_admin', true);
+            formData.append('user_id', userId);
+            if (file) formData.append('image', file);
+
+            const response = await fetch('/admin/chat/send', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
+            if (response.ok) {
+                document.getElementById('chatMessage').value = '';
+                document.getElementById('chatImage').value = '';
+            }
+        };
+
+        // Tải tin nhắn
+        function loadMessages(userId) {
+            fetch(`/admin/chat/fetch/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    chatBody.innerHTML = "";
+                    data.forEach(msg => {
+                        const div = document.createElement("div");
+                        div.className = msg.is_admin ? "msg admin" : "msg user";
+
+                        let html = "";
+                        if (msg.message) html += `<p>${msg.message}</p>`;
+                        if (msg.image_url) html += `<img src="${msg.image_url}" style="max-width:150px; border-radius:8px; margin-top:4px;">`;
+                        div.innerHTML = html;
+
+                        chatBody.appendChild(div);
+                    });
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                });
+        }
+
+        // Refresh mỗi 3 giây
+        setInterval(() => {
+            if (activeUserId) loadMessages(activeUserId);
+        }, 3000);
+    });
     </script>
 </body>
 </html>
