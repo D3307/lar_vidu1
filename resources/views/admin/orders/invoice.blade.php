@@ -2,106 +2,166 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Đơn hàng #{{ $order->id }}</title>
+    <title>Vận đơn #{{ $order->id }}</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 13px; }
-        .invoice-box {
-            width: 100%;
-            padding: 10px;
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 11px;
+            margin: 0;
+            padding: 0;
+        }
+        .invoice {
+            width: 128mm;
+            margin: 0 auto;
             border: 1px solid #000;
+            box-sizing: border-box;
+            padding: 5mm;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .tracking {
+            text-align: right;
+        }
+        .tracking p {
+            margin: 0;
+            line-height: 1.3;
         }
         .section {
-            margin-bottom: 10px;
+            border-bottom: 1px solid #000;
+            padding: 4px 0;
         }
-        .header { text-align: center; margin-bottom: 10px; }
-        .header h2 { margin: 0; color: #d35400; }
-        .row { display: flex; justify-content: space-between; }
-        .col { width: 48%; }
-        .barcode, .qrcode { text-align: center; margin: 10px 0; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .col {
+            width: 50%;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .bigcode {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin: 3px 0;
+        }
+        .midcode {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: right;
+        }
+        .qrcode {
+            text-align: center;
             margin-top: 5px;
         }
-        table, th, td { border: 1px solid #000; }
-        th, td { padding: 5px; text-align: center; }
-        .total { text-align: right; font-weight: bold; font-size: 16px; margin-top: 10px; }
-        .footer { font-size: 12px; margin-top: 15px; text-align: center; }
+        .qrcode img {
+            width: 70px;
+            height: 70px;
+        }
+        .product {
+            margin-top: 3px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+        .product ul {
+            margin: 4px 0 0 15px;
+            padding: 0;
+        }
+        .footer {
+            font-size: 10px;
+            text-align: center;
+            border-top: 1px solid #000;
+            margin-top: 5px;
+            padding-top: 3px;
+        }
+        @page {
+            size: A5 portrait;
+            margin: 5mm;
+        }
     </style>
 </head>
 <body>
-    <div class="invoice-box">
+    <div class="invoice">
 
-        {{-- Header --}}
+        {{-- HEADER --}}
         <div class="header">
-            <h2>Bridal Shop</h2>
-            <p>Mã vận đơn: SPX{{ str_pad($order->id, 8, '0', STR_PAD_LEFT) }}</p>
-            <p>Mã đơn hàng: {{ $order->id }}</p>
-        </div>
-
-        {{-- Barcode (giả lập bằng mã đơn hàng) --}}
-        <div class="barcode">
-            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG((string)$order->id, 'C128') }}" alt="barcode" height="50">
-        </div>
-
-        {{-- Thông tin người bán & người mua --}}
-        <div class="row section">
-            <div class="col">
-                <strong>Người bán:</strong><br>
-                Bridal Shop<br>
-                Địa chỉ: 123 Quang Trung, Hà Nội<br>
-                SĐT: 0987654321
+            <div class="logo">
+                <strong>Bridal Shop</strong>
             </div>
-            <div class="col">
-                <strong>Người mua:</strong><br>
-                {{ $order->name }}<br>
-                {{ $order->address }}<br>
-                SĐT: {{ $order->phone }}
+            <div class="tracking">
+                <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG((string)$order->id, 'C128', 1.6, 50) }}" alt="barcode"><br>
+                <p><strong>Mã vận đơn:</strong> SPX{{ str_pad($order->id, 10, '0', STR_PAD_LEFT) }}</p>
+                <p><strong>Mã đơn hàng:</strong> {{ $order->id }}</p>
             </div>
         </div>
 
-        {{-- Sản phẩm trong đơn --}}
+        {{-- FROM / TO --}}
         <div class="section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Sản phẩm</th>
-                        <th>Màu</th>
-                        <th>Size</th>
-                        <th>SL</th>
-                        <th>Giá</th>
-                        <th>Thành tiền</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($order->items as $item)
-                        <tr>
-                            <td>{{ $item->product->name ?? 'SP đã xóa' }}</td>
-                            <td>{{ $item->color ?? '-' }}</td>
-                            <td>{{ $item->size ?? '-' }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->price, 0, ',', '.') }} đ</td>
-                            <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }} đ</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col">
+                    <strong>Từ:</strong><br>
+                    Bridal Shop<br>
+                    ĐC: 41A, Phú Diễn, Bắc Từ Liêm, Hà Nội<br>
+                    SĐT: 0987654321
+                </div>
+                <div class="col">
+                    <strong>Đến:</strong><br>
+                    {{ $order->name }}<br>
+                    {{ $order->address }}<br>
+                    SĐT: {{ $order->phone }}
+                </div>
+            </div>
         </div>
 
-        {{-- QR Code --}}
-        <div class="qrcode">
-            {!! QrCode::size(120)->generate('Order-'.$order->id) !!}
-            <p>Ngày đặt: {{ $order->created_at->format('d/m/Y H:i') }}</p>
+        {{-- PRODUCT LIST --}}
+        <div class="section product">
+            <strong>Nội dung hàng (SL: {{ $order->items->sum('quantity') }}):</strong>
+            <ul>
+                @foreach($order->items as $item)
+                    <li>{{ $item->product->name ?? 'SP đã xóa' }}, SL: {{ $item->quantity }}</li>
+                @endforeach
+            </ul>
         </div>
 
-        {{-- Tổng tiền --}}
-        <div class="total">
-            Tổng cộng: {{ number_format($order->final_total, 0, ',', '.') }} đ
+        {{-- QR + NGÀY --}}
+        <div class="section row" style="align-items: center;">
+            <div class="col qrcode">
+                <img src="{{ public_path('storage/qrcode.png') }}" alt="QR Code">
+            </div>
+            <div class="col" style="text-align:right;">
+                <p class="bold">Mã nội bộ: HC-{{ $order->id }}-GV10R</p>
+                <p><strong>Ngày đặt:</strong><br>{{ $order->created_at->format('d/m/Y H:i') }}</p>
+            </div>
         </div>
 
-        {{-- Footer --}}
+        {{-- TOTAL --}}
+        <div class="section">
+            <p><strong>Tiền thu người nhận:</strong> 
+               {{ $order->final_total > 0 ? number_format($order->final_total, 0, ',', '.') . ' đ' : '0 VND' }}</p>
+            <p><strong>Khối lượng tối đa:</strong> 320g</p>
+            <p><strong>Ghi chú giao hàng:</strong> Được đồng kiểm</p>
+        </div>
+
+        {{-- FOOTER --}}
         <div class="footer">
-            Kiểm tra sản phẩm khi nhận hàng. Liên hệ CSKH Shopee khi có vấn đề phát sinh.
+            Kiểm tra sản phẩm khi nhận hàng. Liên hệ shop khi có vấn đề.
         </div>
     </div>
 </body>

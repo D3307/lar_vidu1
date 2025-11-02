@@ -108,11 +108,11 @@ class OrderController extends Controller
     public function invoice($id)
     {
         $order = Order::with('items.product')->findOrFail($id);
-
-        // Tạo mã vận đơn (có thể sinh random hoặc lấy từ DB)
         $trackingCode = 'SPX' . strtoupper(uniqid());
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.orders.invoice', compact('order', 'trackingCode'))->setPaper([0, 0, 288, 432], 'portrait'); 
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.orders.invoice', compact('order', 'trackingCode'))
+            ->setPaper('A5', 'portrait');
+
         return $pdf->download("invoice-order-{$order->id}.pdf");
     }
 }
