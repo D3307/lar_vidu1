@@ -19,4 +19,9 @@ class Coupon extends Model
             ($this->end_date === null || $this->end_date >= $now) &&
             ($this->usage_limit === null || $this->used_count < $this->usage_limit);
     }
+    
+    public function product()
+    {
+        return $this->belongsTo(\App\Models\Product::class, 'product_id');
+    }
 }

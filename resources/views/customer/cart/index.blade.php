@@ -48,7 +48,29 @@
                                 </td>
                                 <td>{{ $item['size'] ?? '-' }}</td>
                                 <td>{{ $item['quantity'] }}</td>
-                                <td>{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                                @php
+                                    $coupon = \App\Models\Coupon::where('product_id', $item['id'])
+                                        ->where('start_date', '<=', now())
+                                        ->where('end_date', '>=', now())
+                                        ->first();
+                                    $discountedPrice = $item['price'];
+                                    if ($coupon) {
+                                        $discount = $coupon->discount_type === 'percent' 
+                                            ? $item['price'] * ($coupon->discount / 100)
+                                            : $coupon->discount;
+                                        $discount = min($discount, $item['price']);
+                                        $discountedPrice = $item['price'] - $discount;
+                                    }
+                                    $subtotal = $discountedPrice * $item['quantity'];
+                                @endphp
+
+                                <td>
+                                    @if($discountedPrice < $item['price'])
+                                        <span style="color: #7A2F3B; font-weight: bold;">{{ number_format($discountedPrice, 0, ',', '.') }} đ</span>
+                                    @else
+                                        {{ number_format($item['price'], 0, ',', '.') }} đ
+                                    @endif
+                                </td>
                                 <td>{{ number_format($subtotal, 0, ',', '.') }} đ</td>
                             </tr>
                         @endforeach
@@ -66,7 +88,7 @@
 
                 <div class="text-end">
                     <h4 class="mb-3">Tổng cộng:
-                        <span style="color: var(--primary)">{{ number_format($total, 0, ',', '.') }} đ</span>
+                        <span style="color: #7A2F3B;">{{ number_format($subtotal, 0, ',', '.') }} đ</span>
                     </h4>
 
                     <a href="{{ route('customer.products') }}" class="btn" style="background: var(--accent); color: #fff;">

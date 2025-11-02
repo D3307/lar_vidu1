@@ -75,6 +75,33 @@ class OrderController extends Controller
             }
         }
 
+        // Tính tổng và áp dụng giảm giá riêng từng sản phẩm
+        $discountPerItem = 0;
+        foreach ($cart as $key => &$item) {
+            $productId = $item['id'];
+            $coupon = Coupon::where('product_id', $productId)
+                ->where('start_date', '<=', now())
+                ->where('end_date', '>=', now())
+                ->first();
+
+            if ($coupon) {
+                if ($coupon->discount_type === 'percent') {
+                    $discountAmount = $item['price'] * ($coupon->discount / 100);
+                } else {
+                    $discountAmount = $coupon->discount;
+                }
+                // Giảm tối đa không quá giá sản phẩm
+                $discountAmount = min($discountAmount, $item['price']);
+                $item['discounted_price'] = $item['price'] - $discountAmount;
+                $discountPerItem += $discountAmount * $item['quantity'];
+            } else {
+                $item['discounted_price'] = $item['price'];
+            }
+        }
+
+        // Tổng sau giảm từng sản phẩm
+        $total = collect($cart)->sum(fn($i) => ($i['discounted_price'] ?? $i['price']) * ($i['quantity'] ?? 0));
+
         $finalTotal = $total - $discount;
 
         return view('customer.cart.checkout', compact(
@@ -124,7 +151,27 @@ class OrderController extends Controller
         }
 
         // Tính tổng
-        $total = collect($cartItems)->sum(fn($item) => ($item['price'] ?? 0) * ($item['quantity'] ?? 1));
+        $total = 0;
+        foreach ($cartItems as &$item) {
+            $coupon = Coupon::where('product_id', $item['id'])
+                ->where('start_date', '<=', now())
+                ->where('end_date', '>=', now())
+                ->first();
+
+            if ($coupon) {
+                if ($coupon->discount_type === 'percent') {
+                    $discountAmount = $item['price'] * ($coupon->discount / 100);
+                } else {
+                    $discountAmount = $coupon->discount;
+                }
+                $discountAmount = min($discountAmount, $item['price']);
+                $item['price_after_discount'] = $item['price'] - $discountAmount;
+            } else {
+                $item['price_after_discount'] = $item['price'];
+            }
+
+            $total += $item['price_after_discount'] * $item['quantity'];
+        }
 
         // Coupon
         $couponId = $request->input('coupon_id');
@@ -187,7 +234,7 @@ class OrderController extends Controller
                     'size'              => $detail->size,
                     'material'          => $detail->product->material ?? null,
                     'quantity'          => $item['quantity'],
-                    'price'             => $item['price'],
+                    'price'             => $item['price_after_discount'],
                 ]);
 
                 // Trừ tồn kho

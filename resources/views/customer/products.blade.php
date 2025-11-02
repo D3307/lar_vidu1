@@ -62,7 +62,29 @@
         @if($products->count() > 0)
             <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
                 @foreach($products as $product)
-                    <div class="product-card" style="background: white; border-radius: 8px; overflow: hidden;">
+                    <div class="product-card" style="position: relative; background: white; border-radius: 8px; overflow: hidden;">
+                        @if ($product->coupon)
+                            <div style="
+                                position: absolute;
+                                top: 8px;
+                                left: 8px;
+                                background: #ff3b67;
+                                color: #fff;
+                                font-weight: 600;
+                                font-size: 0.8rem;
+                                padding: 5px 10px;
+                                border-radius: 8px;
+                                z-index: 10;
+                                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                            ">
+                                @if($product->coupon->discount_type === 'percent')
+                                    -{{ $product->coupon->discount }}%
+                                @else
+                                    -{{ number_format($product->coupon->discount, 0, ',', '.') }} ₫
+                                @endif
+                            </div>
+                        @endif
+
                         <a href="{{ route('customer.product_detail', $product->id) }}">
                             @if ($product->images->isNotEmpty())
                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
@@ -83,9 +105,33 @@
 
                             <!-- Giá và sao trên cùng 1 dòng -->
                             <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <p style="margin: 0; color: #d70018; font-weight: 600;">
-                                    {{ number_format($product->price, 0, ',', '.') }} ₫
-                                </p>
+                                <div>
+                                    @php
+                                        $discountedPrice = $product->price;
+                                        if ($product->coupon) {
+                                            $coupon = $product->coupon;
+                                            if ($coupon->discount_type === 'percent') {
+                                                $discountedPrice -= $product->price * ($coupon->discount / 100);
+                                            } else {
+                                                $discountedPrice -= $coupon->discount;
+                                            }
+                                            if ($discountedPrice < 0) $discountedPrice = 0; // tránh âm giá
+                                        }
+                                    @endphp
+
+                                    @if($product->coupon)
+                                        <p style="margin: 0; color: #d70018; font-weight: 700; font-size: 1rem;">
+                                            {{ number_format($discountedPrice, 0, ',', '.') }} ₫
+                                            <span style="text-decoration: line-through; color: #888; font-size: 0.8rem; margin-left: 6px;">
+                                                {{ number_format($product->price, 0, ',', '.') }} ₫
+                                            </span>
+                                        </p>
+                                    @else
+                                        <p style="margin: 0; color: #d70018; font-weight: 700;">
+                                            {{ number_format($product->price, 0, ',', '.') }} ₫
+                                        </p>
+                                    @endif
+                                </div>
 
                                 <div>
                                     @php

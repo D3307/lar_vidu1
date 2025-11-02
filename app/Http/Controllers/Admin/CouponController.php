@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class CouponController extends Controller
 {
     public function index()
     {
-        $coupons = Coupon::orderBy('id','asc')->paginate(6);
+        $coupons = Coupon::orderBy('id','asc')->paginate(10);
         return view('admin.coupons.index', compact('coupons'));
     }
 
     public function create()
     {
-        return view('admin.coupons.create');
+        // Lấy danh sách sản phẩm để hiển thị trong select (chỉ cần id + name)
+        $products = Product::orderBy('name')->get();
+
+        return view('admin.coupons.create', compact('products'));
     }
 
     public function store(Request $request)
@@ -40,7 +44,10 @@ class CouponController extends Controller
 
     public function edit(Coupon $coupon)
     {
-        return view('admin.coupons.edit', compact('coupon'));
+        // Lấy danh sách sản phẩm để hiển thị trong select (chỉ cần id + name)
+        $products = Product::orderBy('name')->get();
+
+        return view('admin.coupons.edit', compact('coupon', 'products'));
     }
 
     public function update(Request $request, Coupon $coupon)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Coupon;
 
 class Product extends Model
 {
@@ -56,5 +57,14 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    // Quan hệ một sản phẩm có thể có một mã giảm giá áp dụng cho sản phẩm đó
+    public function coupon()
+    {
+        return $this->hasOne(Coupon::class, 'product_id')
+                    ->where('scope', 'product')
+                    ->where('start_date', '<=', now())
+                    ->where('end_date', '>=', now());
     }
 }

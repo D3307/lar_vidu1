@@ -29,14 +29,16 @@
                 <select name="coupon_id" id="coupon_id" onchange="this.form.submit()">
                     <option value="">-- Không áp dụng --</option>
                     @foreach($coupons as $c)
-                        <option value="{{ $c->id }}" {{ (isset($couponId) && $couponId == $c->id) ? 'selected' : '' }}>
-                            {{ $c->code }} -
-                            @if($c->discount_type === 'percent')
-                                Giảm {{ $c->discount }}%
-                            @else
-                                Giảm {{ number_format($c->discount,0,',','.') }} đ
-                            @endif
-                        </option>
+                        @if(empty($c->product_id)) {{-- Chỉ hiện mã giảm cho toàn đơn hàng --}}
+                            <option value="{{ $c->id }}" {{ (isset($couponId) && $couponId == $c->id) ? 'selected' : '' }}>
+                                {{ $c->code }} -
+                                @if($c->discount_type === 'percent')
+                                    Giảm {{ $c->discount }}%
+                                @else
+                                    Giảm {{ number_format($c->discount,0,',','.') }} đ
+                                @endif
+                            </option>
+                        @endif
                     @endforeach
                 </select>
             </form>
@@ -150,7 +152,22 @@
                                         <input type="hidden" name="price[]" value="{{ $item['price'] }}">
                                     </td>
                                     <td class="text-end">
-                                        {{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1),0,',','.') }} đ
+                                        @php
+                                            $coupon = \App\Models\Coupon::where('product_id', $item['id'])
+                                                ->where('start_date', '<=', now())
+                                                ->where('end_date', '>=', now())
+                                                ->first();
+                                            $discountedPrice = $item['price'];
+                                            if ($coupon) {
+                                                $discount = $coupon->discount_type === 'percent' 
+                                                    ? $item['price'] * ($coupon->discount / 100)
+                                                    : $coupon->discount;
+                                                $discount = min($discount, $item['price']);
+                                                $discountedPrice = $item['price'] - $discount;
+                                            }
+                                            $subtotal = $discountedPrice * $item['quantity'];
+                                        @endphp
+                                        {{ number_format($subtotal, 0, ',', '.') }} đ
                                     </td>
                                 </tr>
                             @endforeach
@@ -181,7 +198,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="shipping" id="flat" value="flat" checked>
                                         <label class="form-check-label" for="flat">
-                                            Giao hàng tiêu chuẩn 30,000đ
+                                            Giao hàng tiêu chuẩn
                                         </label>
                                     </div>
                                     <div class="form-check">

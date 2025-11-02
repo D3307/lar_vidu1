@@ -59,14 +59,36 @@
 
         {{-- Thông tin sản phẩm --}}
         <div class="col-md-6">
-            <h2 class="fw-bold mb-1" style="color: #222;">{{ $product->name }}</h2>
+            <h2 class="fw-bold mb-1" style="color: #222; font-size: 1.8rem;">{{ $product->name }}</h2>
             <div class="mb-2">
                 <span class="text-muted">Danh mục: {{ $product->category->name ?? '---' }}</span>
             </div>
             <div class="mb-2">
-                <span class="fw-bold" style="font-size:1.7rem; color:#e75480;">
-                    {{ number_format($product->price, 0, ',', '.') }} đ
-                </span>
+                @php
+                    $discountedPrice = $product->price;
+                    if ($product->coupon) {
+                        $coupon = $product->coupon;
+                        if ($coupon->discount_type === 'percent') {
+                            $discountedPrice -= $product->price * ($coupon->discount / 100);
+                        } else {
+                            $discountedPrice -= $coupon->discount;
+                        }
+                        if ($discountedPrice < 0) $discountedPrice = 0; // tránh âm giá
+                    }
+                @endphp
+
+                @if($product->coupon)
+                    <p style="margin: 0; color: #e75480; font-weight: 700; font-size: 1.5rem;">
+                        {{ number_format($discountedPrice, 0, ',', '.') }} ₫
+                        <span style="text-decoration: line-through; color: #888; font-size: 1.2rem; margin-left: 6px;">
+                            {{ number_format($product->price, 0, ',', '.') }} ₫
+                        </span>
+                    </p>
+                @else
+                    <p style="margin: 0; color: #d70018; font-weight: 700;">
+                        {{ number_format($product->price, 0, ',', '.') }} ₫
+                    </p>
+                @endif
             </div>
             {{-- Đánh giá sao --}}
             <div class="mb-3">

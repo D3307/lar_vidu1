@@ -20,7 +20,7 @@
                     <th>Loại</th>
                     <th>Giá trị</th>
                     <th>Giá trị tối thiểu</th>
-                    <th>Số lần dùng / Giới hạn</th>
+                    <th>Áp dụng cho</th>
                     <th>Thời gian</th>
                     <th>Hành động</th>
                 </tr>
@@ -39,7 +39,20 @@
                         @endif
                     </td>
                     <td>{{ number_format($coupon->min_order_value, 0, ',', '.') }} đ</td>
-                    <td>{{ $coupon->used_count }} / {{ $coupon->usage_limit ?? '∞' }}</td>
+                    <td>
+                        @if($coupon->scope == 'order')
+                            <span style="color:#007bff;">Đơn hàng</span>
+                        @elseif($coupon->scope == 'product')
+                            <span style="color:#28a745;">Sản phẩm</span>
+                            @if($coupon->product)
+                                <br>
+                                <small style="color:#555;">{{ \Illuminate\Support\Str::limit($coupon->product->name, 20, '...') }}</small>
+                            @else
+                                <br>
+                                <small style="color:#999;">(Chưa gán sản phẩm)</small>
+                            @endif
+                        @endif
+                    </td>
                     <td>
                         {{ \Carbon\Carbon::parse($coupon->start_date)->format('d/m/Y') }}
                         -
@@ -68,44 +81,19 @@
 </div>
 
 <style>
-    .pagination li {
-        display: inline-block;
-        margin: 0 4px;
-    }
-
+    .pagination li {display: inline-block;margin: 0 4px;}
     .pagination li a,
-    .pagination li span {
-        display: inline-block;
-        padding: 8px 14px;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 600;
-        text-decoration: none;
-        color: #7a2f3b;
-        border: 1px solid #e8cbd2;
-    }
-
-    .pagination li a:hover {
-        background-color: #f0d4db;
-    }
-
-    .pagination li.active span {
-        background-color: #c03651;
-        color: #fff;
-        border-color: #c03651;
-    }
+    .pagination li span {display: inline-block;padding: 8px 14px;border-radius: 8px;font-size: 0.95rem;font-weight: 600;text-decoration: none;color: #7a2f3b;border: 1px solid #e8cbd2;}
+    .pagination li a:hover {background-color: #f0d4db;}
+    .pagination li.active span {background-color: #c03651;color: #fff;border-color: #c03651;}
     .admin-card { background:#fff; padding:18px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.05);}
-    .btn-add { background:#f0d4db; color:#7a2f3b; padding:8px 14px; border-radius:8px; border:1px solid #e8cbd2;
-               text-decoration:none; font-size:0.95rem; transition:all .2s ease;}
+    .btn-add { background:#f0d4db; color:#7a2f3b; padding:8px 14px; border-radius:8px; border:1px solid #e8cbd2;text-decoration:none; font-size:0.95rem; transition:all .2s ease;}
     .btn-add:hover { background:#d64571; color:#fff;}
     .table-wrapper { overflow-x:auto; }
-    .styled-table { width:100%; border-collapse:separate; border-spacing:0;
-                    border:1px solid rgba(0,0,0,0.06); border-radius:10px; overflow:hidden;}
-    .styled-table th { background:#f9f3f3; color:#7a2f3b; font-weight:600; text-align:left;
-                       padding:10px 12px; font-size:0.95rem;}
+    .styled-table { width:100%; border-collapse:separate; border-spacing:0;border:1px solid rgba(0,0,0,0.06); border-radius:10px; overflow:hidden;}
+    .styled-table th { background:#f9f3f3; color:#7a2f3b; font-weight:600; text-align:left;padding:10px 12px; font-size:0.95rem;}
     .styled-table td { padding:10px 12px; border-top:1px solid rgba(0,0,0,0.05); font-size:0.95rem; color:#333;}
-    .btn-action { border:none; background:transparent; padding:6px 10px; border-radius:6px;
-                  font-size:0.85rem; cursor:pointer; text-decoration:none; margin-right:4px; transition:background .2s;}
+    .btn-action { border:none; background:transparent; padding:6px 10px; border-radius:6px;font-size:0.85rem; cursor:pointer; text-decoration:none; margin-right:4px; transition:background .2s;}
     .btn-edit { color:#7a2f3b; border:1px solid rgba(122,47,59,0.3);}
     .btn-edit:hover { background:#f9f3f3;}
     .btn-delete { color:#fff; background:#d9534f; border:1px solid #c9302c;}

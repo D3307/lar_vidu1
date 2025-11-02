@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 02, 2025 lúc 09:25 PM
+-- Thời gian đã tạo: Th10 03, 2025 lúc 12:14 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -70,6 +70,8 @@ CREATE TABLE `coupons` (
   `code` varchar(100) NOT NULL,
   `discount` decimal(12,2) NOT NULL,
   `discount_type` enum('percent','fixed') DEFAULT 'percent',
+  `scope` enum('order','product') NOT NULL DEFAULT 'order',
+  `product_id` bigint(20) UNSIGNED DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `usage_limit` int(11) DEFAULT 0,
@@ -82,17 +84,22 @@ CREATE TABLE `coupons` (
 -- Đang đổ dữ liệu cho bảng `coupons`
 --
 
-INSERT INTO `coupons` (`id`, `code`, `discount`, `discount_type`, `start_date`, `end_date`, `usage_limit`, `created_at`, `updated_at`, `min_order_value`) VALUES
-(1, 'WELCOME30', 30.00, 'percent', '2025-09-12', '2025-10-12', 100, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
-(2, 'SALE10', 10.00, 'percent', '2025-09-12', '2025-10-12', 20, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 200000.00),
-(3, 'SALE20', 20.00, 'percent', '2025-09-12', '2025-10-12', 150, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 300000.00),
-(4, 'FREESHIP50', 5000.00, 'fixed', '2025-09-12', '2025-10-12', 300, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 150000.00),
-(5, 'VIP15', 15.00, 'percent', '2025-09-12', '2025-11-11', 500, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 500000.00),
-(6, 'NEWUSER50', 30000.00, 'fixed', '2025-09-12', '2025-10-12', 1000, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
-(7, 'WEEKEND25', 25.00, 'percent', '2025-09-12', '2025-09-19', 100, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 250000.00),
-(8, 'FLASH100K', 50000.00, 'fixed', '2025-09-12', '2025-09-17', 50, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 400000.00),
-(9, 'BIRTHDAY30', 30.00, 'percent', '2025-09-12', '2026-09-12', 999, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
-(10, 'LOYAL20', 20.00, 'percent', '2025-09-12', '2025-12-11', 300, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 600000.00);
+INSERT INTO `coupons` (`id`, `code`, `discount`, `discount_type`, `scope`, `product_id`, `start_date`, `end_date`, `usage_limit`, `created_at`, `updated_at`, `min_order_value`) VALUES
+(1, 'WELCOME30', 30.00, 'percent', 'order', NULL, '2025-09-12', '2025-10-12', 100, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
+(2, 'SALE10', 10.00, 'percent', 'order', NULL, '2025-09-12', '2025-10-12', 20, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 200000.00),
+(3, 'SALE20', 20.00, 'percent', 'order', NULL, '2025-09-12', '2025-10-12', 150, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 300000.00),
+(4, 'FREESHIP50', 5000.00, 'fixed', 'order', NULL, '2025-09-12', '2025-10-12', 300, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 150000.00),
+(5, 'VIP15', 15.00, 'percent', 'order', NULL, '2025-09-12', '2025-11-11', 500, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 500000.00),
+(6, 'NEWUSER50', 30000.00, 'fixed', 'order', NULL, '2025-09-12', '2025-10-12', 1000, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
+(7, 'WEEKEND25', 25.00, 'percent', 'order', NULL, '2025-09-12', '2025-09-19', 100, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 250000.00),
+(8, 'FLASH100K', 50000.00, 'fixed', 'order', NULL, '2025-09-12', '2025-09-17', 50, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 400000.00),
+(9, 'BIRTHDAY30', 30.00, 'percent', 'order', NULL, '2025-09-12', '2026-09-12', 999, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 0.00),
+(10, 'LOYAL20', 20.00, 'percent', 'order', NULL, '2025-09-12', '2025-12-11', 300, '2025-09-12 11:29:20', '2025-09-12 11:29:20', 600000.00),
+(16, 'GIAYBUPBE10', 10.00, 'percent', 'product', 18, '2025-11-01', '2026-11-01', 200, '2025-11-02 21:26:49', '2025-11-02 21:26:49', 0.00),
+(17, 'GIAYTHETHAO50K', 50000.00, 'fixed', 'product', 20, '2025-11-01', '2026-11-01', 500, '2025-11-02 21:26:49', '2025-11-02 21:26:49', 0.00),
+(18, 'GIAYLUOI20', 20.00, 'percent', 'product', 22, '2025-11-01', '2026-11-01', 150, '2025-11-02 21:26:49', '2025-11-02 21:26:49', 0.00),
+(19, 'GIAYBOOT15', 15.00, 'percent', 'product', 24, '2025-11-01', '2026-11-01', 300, '2025-11-02 21:26:49', '2025-11-02 21:26:49', 0.00),
+(20, 'GIAYCAOGOT100K', 100000.00, 'fixed', 'product', 32, '2025-11-01', '2026-11-01', 100, '2025-11-02 21:26:49', '2025-11-02 21:26:49', 0.00);
 
 -- --------------------------------------------------------
 
@@ -233,6 +240,13 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `momo_order_id`, `name`, `phone`, `address`, `user_id`, `total`, `discount`, `final_total`, `status`, `payment_status`, `created_at`, `updated_at`, `payment_method`, `coupon_id`) VALUES
+(66, NULL, 'Thảo', '0944763697', 'Ha Noi', 4, 720000.00, 0, 720000, 'pending', 'unpaid', '2025-11-02 13:28:46', '2025-11-02 13:28:46', 'cod', NULL);
+
+--
 -- Bẫy `orders`
 --
 DELIMITER $$
@@ -273,6 +287,13 @@ CREATE TABLE `order_items` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `material` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `color`, `size`, `quantity`, `price`, `created_at`, `updated_at`, `material`) VALUES
+(67, 66, 32, '#C8D6DF', '35', 1, 720000.00, '2025-11-02 13:28:46', '2025-11-02 13:28:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -442,7 +463,7 @@ INSERT INTO `product_details` (`id`, `product_id`, `color`, `size`, `quantity`, 
 (94, 31, '#000000', '37', 4896, '2025-10-30 00:02:42', '2025-10-30 00:02:42'),
 (95, 31, '#C7C6CB', '38', 98, '2025-10-30 00:02:42', '2025-10-30 00:02:42'),
 (96, 31, '#000000', '39', 156, '2025-10-30 00:02:42', '2025-10-30 00:02:42'),
-(97, 32, '#C8D6DF', '35', 8946, '2025-10-30 00:16:23', '2025-10-30 00:16:23'),
+(97, 32, '#C8D6DF', '35', 8945, '2025-10-30 00:16:23', '2025-11-02 13:28:46'),
 (98, 32, '#000000', '36', 51, '2025-10-30 00:16:23', '2025-10-30 00:16:23'),
 (99, 32, '#fffdd0', '37', 54, '2025-10-30 00:16:23', '2025-10-30 00:16:23'),
 (100, 32, '#C8D6DF', '38', 65, '2025-10-30 00:16:23', '2025-10-30 00:16:23'),
@@ -691,8 +712,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('WImISgcK09cV2yQR5RE5GktDJkrTl5ZynG4ykx3n', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMFMzeUYxOE5lWm8xdWdidTNnbTZCWXl3b0VSa3VlWFlRcU8yMUNYTyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQzOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vcHJvZHVjdHM/cGFnZT0yIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', 1762114840),
-('zQf5MVJrJokrcXiMZpCqD5IBj5McteWdgvwjCa2d', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTzNFdTFLd0N6cnl0Z0VBWG5xMjQ2eGdlT0FQQm9rZk5xSkZuWGNtMCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMwOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvcHJvZHVjdHMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O30=', 1762114944);
+('WImISgcK09cV2yQR5RE5GktDJkrTl5ZynG4ykx3n', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiMFMzeUYxOE5lWm8xdWdidTNnbTZCWXl3b0VSa3VlWFlRcU8yMUNYTyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM1OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYWRtaW4vY291cG9ucyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7fQ==', 1762125195),
+('zQf5MVJrJokrcXiMZpCqD5IBj5McteWdgvwjCa2d', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiTzNFdTFLd0N6cnl0Z0VBWG5xMjQ2eGdlT0FQQm9rZk5xSkZuWGNtMCI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQyOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvY2hlY2tvdXQ/Y291cG9uX2lkPTkiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6NDoiY2FydCI7YToxOntpOjU4O2E6OTp7czoyOiJpZCI7aToyNDtzOjE3OiJwcm9kdWN0X2RldGFpbF9pZCI7aTo1ODtzOjQ6Im5hbWUiO3M6NDk6Ikdpw6B5IE3hu41pIE7hu68gxJDDtG5nIEjhuqNpIETDoW5nIExvYWZlciBDaHVua3kiO3M6NToicHJpY2UiO3M6OToiODkwMDAwLjAwIjtzOjg6InF1YW50aXR5IjtpOjI7czo0OiJzaXplIjtzOjI6IjM1IjtzOjU6ImNvbG9yIjtzOjc6IiNGOUUzQjciO3M6ODoibWF0ZXJpYWwiO3M6MjQ6IkRhIHZpIHPhu6NpIChNaWNyb2ZpYmVyKSI7czo1OiJpbWFnZSI7Tjt9fX0=', 1762122675);
 
 -- --------------------------------------------------------
 
@@ -834,7 +855,27 @@ INSERT INTO `user_histories` (`id`, `user_id`, `coupon_id`, `order_id`, `used_at
 (379, 4, NULL, NULL, '2025-10-30 06:52:08', '2025-10-29 23:52:08', '2025-10-29 23:52:08', NULL),
 (380, 4, NULL, NULL, '2025-10-30 06:54:20', '2025-10-29 23:54:20', '2025-10-29 23:54:20', NULL),
 (381, 4, NULL, NULL, '2025-10-30 06:54:28', '2025-10-29 23:54:28', '2025-10-29 23:54:28', NULL),
-(382, 4, NULL, NULL, '2025-10-30 07:18:50', '2025-10-30 00:18:50', '2025-10-30 00:18:50', NULL);
+(382, 4, NULL, NULL, '2025-10-30 07:18:50', '2025-10-30 00:18:50', '2025-10-30 00:18:50', NULL),
+(383, 4, NULL, NULL, '2025-11-02 20:28:28', '2025-11-02 13:28:28', '2025-11-02 13:28:28', NULL),
+(384, 4, NULL, NULL, '2025-11-02 21:26:08', '2025-11-02 14:26:08', '2025-11-02 14:26:08', NULL),
+(385, 4, NULL, NULL, '2025-11-02 21:26:15', '2025-11-02 14:26:15', '2025-11-02 14:26:15', NULL),
+(386, 4, NULL, NULL, '2025-11-02 21:31:33', '2025-11-02 14:31:33', '2025-11-02 14:31:33', NULL),
+(387, 4, NULL, NULL, '2025-11-02 21:31:36', '2025-11-02 14:31:36', '2025-11-02 14:31:36', NULL),
+(388, 4, NULL, NULL, '2025-11-02 21:31:39', '2025-11-02 14:31:39', '2025-11-02 14:31:39', NULL),
+(389, 4, NULL, NULL, '2025-11-02 21:44:47', '2025-11-02 14:44:47', '2025-11-02 14:44:47', NULL),
+(390, 4, NULL, NULL, '2025-11-02 21:44:52', '2025-11-02 14:44:52', '2025-11-02 14:44:52', NULL),
+(391, 4, NULL, NULL, '2025-11-02 21:46:13', '2025-11-02 14:46:13', '2025-11-02 14:46:13', NULL),
+(392, 4, NULL, NULL, '2025-11-02 21:46:23', '2025-11-02 14:46:23', '2025-11-02 14:46:23', NULL),
+(393, 4, NULL, NULL, '2025-11-02 21:47:27', '2025-11-02 14:47:27', '2025-11-02 14:47:27', NULL),
+(394, 4, NULL, NULL, '2025-11-02 21:50:02', '2025-11-02 14:50:02', '2025-11-02 14:50:02', NULL),
+(395, 4, NULL, NULL, '2025-11-02 21:50:21', '2025-11-02 14:50:21', '2025-11-02 14:50:21', NULL),
+(396, 4, NULL, NULL, '2025-11-02 21:51:21', '2025-11-02 14:51:21', '2025-11-02 14:51:21', NULL),
+(397, 4, NULL, NULL, '2025-11-02 21:51:49', '2025-11-02 14:51:49', '2025-11-02 14:51:49', NULL),
+(398, 4, NULL, NULL, '2025-11-02 21:52:11', '2025-11-02 14:52:11', '2025-11-02 14:52:11', NULL),
+(399, 4, NULL, NULL, '2025-11-02 22:01:12', '2025-11-02 15:01:12', '2025-11-02 15:01:12', NULL),
+(400, 4, NULL, NULL, '2025-11-02 22:03:40', '2025-11-02 15:03:40', '2025-11-02 15:03:40', NULL),
+(401, 4, NULL, NULL, '2025-11-02 22:03:52', '2025-11-02 15:03:52', '2025-11-02 15:03:52', NULL),
+(402, 4, NULL, NULL, '2025-11-02 22:04:06', '2025-11-02 15:04:06', '2025-11-02 15:04:06', NULL);
 
 --
 -- Bẫy `user_histories`
@@ -890,7 +931,8 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `coupons`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `code` (`code`);
+  ADD UNIQUE KEY `code` (`code`),
+  ADD KEY `fk_coupons_product` (`product_id`);
 
 --
 -- Chỉ mục cho bảng `inventories`
@@ -1037,7 +1079,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `inventories`
@@ -1067,13 +1109,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -1127,7 +1169,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `user_histories`
 --
 ALTER TABLE `user_histories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=383;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=403;
 
 --
 -- AUTO_INCREMENT cho bảng `wishlists`
@@ -1138,6 +1180,12 @@ ALTER TABLE `wishlists`
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `coupons`
+--
+ALTER TABLE `coupons`
+  ADD CONSTRAINT `fk_coupons_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `inventories`
