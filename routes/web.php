@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\ProductDetailController as AdminProductDetailCont
 use App\Http\Controllers\Customer\ChatController as CustomerChatController;
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Customer\ChatbotController;
+use App\Http\Controllers\Admin\ChatbotKnowledgeController;
 
 // -------------------- Welcome Page --------------------
 Route::get('/', function() {
@@ -186,4 +187,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])
         Route::post('/chat/send', [AdminChatController::class, 'send'])->name('chat.send');
         Route::get('/chat/fetch/{userId}', [AdminChatController::class, 'fetch'])->name('chat.fetch');
         Route::get('/chat/unread-count', [AdminChatController::class, 'unreadCount'])->name('chat.unread');
+
+        //Route chatbot
+        Route::post('/admin/chatbot/import', [ChatbotKnowledgeController::class, 'import']);    
     });

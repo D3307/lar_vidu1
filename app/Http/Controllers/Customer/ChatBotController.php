@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Customer;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\ChatbotKnowledge;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -12,72 +14,129 @@ class ChatbotController extends Controller
     public function send(Request $request)
     {
         $prompt = trim($request->input('message', ''));
+        $lowerPrompt = mb_strtolower($prompt);
+
         if ($prompt === '') {
-            return response()->json(['reply' => 'Vui lòng nhập tin nhắn.'], 400);
+            return response()->json([
+                'reply' => 'Vui lòng nhập nội dung tin nhắn.'
+            ], 400);
         }
 
-        $apiKey = env('OPENAI_API_KEY');
-        if (empty($apiKey)) {
-            Log::warning('CHATBOT: OPENAI_API_KEY not set; returning mock reply.');
-            return response()->json(['reply' => 'Xin chào! Chatbot chưa được cấu hình.'], 200);
-        }
+        /* ======================================================
+         | 1️⃣ TRA CỨU ĐƠN HÀNG – LOGIC NGHIỆP VỤ (KHÔNG AI)
+         ====================================================== */
+        if (str_contains($lowerPrompt, 'đơn hàng')) {
 
-        // helper để gọi OpenAI Chat API
-        $callOpenAI = function($messages, $temperature = 0.8) use ($apiKey) {
-            return Http::withHeaders([
-                'Authorization' => 'Bearer ' . $apiKey,
-                'Content-Type' => 'application/json',
-            ])->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-3.5-turbo',
-                'messages' => $messages,
-                'max_tokens' => 400,
-                'temperature' => $temperature,
-                'top_p' => 1.0,
-                'n' => 1,
-            ]);
-        };
+            preg_match('/(order_[\w\d_]+|\d+)/i', $prompt, $matches);
 
-        // system prompt — bắt model không chỉ lặp lại câu hỏi, trả lời ngắn gọn, hữu ích
-        $system = "Bạn là trợ lý bán hàng cho Bridal Shop. Trả lời ngắn gọn, thân thiện, cung cấp bước tiếp theo (ví dụ: link sản phẩm, hướng dẫn mua) khi có thể. KHÔNG chỉ lặp lại nguyên văn câu hỏi của người dùng. Nếu người dùng hỏi để mua, đề xuất kích cỡ và hướng dẫn thanh toán.";
-
-        // lần gọi đầu
-        $messages = [
-            ['role' => 'system', 'content' => $system],
-            ['role' => 'user', 'content' => $prompt],
-        ];
-
-        try {
-            $res = $callOpenAI($messages, 0.8);
-            if (! $res->successful()) {
-                Log::error('OpenAI error', ['status' => $res->status(), 'body' => $res->body()]);
-                return response()->json(['reply' => 'Đã xảy ra lỗi khi kết nối AI.'], 500);
+            if (empty($matches[1])) {
+                return response()->json([
+                    'reply' => 'Bạn vui lòng cung cấp mã đơn hàng (ví dụ: 67 hoặc ORDER_67_1769089996).'
+                ]);
             }
 
-            $json = $res->json();
-            $reply = $json['choices'][0]['message']['content'] ?? '';
+            $code = $matches[1];
 
-            // nếu model trả về đúng hoặc gần giống input, thử gọi lại với temperature cao hơn và instruction mạnh hơn
-            $cleanReply = trim(preg_replace('/\s+/', ' ', mb_strtolower(strip_tags($reply))));
-            $cleanPrompt = trim(preg_replace('/\s+/', ' ', mb_strtolower(strip_tags($prompt))));
-            if ($cleanReply === $cleanPrompt || stripos($cleanReply, $cleanPrompt) !== false) {
-                // thêm instruction rõ ràng yêu cầu paraphrase + thêm thông tin hữu ích
-                $messages[] = ['role' => 'system', 'content' => 'Hãy trả lời KHÔNG lặp lại nguyên văn câu hỏi. Tóm tắt, đưa giải pháp hoặc bước tiếp theo cụ thể.'];
-                $messages[] = ['role' => 'user', 'content' => $prompt];
-                $res2 = $callOpenAI($messages, 1.0);
-                if ($res2->successful()) {
-                    $json2 = $res2->json();
-                    $reply = $json2['choices'][0]['message']['content'] ?? $reply;
-                } else {
-                    Log::warning('OpenAI retry failed', ['status' => $res2->status(), 'body' => $res2->body()]);
+            $order = ctype_digit($code)
+                ? Order::where('id', (int)$code)->first()
+                : Order::where('momo_order_id', $code)->first();
+
+            if (! $order) {
+                return response()->json([
+                    'reply' => "❌ Không tìm thấy đơn hàng với mã <b>{$code}</b>."
+                ]);
+            }
+
+            return response()->json([
+                'reply' => "
+                    ✅ <b>Thông tin đơn hàng</b><br>
+                    • Mã đơn: {$order->momo_order_id}<br>
+                    • Trạng thái: {$order->status}<br>
+                    • Thanh toán: {$order->payment_status}<br>
+                    • Tổng tiền: " . number_format($order->final_total) . " VNĐ<br>
+                    • Ngày tạo: {$order->created_at}
+                "
+            ]);
+        }
+
+        /* ======================================================
+         | 2️⃣ LẤY TRI THỨC TỪ EXCEL (DB) – KHÔNG TRẢ LỜI NGAY
+         ====================================================== */
+        $matchedKnowledges = [];
+
+        $knowledges = ChatbotKnowledge::all();
+
+        foreach ($knowledges as $row) {
+            $keywords = array_map(
+                'trim',
+                explode(',', mb_strtolower($row->keywords))
+            );
+
+            foreach ($keywords as $keyword) {
+                if ($keyword !== '' && str_contains($lowerPrompt, $keyword)) {
+                    $matchedKnowledges[] = $row->content;
+                    break;
                 }
             }
-
-            $reply = trim($reply) ?: 'AI chưa trả về phản hồi hợp lệ.';
-            return response()->json(['reply' => $reply], 200);
-
-        } catch (\Throwable $e) {
-            Log::error('CHATBOT exception: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            return response()->json(['reply' => 'Đã xảy ra lỗi khi kết nối AI.'], 500);
         }
+
+        /* ======================================================
+         | 3️⃣ AI DIỄN GIẢI TRI THỨC (RAG)
+         ====================================================== */
+        if (! empty($matchedKnowledges)) {
+
+            $knowledgeText = implode("\n- ", $matchedKnowledges);
+
+            $systemPrompt = <<<PROMPT
+Bạn là trợ lý bán hàng của Bridal Shop.
+
+Chỉ được sử dụng thông tin sau để trả lời:
+- {$knowledgeText}
+
+Yêu cầu:
+- Trả lời tự nhiên, lịch sự
+- Không bịa thêm thông tin
+- Nếu thông tin chưa đủ, nói rõ là shop chưa có dữ liệu
+PROMPT;
+
+            try {
+                $res = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . env('OPENAI_API_KEY'),
+                    'Content-Type' => 'application/json',
+                ])->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-3.5-turbo',
+                    'messages' => [
+                        ['role' => 'system', 'content' => $systemPrompt],
+                        ['role' => 'user', 'content' => $prompt],
+                    ],
+                    'temperature' => 0.6,
+                    'max_tokens' => 300,
+                ]);
+
+                if ($res->successful()) {
+                    return response()->json([
+                        'reply' => $res->json()['choices'][0]['message']['content']
+                            ?? 'Mình chưa có phản hồi phù hợp.'
+                    ]);
+                }
+
+                Log::warning('AI response failed', [
+                    'status' => $res->status()
+                ]);
+
+            } catch (\Throwable $e) {
+                Log::error('RAG AI error', [
+                    'msg' => $e->getMessage()
+                ]);
+            }
+        }
+
+        /* ======================================================
+         | 4️⃣ FALLBACK – KHÔNG CÓ TRI THỨC / HẾT QUOTA
+         ====================================================== */
+        return response()->json([
+            'reply' => '🤖 Mình chưa có thông tin cho câu hỏi này.
+Bạn có thể hỏi về đơn hàng, giao hàng, đổi trả hoặc dịch vụ của shop nhé.'
+        ]);
     }
 }
